@@ -19,8 +19,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useIsMobile } from '@/hooks/use-mobile';
-
 
 interface AzuraCastNowPlaying {
   station: {
@@ -50,8 +48,6 @@ export function RadioPlayer() {
   const [shoutoutOpen, setShoutoutOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isPlayerDetailOpen, setPlayerDetailOpen] = useState(false);
-
-  const isMobile = useIsMobile();
 
   const streamUrl = "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3";
   const apiUrl = "/api/nowplaying";
@@ -354,7 +350,7 @@ export function RadioPlayer() {
       <div className="fixed bottom-0 left-0 right-0 z-50 p-2 sm:p-4">
         {isMounted && <audio ref={audioRef} src={streamUrl} preload="none" />}
 
-        {isMobile && isMounted ? (
+        {isMounted ? (
             <Dialog open={isPlayerDetailOpen} onOpenChange={setPlayerDetailOpen}>
                 <DialogTrigger asChild>
                     <Card className="w-full max-w-4xl mx-auto shadow-2xl backdrop-blur-lg bg-card/80 cursor-pointer">
@@ -365,12 +361,6 @@ export function RadioPlayer() {
                 </DialogTrigger>
                 {fullScreenPlayerView}
             </Dialog>
-        ) : isMounted ? (
-            <Card className="w-full max-w-4xl mx-auto shadow-2xl backdrop-blur-lg bg-card/80">
-                <CardContent className="p-3 sm:p-4">
-                    {miniPlayerContent}
-                </CardContent>
-            </Card>
         ) : null}
       </div>
 
