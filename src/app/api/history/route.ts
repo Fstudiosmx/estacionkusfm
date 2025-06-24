@@ -5,18 +5,15 @@ import { NextResponse } from 'next/server';
 // This is useful for avoiding CORS issues, as the request is made from the server-side.
 // see: https://nextjs.org/docs/app/building-your-application/routing/route-handlers
 
-// We can also use this to cache the response, but for now we'll just proxy it.
-export const revalidate = 0; // do not cache this route
-
 export async function GET() {
   const azura_url = 'https://radio.trabullnetwork.pro/api/station/estacionkusfm/history';
   try {
     const response = await fetch(azura_url, {
-      next: { revalidate: 0 } // Revalidate every 0 seconds
+      cache: 'no-store'
     });
 
     if (!response.ok) {
-      throw new Error(`Error from AzuraCast API: ${response.statusText}`);
+      throw new Error(`Error from AzuraCast API: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();

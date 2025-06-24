@@ -1,17 +1,15 @@
 // src/app/api/nowplaying/route.ts
 import { NextResponse } from 'next/server';
 
-export const revalidate = 0; // do not cache this route
-
 export async function GET() {
   const azura_url = 'https://radio.trabullnetwork.pro/api/nowplaying/estacionkusfm';
   try {
     const response = await fetch(azura_url, {
-      next: { revalidate: 0 } // Revalidate every 0 seconds
+      cache: 'no-store'
     });
 
     if (!response.ok) {
-      throw new Error(`Error from AzuraCast API: ${response.statusText}`);
+      throw new Error(`Error from AzuraCast API: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();

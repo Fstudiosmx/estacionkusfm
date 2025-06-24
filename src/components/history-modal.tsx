@@ -37,7 +37,9 @@ export function HistoryModal() {
       try {
         const response = await fetch('/api/history');
         if (!response.ok) {
-          throw new Error('No se pudo cargar el historial desde el servidor de la radio.');
+          const errorData = await response.json().catch(() => ({}));
+          const message = errorData.message || 'No se pudo cargar el historial desde el servidor de la radio.';
+          throw new Error(message);
         }
         const data: SongHistoryItem[] = await response.json();
         setHistory(data);
@@ -75,7 +77,8 @@ export function HistoryModal() {
             <ServerOff className="h-4 w-4" />
             <AlertTitle>Error de Conexión</AlertTitle>
             <AlertDescription>
-                <p>El historial de canciones no está disponible en este momento. Por favor, inténtalo de nuevo más tarde.</p>
+                <p>{error}</p>
+                <p className="mt-2 text-xs">Por favor, inténtalo de nuevo más tarde.</p>
             </AlertDescription>
         </Alert>
       );
