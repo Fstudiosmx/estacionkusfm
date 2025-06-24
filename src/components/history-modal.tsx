@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from 'lucide-react';
+import { ServerOff } from 'lucide-react';
 
 interface SongHistoryItem {
   sh_id: number;
@@ -35,7 +35,7 @@ export function HistoryModal() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`https://radio.trabullnetwork.pro/api/station/estacionkusfm/history`, { cache: 'no-store' });
+        const response = await fetch('/api/history');
         if (!response.ok) {
           throw new Error('No se pudo cargar el historial desde el servidor de la radio.');
         }
@@ -72,11 +72,10 @@ export function HistoryModal() {
     if (error) {
       return (
          <Alert variant="destructive">
-            <Terminal className="h-4 w-4" />
+            <ServerOff className="h-4 w-4" />
             <AlertTitle>Error de Conexión</AlertTitle>
             <AlertDescription>
-                <p>No se pudo obtener el historial de canciones.</p>
-                <p className="text-xs mt-2">{error}</p>
+                <p>El historial de canciones no está disponible en este momento. Por favor, inténtalo de nuevo más tarde.</p>
             </AlertDescription>
         </Alert>
       );

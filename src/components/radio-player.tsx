@@ -36,11 +36,11 @@ export function RadioPlayer() {
   const lastVolume = useRef(50);
   
   const streamUrl = "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3";
-  const apiUrl = "https://radio.trabullnetwork.pro/api/nowplaying/estacionkusfm";
+  const apiUrl = "/api/nowplaying";
 
   const fetchNowPlaying = async () => {
     try {
-      const response = await fetch(apiUrl, { cache: 'no-store' });
+      const response = await fetch(apiUrl);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
