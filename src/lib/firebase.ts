@@ -6,14 +6,14 @@ import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// IMPORTANT: Replace with your Firebase project's configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBcJGvx5WmOimzK9AX8THXKWnFrbbTSqSE",
+  authDomain: "estacionkusfm.firebaseapp.com",
+  projectId: "estacionkusfm",
+  storageBucket: "estacionkusfm.appspot.com",
+  messagingSenderId: "186423695774",
+  appId: "1:186423695774:web:ef8c3c542762623d455e8f"
 };
 
 // Initialize Firebase
