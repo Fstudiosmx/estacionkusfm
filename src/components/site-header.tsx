@@ -12,7 +12,7 @@ import { useState } from 'react';
 const navItems = [
   { href: '/', label: 'Inicio' },
   { href: '/programacion', label: 'Programación' },
-  { href: '/grabaciones', label: 'Podcasts' },
+  { href: '/grabaciones', label: 'Grabaciones' },
   { href: '/blog', label: 'Blog' },
   { href: '/nosotros', label: 'Nosotros' },
   { href: '/unete', label: 'Únete' },

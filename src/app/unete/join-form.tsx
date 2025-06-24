@@ -20,13 +20,13 @@ import { useToast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: "El nombre debe tener al menos 2 caracteres.",
   }),
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: "Por favor, introduce una dirección de correo electrónico válida.",
   }),
   showIdea: z.string().min(10, {
-    message: "Show idea must be at least 10 characters.",
+    message: "La idea del programa debe tener al menos 10 caracteres.",
   }),
   message: z.string().optional(),
 })
@@ -47,8 +47,8 @@ export function JoinForm() {
       function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values)
         toast({
-            title: "Application Sent!",
-            description: "Thanks for your interest. We'll be in touch soon.",
+            title: "¡Solicitud Enviada!",
+            description: "Gracias por tu interés. Nos pondremos en contacto pronto.",
           })
         form.reset();
       }
@@ -56,15 +56,15 @@ export function JoinForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <h2 className="text-2xl font-bold text-center font-headline">Application Form</h2>
+        <h2 className="text-2xl font-bold text-center font-headline">Formulario de Aplicación</h2>
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>Nombre Completo</FormLabel>
               <FormControl>
-                <Input placeholder="Your Name" {...field} />
+                <Input placeholder="Tu Nombre" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,9 +75,9 @@ export function JoinForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>Correo Electrónico</FormLabel>
               <FormControl>
-                <Input placeholder="you@example.com" {...field} />
+                <Input placeholder="tu@ejemplo.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,12 +88,12 @@ export function JoinForm() {
           name="showIdea"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your Show Idea</FormLabel>
+              <FormLabel>Tu Idea para un Programa</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., 'Weekly Deep Dive into 80s Rock'" {...field} />
+                <Input placeholder="Ej: 'Análisis semanal del Rock de los 80'" {...field} />
               </FormControl>
                <FormDescription>
-                Give us a catchy title or a brief concept for your show.
+                Danos un título llamativo o un concepto breve para tu programa.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -104,10 +104,10 @@ export function JoinForm() {
           name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tell Us More (Optional)</FormLabel>
+              <FormLabel>Cuéntanos Más (Opcional)</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself and your show idea..."
+                  placeholder="Cuéntanos un poco sobre ti y tu idea para el programa..."
                   className="resize-none"
                   {...field}
                 />
@@ -116,7 +116,7 @@ export function JoinForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Submit Application</Button>
+        <Button type="submit" className="w-full">Enviar Solicitud</Button>
       </form>
     </Form>
   )

@@ -37,6 +37,7 @@ export interface BlogPost {
     author: string;
     date: string;
     excerpt: string;
+    content: string;
     imageUrl: string;
     category: string;
 }
@@ -143,38 +144,42 @@ export const campaigns: Campaign[] = [
 export const blogPosts: BlogPost[] = [
     {
         id: 1,
-        title: 'Behind the Mic: An Interview with Alex Johnson',
+        title: 'Detrás del Micrófono: Una Entrevista con Alex Johnson',
         author: 'Jane Doe',
-        date: 'July 15, 2024',
-        excerpt: 'We sat down with the host of "Morning Commute" to talk about his journey in radio, his favorite music, and what wakes him up in the morning.',
+        date: '15 de Julio, 2024',
+        excerpt: 'Nos sentamos con el presentador de "Morning Commute" para hablar sobre su trayectoria en la radio, su música favorita y lo que lo despierta por la mañana.',
+        content: 'En esta charla exclusiva, Alex Johnson comparte sus inicios en el mundo de la radio, desde sus días en la radio universitaria hasta convertirse en una de las voces más reconocidas de las mañanas. Hablamos de los retos de la transmisión en vivo, la importancia de conectar con la audiencia y sus momentos más memorables al aire. Además, nos revela su proceso para descubrir nueva música y qué artistas no pueden faltar en su playlist personal. Una conversación íntima que te permitirá conocer al hombre detrás del micrófono.',
         imageUrl: 'https://placehold.co/600x400.png',
-        category: 'Interviews'
+        category: 'Entrevistas'
     },
     {
         id: 2,
-        title: 'The Rise of Indie Pop: A Look at Today\'s Scene',
+        title: 'El Auge del Indie Pop: Una Mirada a la Escena Actual',
         author: 'John Smith',
-        date: 'July 10, 2024',
-        excerpt: 'Indie pop has taken over the airwaves. We explore the artists and sounds that are defining the genre in the 2020s.',
+        date: '10 de Julio, 2024',
+        excerpt: 'El indie pop ha conquistado las ondas de radio. Exploramos los artistas y sonidos que definen el género en la década de 2020.',
+        content: 'Desde sus raíces alternativas hasta su actual dominio en las listas de popularidad, el indie pop ha demostrado ser más que una moda pasajera. En este artículo, analizamos las características que definen el sonido actual, la influencia de las plataformas de streaming en su difusión y cómo los artistas independientes están redefiniendo las reglas de la industria musical. Presentamos a algunos de los actos más prometedores y repasamos los álbumes que están marcando el pulso de esta vibrante escena musical.',
         imageUrl: 'https://placehold.co/600x400.png',
-        category: 'Music'
+        category: 'Música'
     },
     {
         id: 3,
-        title: 'Our Top 5 Albums of the Year (So Far)',
-        author: 'EstacionKusFM Staff',
-        date: 'July 5, 2024',
-        excerpt: 'The year is halfway over, and we\'re rounding up the best albums that have been on repeat in the EstacionKusFM studio.',
+        title: 'Nuestros 5 Álbumes Favoritos del Año (Hasta Ahora)',
+        author: 'Staff de EstacionKusFM',
+        date: '5 de Julio, 2024',
+        excerpt: 'El año ya va por la mitad, y estamos resumiendo los mejores álbumes que han estado en repetición en el estudio de EstacionKusFM.',
+        content: 'La primera mitad del año nos ha regalado una increíble cantidad de música excepcional. El equipo de EstacionKusFM ha debatido, votado y compilado una lista de los cinco álbumes que consideramos imprescindibles. Desde debuts sorprendentes hasta trabajos consagrados de artistas reconocidos, nuestra selección abarca una variedad de géneros y estilos. Descubre cuáles son nuestros favoritos y por qué creemos que estos discos resistirán el paso del tiempo.',
         imageUrl: 'https://placehold.co/600x400.png',
-        category: 'Reviews'
+        category: 'Reseñas'
     },
     {
         id: 4,
-        title: 'How We\'re Supporting Local Talent with Music Rally',
-        author: 'Community Team',
-        date: 'June 28, 2024',
-        excerpt: 'Learn more about our "Local Music Rally" campaign and the amazing artists we\'ve featured so far.',
+        title: 'Cómo Apoyamos el Talento Local con Music Rally',
+        author: 'Equipo Comunitario',
+        date: '28 de Junio, 2024',
+        excerpt: 'Aprende más sobre nuestra campaña "Local Music Rally" y los increíbles artistas que hemos presentado hasta ahora.',
+        content: 'En EstacionKusFM, creemos firmemente en el poder de la comunidad y en la importancia de apoyar a los artistas locales. Nuestra iniciativa "Local Music Rally" nació con el objetivo de dar visibilidad al talento emergente de nuestra ciudad. En este post, te contamos cómo funciona la campaña, compartimos algunas historias de éxito de músicos que han participado y te explicamos cómo puedes unirte, ya sea como artista o como oyente, para fortalecer nuestra escena musical local.',
         imageUrl: 'https://placehold.co/600x400.png',
-        category: 'Campaigns'
+        category: 'Campañas'
     }
 ];

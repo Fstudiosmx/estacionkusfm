@@ -25,7 +25,7 @@ export default function BlogPage() {
               <Link href={`/blog/${post.id}`}>
                 <Image
                   src={post.imageUrl}
-                  data-ai-hint={post.category === 'Interviews' ? 'portrait microphone' : 'music lifestyle'}
+                  data-ai-hint={post.category === 'Entrevistas' ? 'portrait microphone' : 'music lifestyle'}
                   alt={post.title}
                   width={600}
                   height={400}

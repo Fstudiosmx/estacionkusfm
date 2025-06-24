@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { SongRequestModal } from './song-request-modal';
+import { HistoryModal } from './history-modal';
+import { ShoutoutModal } from './shoutout-modal';
 
 interface AzuraCastNowPlaying {
   station: {
@@ -181,22 +185,39 @@ export function RadioPlayer() {
             <div className="flex items-center gap-2">
               <TooltipProvider delayDuration={100}>
                 <div className="hidden sm:flex items-center gap-1">
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                <Music className="h-5 w-5" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>Pedir una canción</p></TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                <History className="h-5 w-5" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>Historial</p></TooltipContent>
-                    </Tooltip>
+                    <Dialog>
+                      <Tooltip>
+                          <TooltipTrigger asChild>
+                              <DialogTrigger asChild>
+                                  <Button variant="ghost" size="icon"><Music className="h-5 w-5" /></Button>
+                              </DialogTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent><p>Pedir una canción</p></TooltipContent>
+                      </Tooltip>
+                      <SongRequestModal />
+                    </Dialog>
+                    <Dialog>
+                      <Tooltip>
+                          <TooltipTrigger asChild>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="icon"><MessageCircle className="h-5 w-5" /></Button>
+                              </DialogTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent><p>Enviar un saludo</p></TooltipContent>
+                      </Tooltip>
+                      <ShoutoutModal />
+                    </Dialog>
+                    <Dialog>
+                      <Tooltip>
+                          <TooltipTrigger asChild>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="icon"><History className="h-5 w-5" /></Button>
+                              </DialogTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent><p>Historial</p></TooltipContent>
+                      </Tooltip>
+                      <HistoryModal />
+                    </Dialog>
                      <Tooltip>
                         <TooltipTrigger asChild>
                             <Button variant="ghost" size="icon" onClick={fetchNowPlaying}>

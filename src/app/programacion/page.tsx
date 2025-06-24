@@ -7,6 +7,16 @@ import { weeklySchedule } from '@/lib/data';
 import { Calendar } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
+const dayTranslations: { [key: string]: string } = {
+    Monday: 'Lunes',
+    Tuesday: 'Martes',
+    Wednesday: 'Miércoles',
+    Thursday: 'Jueves',
+    Friday: 'Viernes',
+    Saturday: 'Sábado',
+    Sunday: 'Domingo',
+};
+
 export default function ProgramacionPage() {
   const [activeTab, setActiveTab] = useState<string>('');
 
@@ -22,11 +32,11 @@ export default function ProgramacionPage() {
       <div className="container mx-auto px-4 md:px-6 py-12">
         <div className="flex flex-col items-center text-center mb-12">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">
-            Our Schedule
+            Nuestra Programación
           </h1>
           <p className="max-w-[700px] text-muted-foreground md:text-xl mt-4">
-            Never miss your favorite show. Here’s what’s playing on RadioWave
-            throughout the week.
+            No te pierdas nunca tu programa favorito. Aquí tienes lo que suena en EstacionKusFM
+            durante toda la semana.
           </p>
         </div>
         <div className="w-full space-y-4">
@@ -41,11 +51,11 @@ export default function ProgramacionPage() {
     <div className="container mx-auto px-4 md:px-6 py-12">
       <div className="flex flex-col items-center text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">
-          Our Schedule
+          Nuestra Programación
         </h1>
         <p className="max-w-[700px] text-muted-foreground md:text-xl mt-4">
-          Never miss your favorite show. Here’s what’s playing on RadioWave
-          throughout the week.
+          No te pierdas nunca tu programa favorito. Aquí tienes lo que suena en EstacionKusFM
+          durante toda la semana.
         </p>
       </div>
 
@@ -53,7 +63,7 @@ export default function ProgramacionPage() {
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 md:grid-cols-7 mb-8">
           {weeklySchedule.map((day) => (
             <TabsTrigger key={day.day} value={day.day}>
-              {day.day}
+              {dayTranslations[day.day] || day.day}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -63,7 +73,7 @@ export default function ProgramacionPage() {
               <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2">
                   <Calendar className="h-6 w-6 text-primary" />
-                  {day.day}'s Programming
+                  Programación del {dayTranslations[day.day] || day.day}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -77,7 +87,7 @@ export default function ProgramacionPage() {
                         <div className="mb-2 sm:mb-0">
                           <p className="font-semibold text-lg">{program.title}</p>
                           <p className="text-sm text-muted-foreground">
-                            with {program.host}
+                            con {program.host}
                           </p>
                         </div>
                         <span className="text-sm font-bold text-primary px-3 py-1 bg-primary/10 rounded-full self-start sm:self-center">
@@ -88,7 +98,7 @@ export default function ProgramacionPage() {
                   </ul>
                 ) : (
                   <p className="text-muted-foreground text-center py-8">
-                    No programs scheduled for {day.day}. Enjoy our continuous music mix!
+                    No hay programas agendados para el {dayTranslations[day.day] || day.day}. ¡Disfruta de nuestra mezcla de música continua!
                   </p>
                 )}
               </CardContent>

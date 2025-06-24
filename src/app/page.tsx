@@ -165,39 +165,43 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3 mt-12">
-            {blogPosts.slice(0, 3).map((post) => (
-              <Card key={post.id} className="flex flex-col overflow-hidden">
-                <Link href={`/blog/${post.id}`}>
-                  <Image
-                    src={post.imageUrl}
-                    data-ai-hint={post.category === 'Interviews' ? 'portrait microphone' : 'music lifestyle'}
-                    alt={post.title}
-                    width={600}
-                    height={400}
-                    className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
-                  />
-                </Link>
-                <CardContent className="p-6 flex-1 flex flex-col">
-                  <div className="mb-4">
-                    <Badge variant="outline">{post.category}</Badge>
-                  </div>
-                  <CardTitle className="font-headline text-lg mb-2 flex-1">
-                    <Link href={`/blog/${post.id}`} className="hover:text-primary transition-colors">
-                      {post.title}
-                    </Link>
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground mb-4 flex-1">
-                    {post.excerpt}
-                  </p>
-                  <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
-                    <Link href={`/blog/${post.id}`}>
-                      Leer Más <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="relative mt-12">
+            <div className="flex overflow-x-auto space-x-8 pb-4 -mx-4 px-4">
+                {blogPosts.slice(0, 4).map((post) => (
+                <div key={post.id} className="min-w-[300px] sm:min-w-[350px] flex-shrink-0">
+                    <Card className="flex flex-col overflow-hidden h-full">
+                        <Link href={`/blog/${post.id}`}>
+                        <Image
+                            src={post.imageUrl}
+                            data-ai-hint={post.category === 'Entrevistas' ? 'portrait microphone' : 'music lifestyle'}
+                            alt={post.title}
+                            width={600}
+                            height={400}
+                            className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
+                        />
+                        </Link>
+                        <CardContent className="p-6 flex-1 flex flex-col">
+                          <div className="mb-4">
+                              <Badge variant="outline">{post.category}</Badge>
+                          </div>
+                          <CardTitle className="font-headline text-lg mb-2 flex-1">
+                              <Link href={`/blog/${post.id}`} className="hover:text-primary transition-colors">
+                              {post.title}
+                              </Link>
+                          </CardTitle>
+                          <p className="text-sm text-muted-foreground mb-4 flex-1">
+                              {post.excerpt}
+                          </p>
+                          <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
+                              <Link href={`/blog/${post.id}`}>
+                              Leer Más <ArrowRight className="ml-2 h-4 w-4" />
+                              </Link>
+                          </Button>
+                        </CardContent>
+                    </Card>
+                </div>
+                ))}
+            </div>
           </div>
         </div>
       </section>
