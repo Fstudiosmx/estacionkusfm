@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { SiteLogo } from '@/components/icons/radiowave';
-import { Facebook, Twitter, Instagram } from 'lucide-react';
+import { Facebook, Instagram, X } from 'lucide-react';
 
 const footerNavs = [
   { href: '/nosotros', label: 'Nosotros' },
@@ -43,17 +43,17 @@ export function SiteFooter() {
               <h3 className="font-semibold text-foreground mb-4 font-headline">Conecta</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <a href="https://facebook.com/ekusfm" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
                     <Facebook className="w-4 h-4" /> Facebook
                   </a>
                 </li>
                  <li>
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
-                    <Twitter className="w-4 h-4" /> Twitter
+                  <a href="https://x.com/estacionkusfm" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                    <X className="w-4 h-4" /> X
                   </a>
                 </li>
                  <li>
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <a href="https://instagram.com/estacionkusfm" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
                     <Instagram className="w-4 h-4" /> Instagram
                   </a>
                 </li>
