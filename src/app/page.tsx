@@ -19,6 +19,7 @@ import { collection, doc, getDoc, getDocs, limit, orderBy, query } from 'firebas
 import { db } from '@/lib/firebase';
 import type { Program, Song, BlogPost } from '@/lib/data';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SponsorsSection } from '@/components/sponsors-section';
 
 export default function Home() {
   const [today, setToday] = useState('');
@@ -302,6 +303,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      <SponsorsSection />
+
     </div>
   );
 }

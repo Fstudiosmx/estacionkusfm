@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { RadioPlayer } from '@/components/radio-player';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'EstacionKusFM - Tu Radio Online',
@@ -28,6 +29,16 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Belleza&display=swap"
           rel="stylesheet"
+        />
+        {/* 
+          TODO: Reemplaza "ca-pub-XXXXXXXXXXXXXXXX" con tu ID de cliente de Google AdSense.
+          Puedes encontrarlo en tu cuenta de AdSense.
+        */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
       </head>
       <body

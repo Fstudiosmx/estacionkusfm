@@ -46,6 +46,11 @@ const firestoreData = {
   ],
   "invitationCodes": [
     { "code": "KUSFM2024", "used": false }
+  ],
+  "sponsors": [
+    { "order": 1, "name": "Café del Sol", "imageUrl": "https://placehold.co/300x150.png", "hint": "coffee shop", "websiteUrl": "#", "level": "platinum" },
+    { "order": 2, "name": "Vinilos & Más", "imageUrl": "https://placehold.co/300x150.png", "hint": "vinyl records", "websiteUrl": "#", "level": "gold" },
+    { "order": 3, "name": "Tech Gadgets", "imageUrl": "https://placehold.co/300x150.png", "hint": "gadgets tech", "websiteUrl": "#", "level": "silver" }
   ]
 };
 
@@ -92,6 +97,11 @@ export async function POST() {
                 usedBy: null,
                 usedAt: null,
             });
+        });
+
+        firestoreData.sponsors.forEach(sponsor => {
+            const docRef = doc(collection(db, 'sponsors'));
+            batch.set(docRef, sponsor);
         });
 
         await batch.commit();

@@ -70,3 +70,13 @@ export interface RecordedShow {
     imageUrl: string;
     imageHint: string;
 }
+
+export interface Sponsor {
+  id: any;
+  name: string;
+  imageUrl: string;
+  hint: string;
+  websiteUrl: string;
+  level: 'platinum' | 'gold' | 'silver';
+  order: number;
+}
