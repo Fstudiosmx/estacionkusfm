@@ -1,3 +1,5 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -8,14 +10,27 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { topSongs, weeklySchedule, campaigns } from '@/lib/data';
+import { topSongs, weeklySchedule, campaigns, type Program } from '@/lib/data';
 import { TopSongItem } from '@/components/top-song-item';
 import { ArrowRight, Mic, Calendar, Heart } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
-  const today = new Date().toLocaleDateString('es-ES', { weekday: 'long' });
-  const todaysSchedule =
-    weeklySchedule.find((day) => day.day.toLowerCase() === today.toLowerCase())?.schedule || [];
+  const [today, setToday] = useState('');
+  const [todaysSchedule, setTodaysSchedule] = useState<Program[]>([]);
+
+  useEffect(() => {
+    const date = new Date();
+    // Use en-US for programmatic key matching against data.ts
+    const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
+    // Use es-ES for display purposes
+    const localizedDay = date.toLocaleDateString('es-ES', { weekday: 'long' });
+    
+    setToday(localizedDay);
+    const scheduleForToday =
+      weeklySchedule.find((day) => day.day.toLowerCase() === dayOfWeek.toLowerCase())?.schedule || [];
+    setTodaysSchedule(scheduleForToday);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -71,7 +86,7 @@ export default function Home() {
             <div className="flex flex-col space-y-8">
               <div>
                 <h3 className="text-2xl font-bold tracking-tighter font-headline mb-4 capitalize">
-                  Programación de Hoy: {today}
+                  {today ? `Programación de Hoy: ${today}` : 'Programación de Hoy'}
                 </h3>
                 <Card>
                   <CardContent className="p-6">
@@ -95,7 +110,7 @@ export default function Home() {
                         ))
                       ) : (
                         <p className="text-muted-foreground">
-                          No hay programas para hoy. ¡Disfruta de la música!
+                          {today ? 'No hay programas para hoy. ¡Disfruta de la música!' : 'Cargando...'}
                         </p>
                       )}
                     </ul>

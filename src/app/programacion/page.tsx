@@ -1,10 +1,41 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { weeklySchedule } from '@/lib/data';
 import { Calendar } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProgramacionPage() {
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const [activeTab, setActiveTab] = useState<string>('');
+
+  useEffect(() => {
+    // Set the active tab to the current day, only on the client
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    setActiveTab(today);
+  }, []);
+
+  // Render a loading state on the server and initial client render
+  if (!activeTab) {
+    return (
+      <div className="container mx-auto px-4 md:px-6 py-12">
+        <div className="flex flex-col items-center text-center mb-12">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">
+            Our Schedule
+          </h1>
+          <p className="max-w-[700px] text-muted-foreground md:text-xl mt-4">
+            Never miss your favorite show. Here’s what’s playing on RadioWave
+            throughout the week.
+          </p>
+        </div>
+        <div className="w-full space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-64 w-full" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12">
@@ -18,7 +49,7 @@ export default function ProgramacionPage() {
         </p>
       </div>
 
-      <Tabs defaultValue={today} className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 md:grid-cols-7 mb-8">
           {weeklySchedule.map((day) => (
             <TabsTrigger key={day.day} value={day.day}>
