@@ -96,15 +96,27 @@ export default function DocsPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4 text-muted-foreground">
-                    <p>Para empezar rápidamente, puedes poblar tu Firestore con datos de ejemplo. La forma más sencilla es añadir los documentos manualmente a través de la consola de Firebase.</p>
+                    <p>Para empezar rápidamente, puedes poblar tu Firestore con datos de ejemplo. La forma más sencilla es añadir los documentos manualmente a través de la consola de Firebase. A continuación te explicamos cómo hacerlo para la colección `blogPosts` como ejemplo.</p>
                      <ol className="list-decimal list-inside space-y-2">
-                        <li>En Firestore, haz clic en <strong>Iniciar colección</strong>.</li>
-                        <li>Como ID de colección, introduce <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">blogPosts</code>.</li>
-                        <li>Crea un nuevo documento. Puedes hacer clic en <strong>ID automático</strong>.</li>
-                        <li>Copia los campos de un objeto del array `blogPosts` de abajo y pégalos en los campos del nuevo documento. Asegúrate de que los tipos de datos coincidan (por ejemplo, `id` y `rank` como `number`, el resto como `string`).</li>
-                        <li>Repite el proceso para cada artículo del blog.</li>
-                        <li>Haz lo mismo para las colecciones <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">topSongs</code> y <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">weeklySchedule</code>, usando los datos correspondientes. Para `weeklySchedule`, el ID del documento debe ser el nombre del día en inglés (ej. "Monday").</li>
+                        <li>En la consola de Firestore, haz clic en <strong>Iniciar colección</strong>.</li>
+                        <li>Como ID de colección, introduce <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">blogPosts</code> y haz clic en <strong>Siguiente</strong>.</li>
+                        <li>Para el ID del documento, haz clic en <strong>ID automático</strong>.</li>
+                        <li>Ahora, añade los campos para el primer artículo del blog. Para cada campo del objeto JSON de abajo:
+                            <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
+                                <li>Introduce el nombre del campo (ej. `title`).</li>
+                                <li>Selecciona el tipo de dato correcto (la mayoría son `string`, pero `id` y `rank` son `number`).</li>
+                                <li>Copia y pega el valor correspondiente.</li>
+                            </ul>
+                            Por ejemplo, para el primer campo, introduce <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">id</code>, selecciona el tipo <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">number</code>, y pon como valor <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">1</code>. Haz clic en el icono de '+' para añadir el siguiente.
+                        </li>
+                        <li>Una vez añadidos todos los campos de un artículo, haz clic en <strong>Guardar</strong>.</li>
+                        <li>Repite este proceso para cada uno de los artículos en la sección `blogPosts` de los datos de abajo.</li>
                     </ol>
+                    <p className="mt-4 font-bold">Repite el proceso para las otras colecciones:</p>
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Colección `topSongs`:</strong> Usa el ID de colección `topSongs`. Los documentos pueden tener un ID automático. Asegúrate de que `rank` sea de tipo `number`.</li>
+                        <li><strong>Colección `weeklySchedule`:</strong> Usa el ID de colección `weeklySchedule`. <strong>Importante:</strong> Para esta colección, el ID del documento no es automático. Debe ser el nombre del día en inglés (ej: `Monday`, `Tuesday`, etc.). Cada documento tendrá un solo campo llamado `schedule` de tipo `array`, que contendrá los programas de ese día.</li>
+                    </ul>
                     <p className="mt-4">Aquí están los datos que puedes usar:</p>
                     <pre className="bg-secondary p-4 rounded-md overflow-x-auto text-sm max-h-64">
                         <code className="text-secondary-foreground">
