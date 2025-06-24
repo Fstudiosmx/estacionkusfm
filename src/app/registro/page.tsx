@@ -52,11 +52,13 @@ export default function RegisterPage() {
       router.push("/panel");
     } catch (error: any) {
       console.error("Error creating user: ", error);
-      let message = "Ocurrió un error al crear la cuenta.";
+      let message = "Ocurrió un error al crear la cuenta. Por favor, inténtalo de nuevo.";
       if (error.code === 'auth/email-already-in-use') {
         message = "El correo electrónico ya está en uso por otra cuenta.";
       } else if (error.code === 'auth/weak-password') {
         message = "La contraseña es demasiado débil. Debe tener al menos 6 caracteres.";
+      } else if (error.code === 'auth/invalid-api-key') {
+        message = "Error de configuración de Firebase. Revisa que las credenciales en 'src/lib/firebase.ts' sean correctas.";
       }
       toast({
         title: "Error de Registro",

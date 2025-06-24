@@ -28,9 +28,13 @@ export default function LoginPage() {
       router.push("/panel");
     } catch (error: any) {
       console.error("Error signing in: ", error);
+      let message = "El correo o la contraseña son incorrectos. Por favor, inténtalo de nuevo.";
+      if (error.code === 'auth/invalid-api-key') {
+        message = "Error de configuración de Firebase. Revisa que las credenciales en 'src/lib/firebase.ts' sean correctas.";
+      }
       toast({
         title: "Error al iniciar sesión",
-        description: "El correo o la contraseña son incorrectos. Por favor, inténtalo de nuevo.",
+        description: message,
         variant: "destructive",
       });
     }
