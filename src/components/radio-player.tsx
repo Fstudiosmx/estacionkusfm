@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Share2 } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface AzuraCastNowPlaying {
   station: {
@@ -102,6 +103,25 @@ export function RadioPlayer() {
     }
   };
 
+  const handleShare = async () => {
+    const trackInfo = nowPlaying?.now_playing.song.text || 'Música en vivo';
+    const shareData = {
+      title: 'EstacionKusFM',
+      text: `Escuchando ahora: ${trackInfo} en EstacionKusFM`,
+      url: window.location.origin,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        navigator.clipboard.writeText(shareData.url);
+        alert('Enlace de la radio copiado al portapapeles!');
+      }
+    } catch (err) {
+      console.error('Error sharing:', err);
+    }
+  };
+
   const isOnline = nowPlaying?.is_online ?? false;
   const currentTrack = nowPlaying?.now_playing.song;
   const coverArt = currentTrack?.art && currentTrack.art !== 'https://www.azuracast.com/img/api/album_art_blank.png' 
@@ -157,9 +177,43 @@ export function RadioPlayer() {
             </div>
             
             <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
-                    <Share2 className="h-5 w-5" />
-                </Button>
+              <TooltipProvider delayDuration={100}>
+                <div className="hidden sm:flex items-center gap-1">
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <Music className="h-5 w-5" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>Pedir una canción</p></TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <History className="h-5 w-5" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>Historial</p></TooltipContent>
+                    </Tooltip>
+                     <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="ghost" size="icon" onClick={fetchNowPlaying}>
+                                <RefreshCw className="h-5 w-5" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>Refrescar</p></TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="ghost" size="icon" onClick={handleShare}>
+                                <Share2 className="h-5 w-5" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>Compartir</p></TooltipContent>
+                    </Tooltip>
+                </div>
+              </TooltipProvider>
+
                 <Button onClick={togglePlay} size="icon" className="w-12 h-12 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={!isOnline}>
                     {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
                 </Button>

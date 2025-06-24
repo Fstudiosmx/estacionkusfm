@@ -5,6 +5,10 @@ export interface Song {
   artist: string;
   coverArt: string;
   externalLink: string;
+  youtubeVideoId?: string;
+  spotifyLink?: string;
+  appleMusicLink?: string;
+  youtubeMusicLink?: string;
 }
 
 export interface Program {
@@ -46,7 +50,7 @@ export const topSongs: Song[] = [
   { id: 7, rank: 7, title: 'Retrograde', artist: 'Cosmic Drift', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
   { id: 8, rank: 8, title: 'City Lights', artist: 'Urban Glow', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
   { id: 9, rank: 9, title: 'Ocean Deep', artist: 'Tidal Waves', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 10, rank: 10, title: 'Solar Flare', artist: 'Galaxy Runners', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
+  { id: 10, rank: 10, title: 'Solar Flare', artist: 'Galaxy Runners', coverArt: 'https://placehold.co/100x100.png', externalLink: '#', youtubeVideoId: 'jfKfPfyJRdk', spotifyLink: '#', appleMusicLink: '#', youtubeMusicLink: '#' },
 ];
 
 export const allSongs: Song[] = [
