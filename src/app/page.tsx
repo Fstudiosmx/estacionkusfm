@@ -11,28 +11,82 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { topSongs, weeklySchedule, blogPosts, type Program } from '@/lib/data';
 import { TopSongItem } from '@/components/top-song-item';
-import { ArrowRight, Mic, Calendar, Heart, Rss } from 'lucide-react';
+import { ArrowRight, Mic, Calendar, Rss, ServerCrash } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { collection, doc, getDoc, getDocs, limit, orderBy, query } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import type { Program, Song, BlogPost } from '@/lib/data';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Home() {
   const [today, setToday] = useState('');
   const [todaysSchedule, setTodaysSchedule] = useState<Program[]>([]);
+  const [topSongs, setTopSongs] = useState<Song[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [firebaseError, setFirebaseError] = useState<string | null>(null);
 
   useEffect(() => {
     const date = new Date();
-    // Use en-US for programmatic key matching against data.ts
-    const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
-    // Use es-ES for display purposes
-    const localizedDay = date.toLocaleDateString('es-ES', { weekday: 'long' });
-    
-    setToday(localizedDay);
-    const scheduleForToday =
-      weeklySchedule.find((day) => day.day.toLowerCase() === dayOfWeek.toLowerCase())?.schedule || [];
-    setTodaysSchedule(scheduleForToday);
+    const dayOfWeekEn = date.toLocaleDateString('en-US', { weekday: 'long' });
+    const dayOfWeekEs = date.toLocaleDateString('es-ES', { weekday: 'long' });
+    setToday(dayOfWeekEs);
+
+    async function fetchData() {
+      setLoading(true);
+      setFirebaseError(null);
+      try {
+        // Fetch Top Songs
+        const songsQuery = query(collection(db, "topSongs"), orderBy("rank"), limit(10));
+        const songsSnapshot = await getDocs(songsQuery);
+        const songsData = songsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Song));
+        setTopSongs(songsData);
+
+        // Fetch Today's Schedule
+        const scheduleDocRef = doc(db, "weeklySchedule", dayOfWeekEn);
+        const scheduleDocSnap = await getDoc(scheduleDocRef);
+        if (scheduleDocSnap.exists()) {
+          setTodaysSchedule(scheduleDocSnap.data().schedule || []);
+        }
+
+        // Fetch Blog Posts
+        const postsQuery = query(collection(db, "blogPosts"), orderBy("date", "desc"), limit(4));
+        const postsSnapshot = await getDocs(postsQuery);
+        const postsData = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogPost));
+        setBlogPosts(postsData);
+
+      } catch (error) {
+        console.error("Firebase fetch error:", error);
+        setFirebaseError("No se pudo conectar con la base de datos. Por favor, revisa la configuración de Firebase.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
   }, []);
+
+  const renderFirebaseError = () => (
+    <div className="max-w-2xl mx-auto text-center my-12">
+        <Card>
+            <CardHeader>
+                <div className="mx-auto bg-destructive/10 p-3 rounded-full">
+                 <ServerCrash className="h-8 w-8 text-destructive" />
+                </div>
+                <CardTitle>Error de Conexión con Firebase</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-muted-foreground">{firebaseError}</p>
+                <Button asChild className="mt-4">
+                    <Link href="/docs">Ver Guía de Configuración</Link>
+                </Button>
+            </CardContent>
+        </Card>
+    </div>
+  );
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -71,6 +125,7 @@ export default function Home() {
 
       <section className="w-full py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
+          {firebaseError && !loading ? renderFirebaseError() : (
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-24">
             <div className="flex flex-col space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">
@@ -80,9 +135,22 @@ export default function Home() {
                 Las canciones más sonadas y solicitadas esta semana en EstacionKusFM.
               </p>
               <div className="space-y-4">
-                {topSongs.map((song) => (
-                  <TopSongItem key={song.id} song={song} />
-                ))}
+                {loading ? (
+                    Array.from({ length: 10 }).map((_, i) => (
+                        <div key={i} className="flex items-center gap-4 p-2">
+                             <Skeleton className="h-6 w-6" />
+                             <Skeleton className="h-12 w-12 rounded-md" />
+                             <div className="flex-1 space-y-2">
+                                 <Skeleton className="h-4 w-3/4" />
+                                 <Skeleton className="h-4 w-1/2" />
+                             </div>
+                        </div>
+                    ))
+                ) : (
+                    topSongs.map((song) => (
+                        <TopSongItem key={song.id} song={song} />
+                    ))
+                )}
               </div>
             </div>
             <div className="flex flex-col space-y-8">
@@ -92,6 +160,19 @@ export default function Home() {
                 </h3>
                 <Card>
                   <CardContent className="p-6">
+                   {loading ? (
+                       <div className="space-y-4">
+                         {Array.from({ length: 3 }).map((_, i) => (
+                            <div key={i} className="flex justify-between items-center">
+                               <div className="space-y-2">
+                                 <Skeleton className="h-4 w-48" />
+                                 <Skeleton className="h-4 w-32" />
+                               </div>
+                               <Skeleton className="h-4 w-24" />
+                            </div>
+                         ))}
+                       </div>
+                   ) : (
                     <ul className="space-y-4">
                       {todaysSchedule.length > 0 ? (
                         todaysSchedule.map((program, index) => (
@@ -116,6 +197,7 @@ export default function Home() {
                         </p>
                       )}
                     </ul>
+                   )}
                     <Button asChild variant="link" className="px-0 mt-4">
                       <Link href="/programacion">
                         Horario Semanal Completo <ArrowRight className="ml-2 h-4 w-4" />
@@ -147,6 +229,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          )}
         </div>
       </section>
 
@@ -166,40 +249,56 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                {blogPosts.slice(0, 4).map((post) => (
-                    <Card key={post.id} className="flex flex-col overflow-hidden h-full">
-                        <Link href={`/blog/${post.id}`}>
-                        <Image
-                            src={post.imageUrl}
-                            data-ai-hint={post.category === 'Entrevistas' ? 'portrait microphone' : 'music lifestyle'}
-                            alt={post.title}
-                            width={600}
-                            height={400}
-                            className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
-                        />
-                        </Link>
-                        <CardContent className="p-6 flex-1 flex flex-col">
-                          <div className="mb-4">
-                              <Badge variant="outline">{post.category}</Badge>
-                          </div>
-                          <CardTitle className="font-headline text-lg mb-2 flex-1">
-                              <Link href={`/blog/${post.id}`} className="hover:text-primary transition-colors">
-                              {post.title}
-                              </Link>
-                          </CardTitle>
-                          <p className="text-sm text-muted-foreground mb-4">
-                              {post.excerpt}
-                          </p>
-                          <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
-                              <Link href={`/blog/${post.id}`}>
-                              Leer Más <ArrowRight className="ml-2 h-4 w-4" />
-                              </Link>
-                          </Button>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+             {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {Array.from({length: 4}).map((_, i) => (
+                        <Card key={i} className="flex flex-col overflow-hidden h-full">
+                            <Skeleton className="w-full h-48" />
+                            <CardContent className="p-6 flex-1 flex flex-col">
+                                <Skeleton className="h-4 w-1/4 mb-4" />
+                                <Skeleton className="h-6 w-full mb-2" />
+                                <Skeleton className="h-4 w-3/4 mb-4" />
+                                <Skeleton className="h-8 w-1/2 mt-auto" />
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            ) : firebaseError ? renderFirebaseError() : (
+                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {blogPosts.map((post) => (
+                        <Card key={post.id} className="flex flex-col overflow-hidden h-full">
+                            <Link href={`/blog/${post.id}`}>
+                            <Image
+                                src={post.imageUrl}
+                                data-ai-hint={post.category === 'Entrevistas' ? 'portrait microphone' : 'music lifestyle'}
+                                alt={post.title}
+                                width={600}
+                                height={400}
+                                className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
+                            />
+                            </Link>
+                            <CardContent className="p-6 flex-1 flex flex-col">
+                              <div className="mb-4">
+                                  <Badge variant="outline">{post.category}</Badge>
+                              </div>
+                              <CardTitle className="font-headline text-lg mb-2 flex-1">
+                                  <Link href={`/blog/${post.id}`} className="hover:text-primary transition-colors">
+                                  {post.title}
+                                  </Link>
+                              </CardTitle>
+                              <p className="text-sm text-muted-foreground mb-4">
+                                  {post.excerpt}
+                              </p>
+                              <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
+                                  <Link href={`/blog/${post.id}`}>
+                                  Leer Más <ArrowRight className="ml-2 h-4 w-4" />
+                                  </Link>
+                              </Button>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            )}
           </div>
         </div>
       </section>
