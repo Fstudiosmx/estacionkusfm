@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { collection, getDocs, limit, query } from "firebase/firestore";
-import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users } from "lucide-react";
+import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket } from "lucide-react";
 import Link from "next/link";
 
 export default function PanelPage() {
@@ -189,7 +189,7 @@ export default function PanelPage() {
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Edita el ranking de las canciones más populares de la semana.</p>
-                    <Button disabled>Gestionar (Próximamente)</Button>
+                    <Button asChild><Link href="/panel/top-songs">Gestionar</Link></Button>
                 </CardContent>
             </Card>
             <Card>
@@ -211,17 +211,17 @@ export default function PanelPage() {
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Actualiza el horario semanal de todos los programas.</p>
-                    <Button disabled>Gestionar (Próximamente)</Button>
+                    <Button asChild><Link href="/panel/schedule">Gestionar</Link></Button>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                    <Users className="h-8 w-8 text-primary" />
+                    <Ticket className="h-8 w-8 text-primary" />
                     <CardTitle className="font-headline text-xl">Invitaciones</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Genera nuevos códigos para invitar a otros administradores.</p>
-                    <Button disabled>Gestionar (Próximamente)</Button>
+                    <Button asChild><Link href="/panel/invitations">Gestionar</Link></Button>
                 </CardContent>
             </Card>
         </div>

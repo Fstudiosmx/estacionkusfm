@@ -10,30 +10,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { validateCode, markCodeAsUsed } from "./actions";
+import { Loader2 } from "lucide-react";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [invitationCode, setInvitationCode] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
-  // IMPORTANTE: Este es un marcador de posición para un sistema real de códigos de invitación.
-  // En una aplicación real, validarías este código contra una base de datos.
-  const VALID_INVITATION_CODE = "KUSFM2024";
-
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (invitationCode !== VALID_INVITATION_CODE) {
-        toast({
-            title: "Código de Invitación Inválido",
-            description: "Por favor, introduce un código de invitación válido para registrarte.",
-            variant: "destructive",
-        });
-        return;
-    }
+    setIsSubmitting(true);
 
     if (password !== confirmPassword) {
       toast({
@@ -41,15 +32,35 @@ export default function RegisterPage() {
         description: "Las contraseñas no coinciden.",
         variant: "destructive",
       });
+      setIsSubmitting(false);
       return;
     }
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // 1. Validar el código de invitación
+      const validationResult = await validateCode(invitationCode);
+      if (!validationResult.valid) {
+        toast({
+          title: "Código de Invitación Inválido",
+          description: validationResult.message,
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // 2. Crear el usuario en Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      
+      // 3. Si la creación es exitosa, marcar el código como usado
+      await markCodeAsUsed(invitationCode, userCredential.user.email!);
+
       toast({
         title: "¡Cuenta Creada!",
         description: "Tu cuenta ha sido creada exitosamente. Ahora serás redirigido al panel.",
       });
       router.push("/panel");
+
     } catch (error: any) {
       console.error("Error creating user: ", error);
       let message = "Ocurrió un error al crear la cuenta. Por favor, inténtalo de nuevo.";
@@ -57,7 +68,7 @@ export default function RegisterPage() {
         message = "El correo electrónico ya está en uso por otra cuenta.";
       } else if (error.code === 'auth/weak-password') {
         message = "La contraseña es demasiado débil. Debe tener al menos 6 caracteres.";
-      } else if (error.code === 'auth/invalid-api-key') {
+      } else if (error.code === 'auth/invalid-api-key' || error.code === 'auth/internal-error') {
         message = "Error de configuración de Firebase. Revisa que las credenciales en 'src/lib/firebase.ts' sean correctas.";
       }
       toast({
@@ -65,6 +76,8 @@ export default function RegisterPage() {
         description: message,
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -123,7 +136,10 @@ export default function RegisterPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button type="submit" className="w-full">Registrarse</Button>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Registrarse
+            </Button>
             <p className="mt-4 text-xs text-center text-muted-foreground">
               ¿Ya tienes una cuenta?{" "}
               <Link href="/login" className="underline">

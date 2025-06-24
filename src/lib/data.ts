@@ -41,3 +41,12 @@ export interface BlogPost {
     imageUrl: string;
     category: string;
 }
+
+export interface InvitationCode {
+    id: string;
+    code: string;
+    createdAt: any; // Firestore Timestamp
+    used: boolean;
+    usedBy?: string;
+    usedAt?: any;
+}

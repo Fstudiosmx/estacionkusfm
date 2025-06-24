@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { collection, getDocs, writeBatch, limit, query, doc } from 'firebase/firestore';
+import { collection, getDocs, writeBatch, limit, query, doc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 const firestoreData = {
@@ -29,6 +29,9 @@ const firestoreData = {
     { "day": "Friday", "schedule": [ { "time": "08:00 - 10:00", "title": "Morning Commute", "host": "Alex Johnson" }, { "time": "10:00 - 12:00", "title": "Friday Feelings", "host": "Samantha Bee" } ] },
     { "day": "Saturday", "schedule": [ { "time": "09:00 - 11:00", "title": "Saturday Brunch", "host": "Various" }, { "time": "11:00 - 13:00", "title": "The Chart Show", "host": "Leo Maxwell" } ] },
     { "day": "Sunday", "schedule": [ { "time": "09:00 - 11:00", "title": "Easy Like Sunday Morning", "host": "Chloe Adams" }, { "time": "11:00 - 13:00", "title": "The Jazz Lounge", "host": "Marcus Cole" } ] }
+  ],
+  "invitationCodes": [
+    { "code": "KUSFM2024", "used": false }
   ]
 };
 
@@ -62,7 +65,18 @@ export async function POST() {
             batch.set(docRef, { schedule: daySchedule.schedule });
         });
 
-        // 5. Commit the batch
+        // 5. Seed invitationCodes
+        firestoreData.invitationCodes.forEach(code => {
+            const docRef = doc(collection(db, 'invitationCodes')); // Auto-generate ID
+            batch.set(docRef, { 
+                ...code, 
+                createdAt: Timestamp.now(),
+                usedBy: null,
+                usedAt: null,
+            });
+        });
+
+        // 6. Commit the batch
         await batch.commit();
 
         return NextResponse.json({ message: "Base de datos inicializada con éxito." }, { status: 200 });
