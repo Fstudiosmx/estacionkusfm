@@ -50,3 +50,23 @@ export interface InvitationCode {
     usedBy?: string;
     usedAt?: any;
 }
+
+export interface TeamMember {
+    id: any;
+    name: string;
+    role: string;
+    image: string;
+    hint: string;
+    order: number;
+}
+
+export interface RecordedShow {
+    id: any;
+    title: string;
+    host: string;
+    date: string;
+    duration: string;
+    description: string;
+    imageUrl: string;
+    imageHint: string;
+}

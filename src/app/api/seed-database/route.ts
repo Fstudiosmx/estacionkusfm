@@ -30,6 +30,20 @@ const firestoreData = {
     { "day": "Saturday", "schedule": [ { "time": "09:00 - 11:00", "title": "Saturday Brunch", "host": "Various" }, { "time": "11:00 - 13:00", "title": "The Chart Show", "host": "Leo Maxwell" } ] },
     { "day": "Sunday", "schedule": [ { "time": "09:00 - 11:00", "title": "Easy Like Sunday Morning", "host": "Chloe Adams" }, { "time": "11:00 - 13:00", "title": "The Jazz Lounge", "host": "Marcus Cole" } ] }
   ],
+  "teamMembers": [
+    { "order": 1, "name": "Alex Johnson", "role": "Morning Commute", "image": "https://placehold.co/300x300.png", "hint": "male portrait" },
+    { "order": 2, "name": "Samantha Bee", "role": "Indie Vibes", "image": "https://placehold.co/300x300.png", "hint": "female portrait" },
+    { "order": 3, "name": "Mike Richards", "role": "Lunchtime Classics", "image": "https://placehold.co/300x300.png", "hint": "male portrait smiling" },
+    { "order": 4, "name": "Jessica Wu", "role": "Afternoon Chill", "image": "https://placehold.co/300x300.png", "hint": "female portrait glasses" },
+    { "order": 5, "name": "Chris Green", "role": "Drive Time Power Mix", "image": "https://placehold.co/300x300.png", "hint": "male portrait headphones" },
+    { "order": 6, "name": "Maria Garcia", "role": "Sunrise Sessions", "image": "https://placehold.co/300x300.png", "hint": "female portrait smiling" }
+  ],
+  "recordedShows": [
+    { "date": "July 14, 2024", "title": "Indie Vibes Ep. 12: Summer Sounds", "host": "Samantha Bee", "duration": "45 min", "description": "A mix of the best new indie tracks perfect for a summer day. Featuring interviews with upcoming artists.", "imageUrl": "https://placehold.co/600x400.png", "imageHint": "indie music" },
+    { "date": "July 12, 2024", "title": "Tech Talk Ep. 8: The Future of AI", "host": "David Chen", "duration": "60 min", "description": "Exploring the latest advancements in Artificial Intelligence and its impact on our daily lives.", "imageUrl": "https://placehold.co/600x400.png", "imageHint": "tech podcast" },
+    { "date": "July 10, 2024", "title": "Global Grooves Ep. 5: Rhythms of Brazil", "host": "Fatima Khan", "duration": "55 min", "description": "A journey through the vibrant and diverse music of Brazil, from Samba to Bossa Nova.", "imageUrl": "https://placehold.co/600x400.png", "imageHint": "brazil carnival" },
+    { "date": "July 8, 2024", "title": "Throwback Thursday: 90s Hip-Hop Special", "host": "David Chen", "duration": "90 min", "description": "Revisiting the golden age of Hip-Hop with classic tracks and forgotten gems from the 1990s.", "imageUrl": "https://placehold.co/600x400.png", "imageHint": "hip hop" }
+  ],
   "invitationCodes": [
     { "code": "KUSFM2024", "used": false }
   ]
@@ -37,7 +51,6 @@ const firestoreData = {
 
 export async function POST() {
     try {
-        // 1. Check if the database is already seeded to prevent accidental overwrites
         const checkQuery = query(collection(db, "blogPosts"), limit(1));
         const checkSnapshot = await getDocs(checkQuery);
         if (!checkSnapshot.empty) {
@@ -46,28 +59,33 @@ export async function POST() {
 
         const batch = writeBatch(db);
 
-        // 2. Seed blogPosts
         firestoreData.blogPosts.forEach(post => {
-            const docRef = doc(collection(db, 'blogPosts')); // Auto-generate ID
+            const docRef = doc(collection(db, 'blogPosts'));
             batch.set(docRef, post);
         });
 
-        // 3. Seed topSongs
         firestoreData.topSongs.forEach(song => {
-            const docRef = doc(collection(db, 'topSongs')); // Auto-generate ID
+            const docRef = doc(collection(db, 'topSongs'));
             batch.set(docRef, song);
         });
 
-        // 4. Seed weeklySchedule
         firestoreData.weeklySchedule.forEach(daySchedule => {
-            // For this collection, the document ID is the day name
             const docRef = doc(db, 'weeklySchedule', daySchedule.day);
             batch.set(docRef, { schedule: daySchedule.schedule });
         });
+        
+        firestoreData.teamMembers.forEach(member => {
+            const docRef = doc(collection(db, 'teamMembers'));
+            batch.set(docRef, member);
+        });
 
-        // 5. Seed invitationCodes
+        firestoreData.recordedShows.forEach(show => {
+            const docRef = doc(collection(db, 'recordedShows'));
+            batch.set(docRef, show);
+        });
+
         firestoreData.invitationCodes.forEach(code => {
-            const docRef = doc(collection(db, 'invitationCodes')); // Auto-generate ID
+            const docRef = doc(collection(db, 'invitationCodes'));
             batch.set(docRef, { 
                 ...code, 
                 createdAt: Timestamp.now(),
@@ -76,7 +94,6 @@ export async function POST() {
             });
         });
 
-        // 6. Commit the batch
         await batch.commit();
 
         return NextResponse.json({ message: "Base de datos inicializada con éxito." }, { status: 200 });

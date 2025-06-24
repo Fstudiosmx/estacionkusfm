@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { collection, getDocs, limit, query } from "firebase/firestore";
-import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket } from "lucide-react";
+import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket, PlayCircle } from "lucide-react";
 import Link from "next/link";
 
 export default function PanelPage() {
@@ -181,17 +181,7 @@ export default function PanelPage() {
 
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold font-headline mb-4">Panel de Contenido</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                    <ListMusic className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Top 10 Canciones</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Edita el ranking de las canciones más populares de la semana.</p>
-                    <Button asChild><Link href="/panel/top-songs">Gestionar</Link></Button>
-                </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <FileText className="h-8 w-8 text-primary" />
@@ -204,6 +194,16 @@ export default function PanelPage() {
                     </Button>
                 </CardContent>
             </Card>
+             <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <ListMusic className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Top 10 Canciones</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Edita el ranking de las canciones más populares de la semana.</p>
+                    <Button asChild><Link href="/panel/top-songs">Gestionar</Link></Button>
+                </CardContent>
+            </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <CalendarDays className="h-8 w-8 text-primary" />
@@ -212,6 +212,26 @@ export default function PanelPage() {
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Actualiza el horario semanal de todos los programas.</p>
                     <Button asChild><Link href="/panel/schedule">Gestionar</Link></Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <Users className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Equipo</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Gestiona los miembros del equipo que se muestran en la página 'Nosotros'.</p>
+                    <Button asChild><Link href="/panel/team">Gestionar</Link></Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <PlayCircle className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Grabaciones</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Añade y edita los podcasts y programas grabados.</p>
+                    <Button asChild><Link href="/panel/recordings">Gestionar</Link></Button>
                 </CardContent>
             </Card>
             <Card>
