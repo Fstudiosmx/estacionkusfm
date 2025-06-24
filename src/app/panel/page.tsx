@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { collection, getDocs, limit, query } from "firebase/firestore";
-import { Loader2, UploadCloud } from "lucide-react";
+import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users } from "lucide-react";
 
 export default function PanelPage() {
   const router = useRouter();
@@ -105,7 +105,7 @@ export default function PanelPage() {
             <Skeleton className="h-10 w-64 mb-4" />
             <Skeleton className="h-6 w-80" />
         </div>
-        <Card className="max-w-2xl mx-auto">
+        <Card className="max-w-4xl mx-auto">
             <CardHeader>
                 <Skeleton className="h-8 w-48 mb-2" />
                 <Skeleton className="h-4 w-full" />
@@ -129,14 +129,15 @@ export default function PanelPage() {
                 Panel de Administración
             </h1>
             <p className="max-w-[700px] text-muted-foreground md:text-xl mt-4">
-                Gestiona el contenido de EstacionKusFM.
+                Gestiona el contenido y la configuración de EstacionKusFM.
             </p>
         </div>
-      <Card className="max-w-2xl mx-auto">
+
+      <Card className="max-w-4xl mx-auto mb-8">
         <CardHeader>
           <CardTitle>Bienvenido, {user.email}</CardTitle>
           <CardDescription>
-            Este es tu panel de control. Desde aquí podrás gestionar las canciones, programas, artículos del blog y más. Esta funcionalidad se implementará próximamente.
+            Usa las herramientas de abajo para gestionar el contenido de tu sitio web.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -145,7 +146,7 @@ export default function PanelPage() {
       </Card>
 
       {!isCheckingDb && !isDbSeeded && (
-        <Card className="max-w-2xl mx-auto mt-8 bg-secondary border-primary/50">
+        <Card className="max-w-4xl mx-auto mt-8 mb-8 bg-secondary border-primary/50">
           <CardHeader>
             <div className="flex items-center gap-4">
                 <div className="p-3 bg-primary/10 rounded-full">
@@ -176,6 +177,52 @@ export default function PanelPage() {
           </CardContent>
         </Card>
       )}
+
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold font-headline mb-4">Panel de Contenido</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <ListMusic className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Top 10 Canciones</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Edita el ranking de las canciones más populares de la semana.</p>
+                    <Button disabled>Gestionar (Próximamente)</Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <FileText className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Blog</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Crea, edita y publica nuevos artículos en el blog.</p>
+                    <Button disabled>Gestionar (Próximamente)</Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <CalendarDays className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Programación</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Actualiza el horario semanal de todos los programas.</p>
+                    <Button disabled>Gestionar (Próximamente)</Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <Users className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Invitaciones</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Genera nuevos códigos para invitar a otros administradores.</p>
+                    <Button disabled>Gestionar (Próximamente)</Button>
+                </CardContent>
+            </Card>
+        </div>
+      </div>
     </div>
   );
 }
