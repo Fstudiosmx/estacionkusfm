@@ -66,6 +66,7 @@ export default async function BlogPage() {
                     width={600}
                     height={400}
                     className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
+                    unoptimized
                   />
                 </Link>
               </CardHeader>

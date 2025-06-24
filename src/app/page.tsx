@@ -3,6 +3,8 @@ import Link from 'next/link';
 import {
   Card,
   CardContent,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TopSongItem } from '@/components/top-song-item';
@@ -214,6 +216,7 @@ export default async function Home() {
                               width={600}
                               height={400}
                               className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
+                              unoptimized
                           />
                           </Link>
                           <CardContent className="p-6 flex-1 flex flex-col">

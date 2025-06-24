@@ -48,6 +48,7 @@ export async function SponsorsSection() {
                 width={200}
                 height={100}
                 className="object-contain"
+                unoptimized
               />
             </Link>
           ))}

@@ -59,7 +59,7 @@ export const columns = ({ onEdit, onDelete }: { onEdit: (member: TeamMember) => 
     header: "Imagen",
     cell: ({ row }: { row: { original: TeamMember }}) => {
         const member = row.original;
-        return <Image src={member.image} alt={member.name} width={40} height={40} className="rounded-full object-cover" />
+        return <Image src={member.image} alt={member.name} width={40} height={40} className="rounded-full object-cover" unoptimized />
     }
   },
   {

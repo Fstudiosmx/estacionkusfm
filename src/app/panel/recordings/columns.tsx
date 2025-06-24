@@ -53,7 +53,7 @@ export const columns = ({ onEdit, onDelete }: { onEdit: (recording: RecordedShow
     header: "Imagen",
     cell: ({ row }: { row: { original: RecordedShow }}) => {
         const recording = row.original;
-        return <Image src={recording.imageUrl} alt={recording.title} width={40} height={40} className="rounded-md object-cover" />
+        return <Image src={recording.imageUrl} alt={recording.title} width={40} height={40} className="rounded-md object-cover" unoptimized />
     }
   },
   {

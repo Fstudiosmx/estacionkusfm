@@ -60,7 +60,7 @@ export const columns = ({ onEdit, onDelete }: { onEdit: (sponsor: Sponsor) => vo
     header: "Logo",
     cell: ({ row }: { row: { original: Sponsor }}) => {
         const sponsor = row.original;
-        return <Image src={sponsor.imageUrl} alt={sponsor.name} width={80} height={40} className="rounded-md object-contain" />
+        return <Image src={sponsor.imageUrl} alt={sponsor.name} width={80} height={40} className="rounded-md object-contain" unoptimized />
     }
   },
   {

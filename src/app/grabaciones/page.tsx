@@ -92,6 +92,7 @@ export default function GrabacionesPage() {
                     width={200}
                     height={200}
                     className="w-full sm:w-1/3 h-48 sm:h-auto object-cover"
+                    unoptimized
                 />
                 <div className="flex flex-col flex-1">
                     <CardHeader>

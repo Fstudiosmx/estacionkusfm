@@ -59,7 +59,7 @@ export const columns = ({ onEdit, onDelete }: { onEdit: (song: Song) => void; on
     header: "Carátula",
     cell: ({ row }: { row: { original: Song }}) => {
         const song = row.original;
-        return <Image src={song.coverArt} alt={song.title} width={40} height={40} className="rounded-md" />
+        return <Image src={song.coverArt} alt={song.title} width={40} height={40} className="rounded-md" unoptimized />
     }
   },
   {

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Radio, Users, History, ServerCrash } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -118,7 +118,7 @@ export default function NosotrosPage() {
              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {teamMembers.map((member) => (
                     <div key={member.name} className="text-center">
-                        <Image src={member.image} data-ai-hint={member.hint} alt={member.name} width={150} height={150} className="rounded-full mx-auto mb-4 object-cover" />
+                        <Image src={member.image} data-ai-hint={member.hint} alt={member.name} width={150} height={150} className="rounded-full mx-auto mb-4 object-cover" unoptimized />
                         <h3 className="font-semibold">{member.name}</h3>
                         <p className="text-sm text-muted-foreground">{member.role}</p>
                     </div>

@@ -97,6 +97,7 @@ export default async function BlogPostPage({ params }: { params: { id: string } 
             width={1200}
             height={675}
             className="w-full h-auto rounded-lg object-cover mb-8"
+            unoptimized
           />
 
           <div className="text-foreground text-lg leading-relaxed space-y-6">
