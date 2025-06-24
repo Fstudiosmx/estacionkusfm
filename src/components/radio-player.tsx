@@ -1,16 +1,24 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music, MessageCircle } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music, MessageCircle, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import { SongRequestModal } from './song-request-modal';
 import { HistoryModal } from './history-modal';
 import { ShoutoutModal } from './shoutout-modal';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface AzuraCastNowPlaying {
   station: {
@@ -36,6 +44,10 @@ export function RadioPlayer() {
   const lastVolume = useRef(50);
   const [isMounted, setIsMounted] = useState(false);
   
+  const [songRequestOpen, setSongRequestOpen] = useState(false);
+  const [shoutoutOpen, setShoutoutOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
+
   const streamUrl = "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3";
   const apiUrl = "/api/nowplaying";
 
@@ -133,7 +145,6 @@ export function RadioPlayer() {
 
   const isOnline = nowPlaying?.is_online ?? false;
   const currentTrack = nowPlaying?.now_playing.song;
-  // Use a generic album cover hint, but let the API provide the actual art.
   const coverArt = currentTrack?.art && currentTrack.art.includes('http') 
     ? currentTrack.art 
     : 'https://placehold.co/100x100.png';
@@ -141,113 +152,143 @@ export function RadioPlayer() {
   const trackArtist = currentTrack?.artist || nowPlaying?.station.name || 'EstacionKusFM';
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-2 sm:p-4">
-      {isMounted && <audio ref={audioRef} src={streamUrl} preload="auto" />}
-      <Card className="w-full max-w-4xl mx-auto shadow-2xl backdrop-blur-lg bg-card/80">
-        <CardContent className="p-3 sm:p-4">
-          <div className="flex items-center gap-4">
-            <Image
-              src={coverArt}
-              data-ai-hint="album cover"
-              alt="Album Art"
-              width={64}
-              height={64}
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-md"
-              unoptimized // Recommended for external art URLs that are not in next.config.js
-            />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span
-                  className={`relative flex h-3 w-3 rounded-full ${
-                    isOnline ? 'bg-green-500' : 'bg-red-500'
-                  }`}
-                >
-                  {isOnline && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>}
-                </span>
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider">
-                  {isOnline ? 'En Vivo' : 'Offline'}
-                </p>
-              </div>
-              <h3 className="font-bold truncate font-headline text-lg">{trackTitle}</h3>
-              <p className="text-sm text-muted-foreground truncate">{trackArtist}</p>
-            </div>
-
-            <div className="hidden md:flex items-center gap-4 flex-1 max-w-xs">
-              <Button variant="ghost" size="icon" onClick={toggleMute}>
-                {isMuted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-              </Button>
-              <Slider
-                value={[volume]}
-                max={100}
-                step={1}
-                className="w-full"
-                onValueChange={handleVolumeChange}
-                aria-label="Volume"
+    <>
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-2 sm:p-4">
+        {isMounted && <audio ref={audioRef} src={streamUrl} preload="none" />}
+        <Card className="w-full max-w-4xl mx-auto shadow-2xl backdrop-blur-lg bg-card/80">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-4">
+              <Image
+                src={coverArt}
+                data-ai-hint="album cover"
+                alt="Album Art"
+                width={64}
+                height={64}
+                className="w-12 h-12 sm:w-16 sm:h-16 rounded-md"
+                unoptimized
               />
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <TooltipProvider delayDuration={100}>
-                <div className="hidden sm:flex items-center gap-1">
-                    <Dialog>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`relative flex h-3 w-3 rounded-full ${
+                      isOnline ? 'bg-green-500' : 'bg-red-500'
+                    }`}
+                  >
+                    {isOnline && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>}
+                  </span>
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">
+                    {isOnline ? 'En Vivo' : 'Offline'}
+                  </p>
+                </div>
+                <h3 className="font-bold truncate font-headline text-lg">{trackTitle}</h3>
+                <p className="text-sm text-muted-foreground truncate">{trackArtist}</p>
+              </div>
+
+              <div className="hidden md:flex items-center gap-4 flex-1 max-w-xs">
+                <Button variant="ghost" size="icon" onClick={toggleMute}>
+                  {isMuted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                </Button>
+                <Slider
+                  value={[volume]}
+                  max={100}
+                  step={1}
+                  className="w-full"
+                  onValueChange={handleVolumeChange}
+                  aria-label="Volume"
+                />
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <TooltipProvider delayDuration={100}>
+                  <div className="hidden sm:flex items-center gap-1">
                       <Tooltip>
                           <TooltipTrigger asChild>
-                              <DialogTrigger asChild>
-                                  <Button variant="ghost" size="icon"><Music className="h-5 w-5" /></Button>
-                              </DialogTrigger>
+                              <Button variant="ghost" size="icon" onClick={() => setSongRequestOpen(true)}><Music className="h-5 w-5" /></Button>
                           </TooltipTrigger>
                           <TooltipContent><p>Pedir una canción</p></TooltipContent>
                       </Tooltip>
-                      <SongRequestModal />
-                    </Dialog>
-                    <Dialog>
                       <Tooltip>
                           <TooltipTrigger asChild>
-                              <DialogTrigger asChild>
-                                <Button variant="ghost" size="icon"><MessageCircle className="h-5 w-5" /></Button>
-                              </DialogTrigger>
+                            <Button variant="ghost" size="icon" onClick={() => setShoutoutOpen(true)}><MessageCircle className="h-5 w-5" /></Button>
                           </TooltipTrigger>
                           <TooltipContent><p>Enviar un saludo</p></TooltipContent>
                       </Tooltip>
-                      <ShoutoutModal />
-                    </Dialog>
-                    <Dialog>
                       <Tooltip>
                           <TooltipTrigger asChild>
-                              <DialogTrigger asChild>
-                                <Button variant="ghost" size="icon"><History className="h-5 w-5" /></Button>
-                              </DialogTrigger>
+                            <Button variant="ghost" size="icon" onClick={() => setHistoryOpen(true)}><History className="h-5 w-5" /></Button>
                           </TooltipTrigger>
                           <TooltipContent><p>Historial</p></TooltipContent>
                       </Tooltip>
-                      <HistoryModal />
-                    </Dialog>
-                     <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon" onClick={fetchNowPlaying}>
-                                <RefreshCw className="h-5 w-5" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>Refrescar</p></TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon" onClick={handleShare}>
-                                <Share2 className="h-5 w-5" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>Compartir</p></TooltipContent>
-                    </Tooltip>
-                </div>
-              </TooltipProvider>
+                       <Tooltip>
+                          <TooltipTrigger asChild>
+                              <Button variant="ghost" size="icon" onClick={fetchNowPlaying}>
+                                  <RefreshCw className="h-5 w-5" />
+                              </Button>
+                          </TooltipTrigger>
+                          <TooltipContent><p>Refrescar</p></TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                          <TooltipTrigger asChild>
+                              <Button variant="ghost" size="icon" onClick={handleShare}>
+                                  <Share2 className="h-5 w-5" />
+                              </Button>
+                          </TooltipTrigger>
+                          <TooltipContent><p>Compartir</p></TooltipContent>
+                      </Tooltip>
+                  </div>
+                   <div className="sm:hidden">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="h-5 w-5" />
+                          <span className="sr-only">Más opciones</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onSelect={() => setSongRequestOpen(true)}>
+                          <Music className="mr-2 h-4 w-4" />
+                          <span>Pedir una canción</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setShoutoutOpen(true)}>
+                          <MessageCircle className="mr-2 h-4 w-4" />
+                          <span>Enviar un saludo</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setHistoryOpen(true)}>
+                          <History className="mr-2 h-4 w-4" />
+                          <span>Historial</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onSelect={fetchNowPlaying}>
+                          <RefreshCw className="mr-2 h-4 w-4" />
+                          <span>Refrescar</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={handleShare}>
+                          <Share2 className="mr-2 h-4 w-4" />
+                          <span>Compartir</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </TooltipProvider>
 
-                <Button onClick={togglePlay} size="icon" className="w-12 h-12 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={!isOnline}>
-                    {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
-                </Button>
+                  <Button onClick={togglePlay} size="icon" className="w-12 h-12 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={!isOnline}>
+                      {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
+                  </Button>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Dialog open={songRequestOpen} onOpenChange={setSongRequestOpen}>
+        <SongRequestModal />
+      </Dialog>
+      <Dialog open={shoutoutOpen} onOpenChange={setShoutoutOpen}>
+        <ShoutoutModal />
+      </Dialog>
+      <Dialog open={historyOpen} onOpenChange={setHistoryOpen}>
+        <HistoryModal />
+      </Dialog>
+    </>
   );
 }
