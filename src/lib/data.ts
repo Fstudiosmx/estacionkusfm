@@ -4,6 +4,7 @@ export interface Song {
   title: string;
   artist: string;
   coverArt: string;
+  coverArtHint?: string;
   externalLink: string;
   youtubeVideoId?: string;
   spotifyLink?: string;
@@ -24,7 +25,7 @@ export interface ScheduleDay {
 
 export interface Campaign {
   id: number;
-  title: string;
+  title:string;
   date: string;
   description: string;
   icon: 'Calendar' | 'Heart';
@@ -41,24 +42,24 @@ export interface BlogPost {
 }
 
 export const topSongs: Song[] = [
-  { id: 1, rank: 1, title: 'Echoes of Tomorrow', artist: 'Starlight Sirens', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 2, rank: 2, title: 'Midnight Drive', artist: 'Neon Bloom', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 3, rank: 3, title: 'Chasing the Sun', artist: 'The Voyagers', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 4, rank: 4, title: 'Velvet Horizon', artist: 'Aurora Haze', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 5, rank: 5, title: 'Crystal Clear', artist: 'Glass Animals', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 6, rank: 6, title: 'Lost in the Sound', artist: 'Wanderlust', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 7, rank: 7, title: 'Retrograde', artist: 'Cosmic Drift', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 8, rank: 8, title: 'City Lights', artist: 'Urban Glow', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 9, rank: 9, title: 'Ocean Deep', artist: 'Tidal Waves', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-  { id: 10, rank: 10, title: 'Solar Flare', artist: 'Galaxy Runners', coverArt: 'https://placehold.co/100x100.png', externalLink: '#', youtubeVideoId: 'jfKfPfyJRdk', spotifyLink: '#', appleMusicLink: '#', youtubeMusicLink: '#' },
+  { id: 1, rank: 1, title: 'Echoes of Tomorrow', artist: 'Starlight Sirens', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'abstract space', externalLink: '#' },
+  { id: 2, rank: 2, title: 'Midnight Drive', artist: 'Neon Bloom', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'neon city', externalLink: '#' },
+  { id: 3, rank: 3, title: 'Chasing the Sun', artist: 'The Voyagers', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'sunrise beach', externalLink: '#' },
+  { id: 4, rank: 4, title: 'Velvet Horizon', artist: 'Aurora Haze', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'purple sunset', externalLink: '#' },
+  { id: 5, rank: 5, title: 'Crystal Clear', artist: 'Glass Animals', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'crystal prism', externalLink: '#' },
+  { id: 6, rank: 6, title: 'Lost in the Sound', artist: 'Wanderlust', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'person headphones', externalLink: '#' },
+  { id: 7, rank: 7, title: 'Retrograde', artist: 'Cosmic Drift', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'retro wave', externalLink: '#' },
+  { id: 8, rank: 8, title: 'City Lights', artist: 'Urban Glow', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'city night', externalLink: '#' },
+  { id: 9, rank: 9, title: 'Ocean Deep', artist: 'Tidal Waves', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'deep ocean', externalLink: '#' },
+  { id: 10, rank: 10, title: 'Solar Flare', artist: 'Galaxy Runners', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'solar flare', externalLink: '#', youtubeVideoId: 'jfKfPfyJRdk', spotifyLink: '#', appleMusicLink: '#', youtubeMusicLink: '#' },
 ];
 
 export const allSongs: Song[] = [
     ...topSongs,
-    { id: 11, title: 'Forest Murmurs', artist: 'Willow Creek', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-    { id: 12, title: 'Mountain High', artist: 'The Peaks', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-    { id: 13, title: 'Desert Wind', artist: 'Mirage', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
-    { id: 14, title: 'River Flow', artist: 'The Current', coverArt: 'https://placehold.co/100x100.png', externalLink: '#' },
+    { id: 11, title: 'Forest Murmurs', artist: 'Willow Creek', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'enchanted forest', externalLink: '#' },
+    { id: 12, title: 'Mountain High', artist: 'The Peaks', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'mountain peak', externalLink: '#' },
+    { id: 13, title: 'Desert Wind', artist: 'Mirage', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'sand dunes', externalLink: '#' },
+    { id: 14, title: 'River Flow', artist: 'The Current', coverArt: 'https://placehold.co/100x100.png', coverArtHint: 'river rapids', externalLink: '#' },
 ];
 
 

@@ -36,7 +36,8 @@ export function RadioPlayer() {
 
   const fetchNowPlaying = async () => {
     try {
-      const response = await fetch(apiUrl);
+      // Add a cache-busting query parameter
+      const response = await fetch(`${apiUrl}?_=${new Date().getTime()}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -124,7 +125,8 @@ export function RadioPlayer() {
 
   const isOnline = nowPlaying?.is_online ?? false;
   const currentTrack = nowPlaying?.now_playing.song;
-  const coverArt = currentTrack?.art && currentTrack.art !== 'https://www.azuracast.com/img/api/album_art_blank.png' 
+  // Use a generic album cover hint, but let the API provide the actual art.
+  const coverArt = currentTrack?.art && currentTrack.art.includes('http') 
     ? currentTrack.art 
     : 'https://placehold.co/100x100.png';
   const trackTitle = currentTrack?.title || (isOnline ? 'En Vivo' : 'Offline');

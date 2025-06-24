@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -10,10 +11,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { topSongs, weeklySchedule, campaigns, type Program } from '@/lib/data';
+import { topSongs, weeklySchedule, blogPosts, type Program } from '@/lib/data';
 import { TopSongItem } from '@/components/top-song-item';
-import { ArrowRight, Mic, Calendar, Heart } from 'lucide-react';
+import { ArrowRight, Mic, Calendar, Heart, Rss } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { Badge } from '@/components/ui/badge';
 
 export default function Home() {
   const [today, setToday] = useState('');
@@ -152,33 +154,47 @@ export default function Home() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
+               <div className="inline-block rounded-lg bg-primary/10 p-3">
+                 <Rss className="h-8 w-8 text-primary" />
+              </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">
-                Nuestras Campañas
+                Desde Nuestro Blog
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Creemos en el poder de la comunidad. Revisa nuestras campañas actuales y descubre cómo puedes participar.
+                Entrevistas, reseñas y las últimas noticias del mundo de la música.
               </p>
             </div>
           </div>
           <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3 mt-12">
-            {campaigns.slice(0, 3).map((campaign) => (
-              <Card key={campaign.id}>
-                <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2">
-                    {campaign.icon === 'Calendar' ? <Calendar className="h-6 w-6 text-primary"/> : <Heart className="h-6 w-6 text-primary"/>}
-                    {campaign.title}
+            {blogPosts.slice(0, 3).map((post) => (
+              <Card key={post.id} className="flex flex-col overflow-hidden">
+                <Link href={`/blog/${post.id}`}>
+                  <Image
+                    src={post.imageUrl}
+                    data-ai-hint={post.category === 'Interviews' ? 'portrait microphone' : 'music lifestyle'}
+                    alt={post.title}
+                    width={600}
+                    height={400}
+                    className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
+                  />
+                </Link>
+                <CardContent className="p-6 flex-1 flex flex-col">
+                  <div className="mb-4">
+                    <Badge variant="outline">{post.category}</Badge>
+                  </div>
+                  <CardTitle className="font-headline text-lg mb-2 flex-1">
+                    <Link href={`/blog/${post.id}`} className="hover:text-primary transition-colors">
+                      {post.title}
+                    </Link>
                   </CardTitle>
-                  <CardDescription>{campaign.date}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    {campaign.description}
+                  <p className="text-sm text-muted-foreground mb-4 flex-1">
+                    {post.excerpt}
                   </p>
-                   <Button asChild variant="link" className="px-0 mt-2">
-                      <Link href="/campanas">
-                        Leer Más <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
+                  <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
+                    <Link href={`/blog/${post.id}`}>
+                      Leer Más <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             ))}

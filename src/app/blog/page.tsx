@@ -22,21 +22,23 @@ export default function BlogPage() {
         {blogPosts.map((post) => (
           <Card key={post.id} className="flex flex-col overflow-hidden">
             <CardHeader className="p-0">
-              <Image
-                src={post.imageUrl}
-                data-ai-hint="blog lifestyle"
-                alt={post.title}
-                width={600}
-                height={400}
-                className="w-full h-48 object-cover"
-              />
+              <Link href={`/blog/${post.id}`}>
+                <Image
+                  src={post.imageUrl}
+                  data-ai-hint={post.category === 'Interviews' ? 'portrait microphone' : 'music lifestyle'}
+                  alt={post.title}
+                  width={600}
+                  height={400}
+                  className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
+                />
+              </Link>
             </CardHeader>
             <CardContent className="p-6 flex-1 flex flex-col">
               <div className="mb-4">
                 <Badge variant="outline">{post.category}</Badge>
               </div>
               <CardTitle className="font-headline text-xl mb-2 flex-1">
-                <Link href="#" className="hover:text-primary transition-colors">
+                <Link href={`/blog/${post.id}`} className="hover:text-primary transition-colors">
                   {post.title}
                 </Link>
               </CardTitle>
@@ -47,7 +49,7 @@ export default function BlogPage() {
                 {post.excerpt}
               </p>
               <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
-                <Link href="#">
+                <Link href={`/blog/${post.id}`}>
                   Leer Más <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

@@ -19,7 +19,7 @@ export function TopSongItem({ song }: TopSongItemProps) {
           </span>
           <Image
             src={song.coverArt}
-            data-ai-hint="album cover"
+            data-ai-hint={song.coverArtHint}
             alt={song.title}
             width={48}
             height={48}

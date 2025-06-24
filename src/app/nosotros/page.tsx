@@ -5,12 +5,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 const teamMembers = [
-  { name: 'Alex Johnson', role: 'Morning Commute', image: 'https://placehold.co/300x300.png' },
-  { name: 'Samantha Bee', role: 'Indie Vibes', image: 'https://placehold.co/300x300.png' },
-  { name: 'Mike Richards', role: 'Lunchtime Classics', image: 'https://placehold.co/300x300.png' },
-  { name: 'Jessica Wu', role: 'Afternoon Chill', image: 'https://placehold.co/300x300.png' },
-  { name: 'Chris Green', role: 'Drive Time Power Mix', image: 'https://placehold.co/300x300.png' },
-  { name: 'Maria Garcia', role: 'Sunrise Sessions', image: 'https://placehold.co/300x300.png' },
+  { name: 'Alex Johnson', role: 'Morning Commute', image: 'https://placehold.co/300x300.png', hint: 'male portrait' },
+  { name: 'Samantha Bee', role: 'Indie Vibes', image: 'https://placehold.co/300x300.png', hint: 'female portrait' },
+  { name: 'Mike Richards', role: 'Lunchtime Classics', image: 'https://placehold.co/300x300.png', hint: 'male portrait smiling' },
+  { name: 'Jessica Wu', role: 'Afternoon Chill', image: 'https://placehold.co/300x300.png', hint: 'female portrait glasses' },
+  { name: 'Chris Green', role: 'Drive Time Power Mix', image: 'https://placehold.co/300x300.png', hint: 'male portrait headphones' },
+  { name: 'Maria Garcia', role: 'Sunrise Sessions', image: 'https://placehold.co/300x300.png', hint: 'female portrait smiling' },
 ];
 
 export default function NosotrosPage() {
@@ -66,7 +66,7 @@ export default function NosotrosPage() {
          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {teamMembers.map((member) => (
                 <div key={member.name} className="text-center">
-                    <Image src={member.image} data-ai-hint="portrait person" alt={member.name} width={150} height={150} className="rounded-full mx-auto mb-4" />
+                    <Image src={member.image} data-ai-hint={member.hint} alt={member.name} width={150} height={150} className="rounded-full mx-auto mb-4" />
                     <h3 className="font-semibold">{member.name}</h3>
                     <p className="text-sm text-muted-foreground">{member.role}</p>
                 </div>

@@ -12,6 +12,7 @@ const recordedShows = [
         duration: '45 min',
         description: 'A mix of the best new indie tracks perfect for a summer day. Featuring interviews with upcoming artists.',
         imageUrl: 'https://placehold.co/600x400.png',
+        imageHint: 'indie music'
     },
     {
         id: 2,
@@ -21,6 +22,7 @@ const recordedShows = [
         duration: '60 min',
         description: 'Exploring the latest advancements in Artificial Intelligence and its impact on our daily lives.',
         imageUrl: 'https://placehold.co/600x400.png',
+        imageHint: 'tech podcast'
     },
     {
         id: 3,
@@ -30,6 +32,7 @@ const recordedShows = [
         duration: '55 min',
         description: 'A journey through the vibrant and diverse music of Brazil, from Samba to Bossa Nova.',
         imageUrl: 'https://placehold.co/600x400.png',
+        imageHint: 'brazil carnival'
     },
      {
         id: 4,
@@ -39,6 +42,7 @@ const recordedShows = [
         duration: '90 min',
         description: 'Revisiting the golden age of Hip-Hop with classic tracks and forgotten gems from the 1990s.',
         imageUrl: 'https://placehold.co/600x400.png',
+        imageHint: 'hip hop'
     }
 ];
 
@@ -59,7 +63,7 @@ export default function GrabacionesPage() {
           <Card key={show.id} className="flex flex-col sm:flex-row overflow-hidden">
              <Image
                 src={show.imageUrl}
-                data-ai-hint="podcast lifestyle"
+                data-ai-hint={show.imageHint}
                 alt={show.title}
                 width={200}
                 height={200}
