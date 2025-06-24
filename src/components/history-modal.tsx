@@ -38,7 +38,7 @@ export function HistoryModal() {
         const response = await fetch('/api/history');
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-          const message = errorData.message || 'No se pudo cargar el historial desde el servidor de la radio.';
+          const message = errorData.message || 'Ocurrió un error inesperado al contactar la API.';
           throw new Error(message);
         }
         const data: SongHistoryItem[] = await response.json();

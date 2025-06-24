@@ -1,27 +1,28 @@
 // src/app/api/history/route.ts
 import { NextResponse } from 'next/server';
 
-// This is a route handler that we can use to proxy requests to the AzuraCast API.
-// This is useful for avoiding CORS issues, as the request is made from the server-side.
-// see: https://nextjs.org/docs/app/building-your-application/routing/route-handlers
-
 export async function GET() {
   const azura_url = 'https://radio.trabullnetwork.pro/api/station/estacionkusfm/history';
   try {
     const response = await fetch(azura_url, {
-      cache: 'no-store'
+      cache: 'no-store',
     });
 
     if (!response.ok) {
-      throw new Error(`Error from AzuraCast API: ${response.status} ${response.statusText}`);
+      const errorText = await response.text().catch(() => 'Could not read error body');
+      console.error(`Error from AzuraCast API: ${response.status} ${response.statusText}`, errorText);
+      return NextResponse.json(
+        { message: `El servidor de la radio devolvió un error: ${response.statusText}` },
+        { status: response.status }
+      );
     }
 
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("Error fetching history from AzuraCast:", error);
+    console.error("Failed to fetch from AzuraCast API:", error);
     return NextResponse.json(
-      { message: "Failed to fetch history from upstream API", error: error.message },
+      { message: "No se pudo conectar con el servidor de la radio para obtener el historial.", error: error.message },
       { status: 502 } // Bad Gateway
     );
   }
