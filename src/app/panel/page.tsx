@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { collection, getDocs, limit, query } from "firebase/firestore";
 import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users } from "lucide-react";
+import Link from "next/link";
 
 export default function PanelPage() {
   const router = useRouter();
@@ -198,7 +199,9 @@ export default function PanelPage() {
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Crea, edita y publica nuevos artículos en el blog.</p>
-                    <Button disabled>Gestionar (Próximamente)</Button>
+                     <Button asChild>
+                        <Link href="/panel/blog">Gestionar</Link>
+                    </Button>
                 </CardContent>
             </Card>
             <Card>
