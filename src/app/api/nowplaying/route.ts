@@ -6,6 +6,9 @@ export async function GET() {
   try {
     const response = await fetch(azura_url, {
       cache: 'no-store',
+      headers: {
+        'User-Agent': 'RadioWaveApp/1.0',
+      }
     });
 
     if (!response.ok) {
