@@ -7,7 +7,6 @@ const footerNavs = [
   { href: '/programacion', label: 'Programación' },
   { href: '/blog', label: 'Blog' },
   { href: '/unete', label: 'Únete' },
-  { href: '/contacto', label: 'Contacto' },
 ];
 
 export function SiteFooter() {
@@ -44,17 +43,17 @@ export function SiteFooter() {
               <h3 className="font-semibold text-foreground mb-4 font-headline">Conecta</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
                     <Facebook className="w-4 h-4" /> Facebook
                   </a>
                 </li>
                  <li>
-                  <a href="#" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
                     <Twitter className="w-4 h-4" /> Twitter
                   </a>
                 </li>
                  <li>
-                  <a href="#" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
                     <Instagram className="w-4 h-4" /> Instagram
                   </a>
                 </li>
@@ -69,12 +68,12 @@ export function SiteFooter() {
                   </Link>
                 </li>
                  <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <Link href="/politica-de-privacidad" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                     Política de Privacidad
                   </Link>
                 </li>
                  <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <Link href="/terminos-de-servicio" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                     Términos de Servicio
                   </Link>
                 </li>

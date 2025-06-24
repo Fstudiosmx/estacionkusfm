@@ -1,13 +1,24 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Menu, LogIn, LogOut, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SiteLogo } from '@/components/icons/radiowave';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged, signOut, type User } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useToast } from '@/hooks/use-toast';
 
 const navItems = [
   { href: '/', label: 'Inicio' },
@@ -16,17 +27,41 @@ const navItems = [
   { href: '/blog', label: 'Blog' },
   { href: '/nosotros', label: 'Nosotros' },
   { href: '/unete', label: 'Únete' },
-  { href: '/login', label: 'Login' },
 ];
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { toast } = useToast();
   const [isSheetOpen, setSheetOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const NavLink = ({ href, children, className }: { href: string, children: React.ReactNode, className?: string }) => (
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast({ title: "Sesión Cerrada" });
+      router.push('/login');
+    } catch (error) {
+      toast({ title: "Error al cerrar sesión", variant: "destructive" });
+    }
+  };
+  
+  const NavLink = ({ href, children, className, onClick }: { href: string, children: React.ReactNode, className?: string, onClick?: () => void }) => (
     <Link
       href={href}
-      onClick={() => setSheetOpen(false)}
+      onClick={() => {
+        setSheetOpen(false);
+        onClick?.();
+      }}
       className={cn(
         "transition-colors hover:text-foreground",
         pathname === href ? "text-foreground" : "text-muted-foreground",
@@ -49,7 +84,7 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex gap-6">
+        <nav className="hidden md:flex flex-1 items-center justify-center gap-6">
           {navItems.map((item) => (
             <NavLink key={item.href} href={item.href} className="text-sm font-medium">
               {item.label}
@@ -57,32 +92,83 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex flex-1 items-center justify-end space-x-4 md:hidden">
-          <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" className="sm:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <nav className="grid gap-6 text-lg font-medium">
-                <Link
-                  href="/"
-                  onClick={() => setSheetOpen(false)}
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
-                  <SiteLogo className="h-6 w-6 text-primary" />
-                  <span className="font-headline">EstacionKusFM</span>
-                </Link>
-                {navItems.map((item) => (
-                  <NavLink key={item.href} href={item.href}>
-                    {item.label}
-                  </NavLink>
-                ))}
-              </nav>
-            </SheetContent>
-          </Sheet>
+        <div className="flex items-center justify-end space-x-2 md:space-x-4">
+            {!loading && (
+              <div className="hidden md:block">
+                {user ? (
+                   <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="secondary" size="sm">
+                        <UserCircle className="mr-2 h-5 w-5" />
+                        Panel
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => router.push('/panel')}>
+                        Ir al Panel
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout}>
+                        Cerrar Sesión
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button asChild size="sm">
+                    <Link href="/login">
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Login
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            )}
+
+
+          <div className="md:hidden">
+            <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle Menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <nav className="grid gap-6 text-lg font-medium">
+                  <Link
+                    href="/"
+                    onClick={() => setSheetOpen(false)}
+                    className="flex items-center gap-2 text-lg font-semibold"
+                  >
+                    <SiteLogo className="h-6 w-6 text-primary" />
+                    <span className="font-headline">EstacionKusFM</span>
+                  </Link>
+                  {navItems.map((item) => (
+                    <NavLink key={item.href} href={item.href}>
+                      {item.label}
+                    </NavLink>
+                  ))}
+                  <div className="border-t pt-6">
+                    {user ? (
+                      <>
+                        <NavLink href="/panel" className="flex items-center gap-2">
+                          <UserCircle className="h-5 w-5" /> Panel
+                        </NavLink>
+                        <button onClick={() => { handleLogout(); setSheetOpen(false); }} className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground w-full text-left">
+                           <LogOut className="h-5 w-5" /> Cerrar Sesión
+                        </button>
+                      </>
+                    ) : (
+                      <NavLink href="/login" className="flex items-center gap-2">
+                        <LogIn className="h-5 w-5" /> Login
+                      </NavLink>
+                    )}
+                  </div>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>
