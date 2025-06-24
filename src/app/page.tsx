@@ -1,3 +1,178 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { topSongs, weeklySchedule, campaigns } from '@/lib/data';
+import { TopSongItem } from '@/components/top-song-item';
+import { ArrowRight, Mic, Calendar, Heart } from 'lucide-react';
+
 export default function Home() {
-  return <></>;
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const todaysSchedule =
+    weeklySchedule.find((day) => day.day === today)?.schedule || [];
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <section className="w-full py-20 md:py-32 lg:py-40 bg-primary/10">
+        <div className="container px-4 md:px-6">
+          <div className="grid gap-6 lg:grid-cols-1 lg:gap-12 xl:grid-cols-2">
+            <div className="flex flex-col justify-center space-y-4">
+              <div className="space-y-2">
+                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-primary">
+                  RadioWave
+                </h1>
+                <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                  Your daily dose of sound. Uninterrupted music, engaging talk
+                  shows, and the pulse of the city, right at your fingertips.
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <Button asChild size="lg" className="font-bold">
+                  <Link href="/programacion">View Schedule</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="font-bold">
+                  <Link href="/unete">Join Us</Link>
+                </Button>
+              </div>
+            </div>
+            <Image
+              src="https://placehold.co/600x400.png"
+              data-ai-hint="radio microphone"
+              width="600"
+              height="400"
+              alt="Hero"
+              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-12 md:py-24 lg:py-32">
+        <div className="container px-4 md:px-6">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-24">
+            <div className="flex flex-col space-y-4">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">
+                Top 10 Songs
+              </h2>
+              <p className="text-muted-foreground">
+                The most played and requested tracks this week on RadioWave.
+              </p>
+              <div className="space-y-4">
+                {topSongs.map((song) => (
+                  <TopSongItem key={song.id} song={song} />
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col space-y-8">
+              <div>
+                <h3 className="text-2xl font-bold tracking-tighter font-headline mb-4">
+                  Today's Schedule: {today}
+                </h3>
+                <Card>
+                  <CardContent className="p-6">
+                    <ul className="space-y-4">
+                      {todaysSchedule.length > 0 ? (
+                        todaysSchedule.map((program, index) => (
+                          <li
+                            key={index}
+                            className="flex justify-between items-center"
+                          >
+                            <div>
+                              <p className="font-semibold">{program.title}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {program.host}
+                              </p>
+                            </div>
+                            <span className="text-sm font-medium text-primary">
+                              {program.time}
+                            </span>
+                          </li>
+                        ))
+                      ) : (
+                        <p className="text-muted-foreground">
+                          No programs scheduled for today. Check back soon!
+                        </p>
+                      )}
+                    </ul>
+                    <Button asChild variant="link" className="px-0 mt-4">
+                      <Link href="/programacion">
+                        Full Weekly Schedule <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold tracking-tighter font-headline">
+                  Join Our Team
+                </h3>
+                <Card className="bg-primary text-primary-foreground">
+                  <CardContent className="p-6 flex items-center gap-6">
+                    <Mic className="h-12 w-12 shrink-0" />
+                    <div>
+                      <h4 className="font-bold text-lg">
+                        Become a Voice at RadioWave
+                      </h4>
+                      <p className="text-sm text-primary-foreground/80">
+                        Have a passion for music or a story to tell? We are
+                        looking for new talent to join our family of hosts.
+                      </p>
+                      <Button asChild variant="secondary" className="mt-4">
+                        <Link href="/unete">Apply Now</Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">
+                Our Campaigns
+              </h2>
+              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                We believe in the power of community. Check out our current
+                campaigns and find out how you can get involved.
+              </p>
+            </div>
+          </div>
+          <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3 mt-12">
+            {campaigns.slice(0, 3).map((campaign) => (
+              <Card key={campaign.id}>
+                <CardHeader>
+                  <CardTitle className="font-headline flex items-center gap-2">
+                    {campaign.icon === 'Calendar' ? <Calendar className="h-6 w-6 text-primary"/> : <Heart className="h-6 w-6 text-primary"/>}
+                    {campaign.title}
+                  </CardTitle>
+                  <CardDescription>{campaign.date}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    {campaign.description}
+                  </p>
+                   <Button asChild variant="link" className="px-0 mt-2">
+                      <Link href="/campanas">
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }

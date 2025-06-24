@@ -1,0 +1,60 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { blogPosts } from '@/lib/data';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+
+export default function BlogPage() {
+  return (
+    <div className="container mx-auto px-4 md:px-6 py-12">
+      <div className="flex flex-col items-center text-center mb-12">
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">
+          The RadioWave Blog
+        </h1>
+        <p className="max-w-[700px] text-muted-foreground md:text-xl mt-4">
+          News, interviews, music reviews, and stories from our world to yours.
+        </p>
+      </div>
+
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {blogPosts.map((post) => (
+          <Card key={post.id} className="flex flex-col overflow-hidden">
+            <CardHeader className="p-0">
+              <Image
+                src={post.imageUrl}
+                data-ai-hint="blog lifestyle"
+                alt={post.title}
+                width={600}
+                height={400}
+                className="w-full h-48 object-cover"
+              />
+            </CardHeader>
+            <CardContent className="p-6 flex-1 flex flex-col">
+              <div className="mb-4">
+                <Badge variant="outline">{post.category}</Badge>
+              </div>
+              <CardTitle className="font-headline text-xl mb-2 flex-1">
+                <Link href="#" className="hover:text-primary transition-colors">
+                  {post.title}
+                </Link>
+              </CardTitle>
+              <p className="text-sm text-muted-foreground mb-4">
+                By {post.author} on {post.date}
+              </p>
+              <p className="text-muted-foreground text-sm mb-6">
+                {post.excerpt}
+              </p>
+              <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
+                <Link href="#">
+                  Read More <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
