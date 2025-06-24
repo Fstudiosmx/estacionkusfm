@@ -34,9 +34,14 @@ export function RadioPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const lastVolume = useRef(50);
+  const [isMounted, setIsMounted] = useState(false);
   
   const streamUrl = "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3";
   const apiUrl = "/api/nowplaying";
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const fetchNowPlaying = async () => {
     try {
@@ -137,7 +142,7 @@ export function RadioPlayer() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-2 sm:p-4">
-      <audio ref={audioRef} src={streamUrl} preload="auto" />
+      {isMounted && <audio ref={audioRef} src={streamUrl} preload="auto" />}
       <Card className="w-full max-w-4xl mx-auto shadow-2xl backdrop-blur-lg bg-card/80">
         <CardContent className="p-3 sm:p-4">
           <div className="flex items-center gap-4">
