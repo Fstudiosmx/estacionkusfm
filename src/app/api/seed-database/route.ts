@@ -2,12 +2,39 @@ import { NextResponse } from 'next/server';
 import { collection, getDocs, writeBatch, limit, query, doc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
+const parseDate = (dateString: string) => {
+    const months: { [key: string]: string } = {
+        'Enero': '01', 'Febrero': '02', 'Marzo': '03', 'Abril': '04', 'Mayo': '05', 'Junio': '06',
+        'Julio': '07', 'Agosto': '08', 'Septiembre': '09', 'Octubre': '10', 'Noviembre': '11', 'Diciembre': '12'
+    };
+    const parts = dateString.replace(/ de /g, ' ').replace(',', '').split(' ');
+    // Format: DD MMMM YYYY -> YYYY-MM-DD
+    if (parts.length === 3) {
+      const day = parts[0].padStart(2, '0');
+      const monthName = parts[1];
+      const year = parts[2];
+      const month = months[monthName];
+      if (day && month && year) {
+        return new Date(`${year}-${month}-${day}T12:00:00Z`);
+      }
+    }
+    // Fallback for "Month DD, YYYY"
+     const fallbackDate = new Date(dateString);
+     if (!isNaN(fallbackDate.getTime())) {
+         return fallbackDate;
+     }
+
+    // Default to now if parsing fails
+    return new Date();
+};
+
+
 const firestoreData = {
   "blogPosts": [
-    { "id": 1, "title": "Detrás del Micrófono: Una Entrevista con Alex Johnson", "author": "Jane Doe", "date": "15 de Julio, 2024", "excerpt": "Nos sentamos con el presentador de 'Morning Commute' para hablar sobre su trayectoria en la radio, su música favorita y lo que lo despierta por la mañana.", "content": "En esta charla exclusiva, Alex Johnson comparte sus inicios en el mundo de la radio, desde sus días en la radio universitaria hasta convertirse en una de las voces más reconocidas de las mañanas. Hablamos de los retos de la transmisión en vivo, la importancia de conectar con la audiencia y sus momentos más memorables al aire. Además, nos revela su proceso para descubrir nueva música y qué artistas no pueden faltar en su playlist personal. Una conversación íntima que te permitirá conocer al hombre detrás del micrófono.", "imageUrl": "https://placehold.co/600x400.png", "category": "Entrevistas" },
-    { "id": 2, "title": "El Auge del Indie Pop: Una Mirada a la Escena Actual", "author": "John Smith", "date": "10 de Julio, 2024", "excerpt": "El indie pop ha conquistado las ondas de radio. Exploramos los artistas y sonidos que definen el género en la década de 2020.", "content": "Desde sus raíces alternativas hasta su actual dominio en las listas de popularidad, el indie pop ha demostrado ser más que una moda pasajera. En este artículo, analizamos las características que definen el sonido actual, la influencia de las plataformas de streaming en su difusión y cómo los artistas independientes están redefiniendo las reglas de la industria musical. Presentamos a algunos de los actos más prometedores y repasamos los álbumes que están marcando el pulso de esta vibrante escena musical.", "imageUrl": "https://placehold.co/600x400.png", "category": "Música" },
-    { "id": 3, "title": "Nuestros 5 Álbumes Favoritos del Año (Hasta Ahora)", "author": "Staff de EstacionKusFM", "date": "5 de Julio, 2024", "excerpt": "El año ya va por la mitad, y estamos resumiendo los mejores álbumes que han estado en repetición en el estudio de EstacionKusFM.", "content": "La primera mitad del año nos ha regalado una increíble cantidad de música excepcional. El equipo de EstacionKusFM ha debatido, votado y compilado una lista de los cinco álbumes que consideramos imprescindibles. Desde debuts sorprendentes hasta trabajos consagrados de artistas reconocidos, nuestra selección abarca una variedad de géneros y estilos. Descubre cuáles son nuestros favoritos y por qué creemos que estos discos resistirán el paso del tiempo.", "imageUrl": "https://placehold.co/600x400.png", "category": "Reseñas" },
-    { "id": 4, "title": "Cómo Apoyamos el Talento Local con Music Rally", "author": "Equipo Comunitario", "date": "28 de Junio, 2024", "excerpt": "Aprende más sobre nuestra campaña 'Local Music Rally' y los increíbles artistas que hemos presentado hasta ahora.", "content": "En EstacionKusFM, creemos firmemente en el poder de la comunidad y en la importancia de apoyar a los artistas locales. Nuestra iniciativa 'Local Music Rally' nació con el objetivo de dar visibilidad al talento emergente de nuestra ciudad. En este post, te contamos cómo funciona la campaña, compartimos algunas historias de éxito de músicos que han participado y te explicamos cómo puedes unirte, ya sea como artista o como oyente, para fortalecer nuestra escena musical local.", "imageUrl": "https://placehold.co/600x400.png", "category": "Campañas" }
+    { "title": "Detrás del Micrófono: Una Entrevista con Alex Johnson", "author": "Jane Doe", "date": "15 de Julio, 2024", "excerpt": "Nos sentamos con el presentador de 'Morning Commute' para hablar sobre su trayectoria en la radio, su música favorita y lo que lo despierta por la mañana.", "content": "En esta charla exclusiva, Alex Johnson comparte sus inicios en el mundo de la radio, desde sus días en la radio universitaria hasta convertirse en una de las voces más reconocidas de las mañanas. Hablamos de los retos de la transmisión en vivo, la importancia de conectar con la audiencia y sus momentos más memorables al aire. Además, nos revela su proceso para descubrir nueva música y qué artistas no pueden faltar en su playlist personal. Una conversación íntima que te permitirá conocer al hombre detrás del micrófono.", "imageUrl": "https://placehold.co/600x400.png", "category": "Entrevistas" },
+    { "title": "El Auge del Indie Pop: Una Mirada a la Escena Actual", "author": "John Smith", "date": "10 de Julio, 2024", "excerpt": "El indie pop ha conquistado las ondas de radio. Exploramos los artistas y sonidos que definen el género en la década de 2020.", "content": "Desde sus raíces alternativas hasta su actual dominio en las listas de popularidad, el indie pop ha demostrado ser más que una moda pasajera. En este artículo, analizamos las características que definen el sonido actual, la influencia de las plataformas de streaming en su difusión y cómo los artistas independientes están redefiniendo las reglas de la industria musical. Presentamos a algunos de los actos más prometedores y repasamos los álbumes que están marcando el pulso de esta vibrante escena musical.", "imageUrl": "https://placehold.co/600x400.png", "category": "Música" },
+    { "title": "Nuestros 5 Álbumes Favoritos del Año (Hasta Ahora)", "author": "Staff de EstacionKusFM", "date": "5 de Julio, 2024", "excerpt": "El año ya va por la mitad, y estamos resumiendo los mejores álbumes que han estado en repetición en el estudio de EstacionKusFM.", "content": "La primera mitad del año nos ha regalado una increíble cantidad de música excepcional. El equipo de EstacionKusFM ha debatido, votado y compilado una lista de los cinco álbumes que consideramos imprescindibles. Desde debuts sorprendentes hasta trabajos consagrados de artistas reconocidos, nuestra selección abarca una variedad de géneros y estilos. Descubre cuáles son nuestros favoritos y por qué creemos que estos discos resistirán el paso del tiempo.", "imageUrl": "https://placehold.co/600x400.png", "category": "Reseñas" },
+    { "title": "Cómo Apoyamos el Talento Local con Music Rally", "author": "Equipo Comunitario", "date": "28 de Junio, 2024", "excerpt": "Aprende más sobre nuestra campaña 'Local Music Rally' y los increíbles artistas que hemos presentado hasta ahora.", "content": "En EstacionKusFM, creemos firmemente en el poder de la comunidad y en la importancia de apoyar a los artistas locales. Nuestra iniciativa 'Local Music Rally' nació con el objetivo de dar visibilidad al talento emergente de nuestra ciudad. En este post, te contamos cómo funciona la campaña, compartimos algunas historias de éxito de músicos que han participado y te explicamos cómo puedes unirte, ya sea como artista o como oyente, para fortalecer nuestra escena musical local.", "imageUrl": "https://placehold.co/600x400.png", "category": "Campañas" }
   ],
   "topSongs": [
     { "id": 1, "rank": 1, "title": "Echoes of Tomorrow", "artist": "Starlight Sirens", "coverArt": "https://placehold.co/100x100.png", "coverArtHint": "abstract space", "externalLink": "#" },
@@ -65,8 +92,12 @@ export async function POST() {
         const batch = writeBatch(db);
 
         firestoreData.blogPosts.forEach(post => {
+            const { date, ...rest } = post;
             const docRef = doc(collection(db, 'blogPosts'));
-            batch.set(docRef, post);
+            batch.set(docRef, {
+                ...rest,
+                publishDate: Timestamp.fromDate(parseDate(date)),
+            });
         });
 
         firestoreData.topSongs.forEach(song => {
@@ -85,8 +116,12 @@ export async function POST() {
         });
 
         firestoreData.recordedShows.forEach(show => {
+            const { date, ...rest } = show;
             const docRef = doc(collection(db, 'recordedShows'));
-            batch.set(docRef, show);
+            batch.set(docRef, {
+                ...rest,
+                publishDate: Timestamp.fromDate(parseDate(date)),
+            });
         });
 
         firestoreData.invitationCodes.forEach(code => {

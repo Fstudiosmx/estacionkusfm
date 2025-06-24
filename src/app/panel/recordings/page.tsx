@@ -42,7 +42,7 @@ export default function RecordingsManagementPage() {
     setLoading(true);
     try {
       const recordingsCollection = collection(db, "recordedShows");
-      const q = query(recordingsCollection, orderBy("date", "desc"));
+      const q = query(recordingsCollection, orderBy("publishDate", "desc"));
       const querySnapshot = await getDocs(q);
       const recordingsData = querySnapshot.docs.map(
         (doc) => ({ id: doc.id, ...doc.data() } as RecordedShow)

@@ -8,6 +8,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/lib/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 async function getBlogPost(id: string): Promise<BlogPost | null> {
   try {
@@ -15,7 +17,6 @@ async function getBlogPost(id: string): Promise<BlogPost | null> {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      // Combine id from document with data
       return { id: docSnap.id, ...docSnap.data() } as BlogPost;
     } else {
       console.log('No such document!');
@@ -23,25 +24,18 @@ async function getBlogPost(id: string): Promise<BlogPost | null> {
     }
   } catch (error) {
     console.error("Error getting document:", error);
-    // This indicates a configuration or permissions issue with Firebase.
     return null;
   }
 }
 
 export default async function BlogPostPage({ params }: { params: { id: string } }) {
-  // Firestore document IDs are strings, so we use the param directly.
-  // The original numeric ID from data.ts is now just a field within the document.
   const post = await getBlogPost(params.id);
 
   if (!post) {
-    // If the post is null either because it doesn't exist or Firebase failed,
-    // we can show notFound or a more specific error page.
-    // For simplicity, we'll use notFound for both cases here.
     notFound();
   }
 
-  // A simple check for a valid post object before rendering.
-  if (!post.title) {
+  if (!post.title || !post.publishDate) {
     return (
         <div className="container mx-auto px-4 md:px-6 py-12">
             <div className="max-w-4xl mx-auto text-center">
@@ -53,7 +47,7 @@ export default async function BlogPostPage({ params }: { params: { id: string } 
                         <CardTitle>Error de Conexión con Firebase</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-muted-foreground">No se pudo cargar el artículo del blog. Por favor, verifica que tus credenciales de Firebase en <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">src/lib/firebase.ts</code> son correctas y que la colección <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">'blogPosts'</code> existe en Firestore.</p>
+                        <p className="text-muted-foreground">No se pudo cargar el artículo del blog. Por favor, verifica que tus credenciales de Firebase en <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">'src/lib/firebase.ts'</code> son correctas y que la colección <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">'blogPosts'</code> existe en Firestore.</p>
                         <Button asChild className="mt-4">
                             <Link href="/docs">Ver Guía de Configuración</Link>
                         </Button>
@@ -91,7 +85,7 @@ export default async function BlogPostPage({ params }: { params: { id: string } 
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>{post.date}</span>
+                <span>{format(post.publishDate.toDate(), "dd 'de' MMMM, yyyy", { locale: es })}</span>
               </div>
             </div>
           </header>

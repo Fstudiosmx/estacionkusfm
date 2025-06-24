@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { collection, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, deleteDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
 
@@ -9,7 +9,9 @@ const formSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(5, "El título debe tener al menos 5 caracteres."),
   host: z.string().min(2, "El presentador es requerido."),
-  date: z.string().min(1, "La fecha es requerida."),
+  publishDate: z.date({
+    required_error: "La fecha es requerida.",
+  }),
   duration: z.string().min(3, "La duración es requerida."),
   description: z.string().min(10, "La descripción es requerida."),
   imageUrl: z.string().url("Debe ser una URL válida."),
@@ -21,13 +23,18 @@ export type RecordingFormValues = z.infer<typeof formSchema>;
 export async function upsertRecording(data: RecordingFormValues) {
   const validatedData = formSchema.parse(data);
   const { id, ...recordingData } = validatedData;
+  
+  const dataToSave = {
+    ...recordingData,
+    publishDate: Timestamp.fromDate(recordingData.publishDate),
+  };
 
   try {
     if (id) {
       const recordingRef = doc(db, "recordedShows", id);
-      await updateDoc(recordingRef, recordingData);
+      await updateDoc(recordingRef, dataToSave);
     } else {
-      await addDoc(collection(db, "recordedShows"), recordingData);
+      await addDoc(collection(db, "recordedShows"), dataToSave);
     }
     revalidatePath("/panel/recordings");
     revalidatePath("/grabaciones");

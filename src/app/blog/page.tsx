@@ -7,20 +7,17 @@ import { ArrowRight, ServerCrash } from 'lucide-react';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/lib/data';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 async function getBlogPosts(): Promise<BlogPost[] | null> {
   try {
     const postsCollection = collection(db, 'blogPosts');
-    // Assuming you have a 'date' field that can be ordered.
-    // Firestore requires an index for ordering by a field and filtering on another.
-    // For simplicity, we will just order by date.
-    // You might want to convert your date strings to Firestore Timestamps for proper ordering.
-    const q = query(postsCollection, orderBy('date', 'desc'));
+    const q = query(postsCollection, orderBy('publishDate', 'desc'));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogPost));
   } catch (error) {
     console.error("Error fetching blog posts:", error);
-    // This usually means Firebase config is wrong or permissions are missing.
     return null;
   }
 }
@@ -61,7 +58,6 @@ export default async function BlogPage() {
           {blogPosts.map((post) => (
             <Card key={post.id} className="flex flex-col overflow-hidden">
               <CardHeader className="p-0">
-                {/* Firestore doc IDs are strings, so we use post.id directly */}
                 <Link href={`/blog/${post.id}`}>
                   <Image
                     src={post.imageUrl}
@@ -83,7 +79,7 @@ export default async function BlogPage() {
                   </Link>
                 </CardTitle>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Por {post.author} el {post.date}
+                  Por {post.author} el {post.publishDate ? format(post.publishDate.toDate(), "dd 'de' MMMM, yyyy", { locale: es }) : ''}
                 </p>
                 <p className="text-muted-foreground text-sm mb-6">
                   {post.excerpt}

@@ -32,10 +32,10 @@ export interface Campaign {
 }
 
 export interface BlogPost {
-    id: any; // Can be string from Firestore or number from old data
+    id: any;
     title: string;
     author: string;
-    date: string;
+    publishDate: any; // Firestore Timestamp
     excerpt: string;
     content: string;
     imageUrl: string;
@@ -64,7 +64,7 @@ export interface RecordedShow {
     id: any;
     title: string;
     host: string;
-    date: string;
+    publishDate: any; // Firestore Timestamp
     duration: string;
     description: string;
     imageUrl: string;

@@ -43,7 +43,7 @@ export default function BlogManagementPage() {
     setLoading(true);
     try {
       const postsCollection = collection(db, "blogPosts");
-      const q = query(postsCollection, orderBy("date", "desc"));
+      const q = query(postsCollection, orderBy("publishDate", "desc"));
       const querySnapshot = await getDocs(q);
       const postsData = querySnapshot.docs.map(
         (doc) => ({ id: doc.id, ...doc.data() } as BlogPost)

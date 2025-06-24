@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { collection, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, deleteDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
 
@@ -9,7 +9,9 @@ const formSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(5, "El título debe tener al menos 5 caracteres."),
   author: z.string().min(2, "El autor debe tener al menos 2 caracteres."),
-  date: z.string().min(1, "La fecha es requerida."),
+  publishDate: z.date({
+    required_error: "La fecha de publicación es requerida.",
+  }),
   excerpt: z.string().min(10, "El extracto debe tener al menos 10 caracteres."),
   content: z.string().min(20, "El contenido debe tener al menos 20 caracteres."),
   imageUrl: z.string().url("Debe ser una URL válida."),
@@ -23,18 +25,21 @@ export async function upsertBlogPost(data: BlogPostFormValues) {
   
   const { id, ...postData } = validatedData;
 
+  const dataToSave = {
+    ...postData,
+    publishDate: Timestamp.fromDate(postData.publishDate),
+  };
+
   try {
     if (id) {
-      // Update existing document
       const postRef = doc(db, "blogPosts", id);
-      await updateDoc(postRef, postData);
+      await updateDoc(postRef, dataToSave);
     } else {
-      // Create new document
-      await addDoc(collection(db, "blogPosts"), postData);
+      await addDoc(collection(db, "blogPosts"), dataToSave);
     }
-    // Revalidate paths to reflect changes
     revalidatePath("/panel/blog");
     revalidatePath("/blog");
+    revalidatePath("/");
   } catch (error) {
     console.error("Error upserting blog post:", error);
     throw new Error("No se pudo guardar el artículo en la base de datos.");
@@ -50,9 +55,9 @@ export async function deleteBlogPost(id: string) {
         const postRef = doc(db, "blogPosts", id);
         await deleteDoc(postRef);
         
-        // Revalidate paths to reflect changes
         revalidatePath("/panel/blog");
         revalidatePath("/blog");
+        revalidatePath("/");
     } catch (error) {
         console.error("Error deleting blog post:", error);
         throw new Error("No se pudo eliminar el artículo de la base de datos.");

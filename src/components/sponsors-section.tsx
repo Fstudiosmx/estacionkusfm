@@ -1,50 +1,24 @@
-"use client";
-
-import { useState, useEffect } from 'react';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { Sponsor } from '@/lib/data';
-import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Megaphone } from 'lucide-react';
 
-export function SponsorsSection() {
-  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchSponsors() {
-      try {
-        const sponsorsCollection = collection(db, "sponsors");
-        const q = query(sponsorsCollection, orderBy("order", "asc"));
-        const querySnapshot = await getDocs(q);
-        const sponsorsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Sponsor));
-        setSponsors(sponsorsData);
-      } catch (error) {
-        console.error("Error fetching sponsors:", error);
-        // Don't show an error, just an empty section
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSponsors();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
-        <div className="container px-4 md:px-6">
-          <Skeleton className="h-10 w-1/3 mx-auto mb-4" />
-          <Skeleton className="h-6 w-1/2 mx-auto mb-12" />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-center justify-center">
-            {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24 w-full" />)}
-          </div>
-        </div>
-      </section>
-    );
+async function getSponsors(): Promise<Sponsor[]> {
+  try {
+    const sponsorsCollection = collection(db, "sponsors");
+    const q = query(sponsorsCollection, orderBy("order", "asc"));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Sponsor));
+  } catch (error) {
+    console.error("Error fetching sponsors:", error);
+    return [];
   }
+}
+
+export async function SponsorsSection() {
+  const sponsors = await getSponsors();
 
   if (sponsors.length === 0) {
     return null; // Don't render the section if there are no sponsors

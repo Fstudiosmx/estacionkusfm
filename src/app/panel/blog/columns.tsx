@@ -12,10 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 type ColumnActionsProps = {
     post: BlogPost;
@@ -71,8 +69,15 @@ export const columns = ({ onEdit, onDelete }: { onEdit: (post: BlogPost) => void
     header: "Autor",
   },
   {
-    accessorKey: "date",
+    accessorKey: "publishDate",
     header: "Fecha",
+    cell: ({ row }: { row: { original: BlogPost }}) => {
+        const post = row.original;
+        if (post.publishDate && typeof post.publishDate.toDate === 'function') {
+            return <span>{format(post.publishDate.toDate(), "dd MMM yyyy", { locale: es })}</span>;
+        }
+        return <span>Fecha inválida</span>;
+    }
   },
   {
     id: "actions",

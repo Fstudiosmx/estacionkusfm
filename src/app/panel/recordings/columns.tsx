@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 type ColumnActionsProps = {
     recording: RecordedShow;
@@ -67,8 +69,15 @@ export const columns = ({ onEdit, onDelete }: { onEdit: (recording: RecordedShow
     header: "Presentador",
   },
   {
-    accessorKey: "date",
+    accessorKey: "publishDate",
     header: "Fecha",
+    cell: ({ row }: { row: { original: RecordedShow }}) => {
+        const recording = row.original;
+        if (recording.publishDate && typeof recording.publishDate.toDate === 'function') {
+            return <span>{format(recording.publishDate.toDate(), "dd MMM yyyy", { locale: es })}</span>;
+        }
+        return <span>Fecha inválida</span>;
+    }
   },
    {
     accessorKey: "duration",

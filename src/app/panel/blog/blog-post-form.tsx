@@ -15,18 +15,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/hooks/use-toast";
 import { BlogPost } from "@/lib/data";
 import { upsertBlogPost } from "./actions";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(5, "El título debe tener al menos 5 caracteres."),
   author: z.string().min(2, "El autor debe tener al menos 2 caracteres."),
-  date: z.string().min(1, "La fecha es requerida."),
+  publishDate: z.date({
+    required_error: "La fecha de publicación es requerida.",
+  }),
   excerpt: z.string().min(10, "El extracto debe tener al menos 10 caracteres."),
   content: z.string().min(20, "El contenido debe tener al menos 20 caracteres."),
   imageUrl: z.string().url("Debe ser una URL válida."),
@@ -45,9 +51,9 @@ export function BlogPostForm({ post, onSuccess }: BlogPostFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues: Partial<BlogPostFormValues> = post
-    ? { ...post }
+    ? { ...post, publishDate: post.publishDate.toDate() }
     : {
-        date: format(new Date(), 'dd de MMMM, yyyy'),
+        publishDate: new Date(),
         author: 'Staff de EstacionKusFM',
         imageUrl: 'https://placehold.co/600x400.png'
       };
@@ -58,8 +64,8 @@ export function BlogPostForm({ post, onSuccess }: BlogPostFormProps) {
   });
 
   useEffect(() => {
-    form.reset(defaultValues);
-  }, [post, form, defaultValues]);
+    form.reset(post ? { ...post, publishDate: post.publishDate.toDate() } : defaultValues);
+  }, [post, form]);
 
   async function onSubmit(data: BlogPostFormValues) {
     setIsSubmitting(true);
@@ -138,17 +144,45 @@ export function BlogPostForm({ post, onSuccess }: BlogPostFormProps) {
             )}
             />
             <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Fecha</FormLabel>
-                <FormControl>
-                    <Input placeholder="1 de Enero, 2024" {...field} />
-                </FormControl>
-                <FormMessage />
+              control={form.control}
+              name="publishDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Fecha de Publicación</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "dd 'de' MMMM, yyyy", { locale: es })
+                          ) : (
+                            <span>Elige una fecha</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
                 </FormItem>
-            )}
+              )}
             />
         </div>
          <div className="grid grid-cols-2 gap-4">

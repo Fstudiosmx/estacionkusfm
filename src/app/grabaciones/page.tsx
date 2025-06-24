@@ -10,6 +10,8 @@ import { db } from '@/lib/firebase';
 import type { RecordedShow } from '@/lib/data';
 import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 export default function GrabacionesPage() {
   const [recordedShows, setRecordedShows] = useState<RecordedShow[]>([]);
@@ -22,7 +24,7 @@ export default function GrabacionesPage() {
       setFirebaseError(null);
       try {
         const showsCollection = collection(db, 'recordedShows');
-        const q = query(showsCollection, orderBy('date', 'desc'));
+        const q = query(showsCollection, orderBy('publishDate', 'desc'));
         const querySnapshot = await getDocs(q);
         const showsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as RecordedShow));
         setRecordedShows(showsData);
@@ -102,7 +104,7 @@ export default function GrabacionesPage() {
                     <CardFooter className="flex justify-between items-center bg-secondary/50 p-4">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Clock className="h-4 w-4" />
-                            <span>{show.date} &middot; {show.duration}</span>
+                            <span>{format(show.publishDate.toDate(), "dd 'de' MMMM, yyyy", { locale: es })} &middot; {show.duration}</span>
                         </div>
                         <Button size="sm">
                             <PlayCircle className="mr-2 h-4 w-4" />

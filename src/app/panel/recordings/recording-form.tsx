@@ -14,18 +14,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/hooks/use-toast";
 import { RecordedShow } from "@/lib/data";
 import { upsertRecording } from "./actions";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(5, "El título debe tener al menos 5 caracteres."),
   host: z.string().min(2, "El presentador es requerido."),
-  date: z.string().min(1, "La fecha es requerida."),
+  publishDate: z.date({
+    required_error: "La fecha es requerida.",
+  }),
   duration: z.string().min(3, "La duración es requerida."),
   description: z.string().min(10, "La descripción es requerida."),
   imageUrl: z.string().url("Debe ser una URL válida."),
@@ -44,9 +50,9 @@ export function RecordingForm({ recording, onSuccess }: RecordingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues: Partial<RecordingFormValues> = recording
-    ? { ...recording }
+    ? { ...recording, publishDate: recording.publishDate.toDate() }
     : {
-        date: format(new Date(), 'dd MMMM, yyyy'),
+        publishDate: new Date(),
         host: 'EstacionKusFM',
         imageUrl: 'https://placehold.co/600x400.png',
         duration: "60 min"
@@ -58,8 +64,8 @@ export function RecordingForm({ recording, onSuccess }: RecordingFormProps) {
   });
 
   useEffect(() => {
-    form.reset(defaultValues);
-  }, [recording, form, defaultValues]);
+    form.reset(recording ? { ...recording, publishDate: recording.publishDate.toDate() } : defaultValues);
+  }, [recording, form]);
 
   async function onSubmit(data: RecordingFormValues) {
     setIsSubmitting(true);
@@ -110,12 +116,12 @@ export function RecordingForm({ recording, onSuccess }: RecordingFormProps) {
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
                 control={form.control}
                 name="host"
                 render={({ field }) => (
-                    <FormItem className="md:col-span-2">
+                    <FormItem>
                     <FormLabel>Presentador</FormLabel>
                     <FormControl>
                         <Input placeholder="Nombre del presentador" {...field} />
@@ -125,17 +131,45 @@ export function RecordingForm({ recording, onSuccess }: RecordingFormProps) {
                 )}
             />
             <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Fecha</FormLabel>
-                    <FormControl>
-                        <Input placeholder="1 de Enero, 2024" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
+              control={form.control}
+              name="publishDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Fecha de Publicación</FormLabel>
+                   <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "dd 'de' MMMM, yyyy", { locale: es })
+                          ) : (
+                            <span>Elige una fecha</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
