@@ -40,8 +40,7 @@ export function RadioPlayer() {
 
   const fetchNowPlaying = async () => {
     try {
-      // Add a cache-busting query parameter
-      const response = await fetch(`${apiUrl}?_=${new Date().getTime()}`);
+      const response = await fetch(apiUrl, { cache: 'no-store' });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

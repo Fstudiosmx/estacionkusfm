@@ -165,11 +165,10 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="relative mt-12">
-            <div className="flex overflow-x-auto space-x-8 pb-4 -mx-4 px-4">
+          <div className="mt-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {blogPosts.slice(0, 4).map((post) => (
-                <div key={post.id} className="min-w-[300px] sm:min-w-[350px] flex-shrink-0">
-                    <Card className="flex flex-col overflow-hidden h-full">
+                    <Card key={post.id} className="flex flex-col overflow-hidden h-full">
                         <Link href={`/blog/${post.id}`}>
                         <Image
                             src={post.imageUrl}
@@ -189,7 +188,7 @@ export default function Home() {
                               {post.title}
                               </Link>
                           </CardTitle>
-                          <p className="text-sm text-muted-foreground mb-4 flex-1">
+                          <p className="text-sm text-muted-foreground mb-4">
                               {post.excerpt}
                           </p>
                           <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
@@ -199,7 +198,6 @@ export default function Home() {
                           </Button>
                         </CardContent>
                     </Card>
-                </div>
                 ))}
             </div>
           </div>

@@ -35,15 +35,15 @@ export function HistoryModal() {
       setLoading(true);
       setError(null);
       try {
-        // Add a cache-busting query parameter
-        const response = await fetch(`https://radio.trabullnetwork.pro/api/station/estacionkusfm/history?_=${new Date().getTime()}`);
+        const response = await fetch(`https://radio.trabullnetwork.pro/api/station/estacionkusfm/history`, { cache: 'no-store' });
         if (!response.ok) {
-          throw new Error('No se pudo cargar el historial.');
+          throw new Error('No se pudo cargar el historial desde el servidor de la radio.');
         }
         const data: SongHistoryItem[] = await response.json();
         setHistory(data);
       } catch (err: any) {
-        setError(err.message || 'Ocurrió un error inesperado.');
+        console.error("Fetch history error:", err);
+        setError(err.message || 'Ocurrió un error inesperado al contactar la API.');
       } finally {
         setLoading(false);
       }
@@ -73,8 +73,11 @@ export function HistoryModal() {
       return (
          <Alert variant="destructive">
             <Terminal className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
+            <AlertTitle>Error de Conexión</AlertTitle>
+            <AlertDescription>
+                <p>No se pudo obtener el historial de canciones.</p>
+                <p className="text-xs mt-2">{error}</p>
+            </AlertDescription>
         </Alert>
       );
     }
