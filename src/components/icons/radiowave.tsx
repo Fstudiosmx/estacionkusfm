@@ -1,4 +1,4 @@
-export function RadioWave(props: React.SVGProps<SVGSVGElement>) {
+export function SiteLogo(props: React.SVGProps<SVGSVGElement>) {
     return (
       <svg
         {...props}

@@ -5,17 +5,18 @@ import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { RadioWave } from '@/components/icons/radiowave';
+import { SiteLogo } from '@/components/icons/radiowave';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/programacion', label: 'Schedule' },
+  { href: '/', label: 'Inicio' },
+  { href: '/programacion', label: 'Programación' },
   { href: '/grabaciones', label: 'Podcasts' },
   { href: '/blog', label: 'Blog' },
-  { href: '/nosotros', label: 'About' },
-  { href: '/unete', label: 'Join Us' },
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/unete', label: 'Únete' },
+  { href: '/login', label: 'Login' },
 ];
 
 export function SiteHeader() {
@@ -41,9 +42,9 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
-            <RadioWave className="h-6 w-6 text-primary" />
+            <SiteLogo className="h-6 w-6 text-primary" />
             <span className="inline-block font-bold font-headline text-lg">
-              RadioWave
+              EstacionKusFM
             </span>
           </Link>
         </div>
@@ -71,8 +72,8 @@ export function SiteHeader() {
                   onClick={() => setSheetOpen(false)}
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
-                  <RadioWave className="h-6 w-6 text-primary" />
-                  <span className="font-headline">RadioWave</span>
+                  <SiteLogo className="h-6 w-6 text-primary" />
+                  <span className="font-headline">EstacionKusFM</span>
                 </Link>
                 {navItems.map((item) => (
                   <NavLink key={item.href} href={item.href}>

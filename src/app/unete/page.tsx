@@ -11,16 +11,16 @@ export default function UnetePage() {
             <Mic className="h-8 w-8 text-primary" />
           </div>
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">
-            Become a Voice at RadioWave
+            Conviértete en una Voz en EstacionKusFM
           </h1>
           <p className="text-muted-foreground md:text-lg">
-            Do you have a passion for music, a unique perspective, or a story the world needs to hear? RadioWave is always searching for fresh, new voices to join our diverse family of hosts and content creators.
+            ¿Tienes pasión por la música, una perspectiva única o una historia que el mundo necesita escuchar? EstacionKusFM siempre está buscando voces nuevas y frescas para unirse a nuestra diversa familia de presentadores y creadores de contenido.
           </p>
           <p className="text-muted-foreground">
-            Whether you're an experienced broadcaster or just starting, we provide the platform and support to help you create compelling audio content. Fill out the form to tell us about your show idea, and let's make something amazing together.
+            Tanto si eres un locutor experimentado como si acabas de empezar, te proporcionamos la plataforma y el apoyo para ayudarte a crear contenido de audio atractivo. Rellena el formulario para contarnos tu idea de programa, y hagamos algo increíble juntos.
           </p>
            <div className="border-l-4 border-primary pl-4">
-             <p className="italic text-muted-foreground">"The best part about RadioWave is the creative freedom. It's a place where your voice truly matters." - Samantha Bee, Host of 'Indie Vibes'</p>
+             <p className="italic text-muted-foreground">"La mejor parte de EstacionKusFM es la libertad creativa. Es un lugar donde tu voz realmente importa." - Samantha Bee, presentadora de 'Indie Vibes'</p>
            </div>
         </div>
         <div className="p-8 bg-secondary rounded-lg">

@@ -13,9 +13,9 @@ import { TopSongItem } from '@/components/top-song-item';
 import { ArrowRight, Mic, Calendar, Heart } from 'lucide-react';
 
 export default function Home() {
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const today = new Date().toLocaleDateString('es-ES', { weekday: 'long' });
   const todaysSchedule =
-    weeklySchedule.find((day) => day.day === today)?.schedule || [];
+    weeklySchedule.find((day) => day.day.toLowerCase() === today.toLowerCase())?.schedule || [];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -25,19 +25,18 @@ export default function Home() {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-primary">
-                  RadioWave
+                  EstacionKusFM
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Your daily dose of sound. Uninterrupted music, engaging talk
-                  shows, and the pulse of the city, right at your fingertips.
+                  Tu dosis diaria de sonido. Música ininterrumpida, programas de entrevistas y el pulso de la ciudad, al alcance de tu mano.
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Button asChild size="lg" className="font-bold">
-                  <Link href="/programacion">View Schedule</Link>
+                  <Link href="/programacion">Ver Programación</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="font-bold">
-                  <Link href="/unete">Join Us</Link>
+                  <Link href="/unete">Únete</Link>
                 </Button>
               </div>
             </div>
@@ -58,10 +57,10 @@ export default function Home() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-24">
             <div className="flex flex-col space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">
-                Top 10 Songs
+                Top 10 Canciones
               </h2>
               <p className="text-muted-foreground">
-                The most played and requested tracks this week on RadioWave.
+                Las canciones más sonadas y solicitadas esta semana en EstacionKusFM.
               </p>
               <div className="space-y-4">
                 {topSongs.map((song) => (
@@ -71,8 +70,8 @@ export default function Home() {
             </div>
             <div className="flex flex-col space-y-8">
               <div>
-                <h3 className="text-2xl font-bold tracking-tighter font-headline mb-4">
-                  Today's Schedule: {today}
+                <h3 className="text-2xl font-bold tracking-tighter font-headline mb-4 capitalize">
+                  Programación de Hoy: {today}
                 </h3>
                 <Card>
                   <CardContent className="p-6">
@@ -96,13 +95,13 @@ export default function Home() {
                         ))
                       ) : (
                         <p className="text-muted-foreground">
-                          No programs scheduled for today. Check back soon!
+                          No hay programas para hoy. ¡Disfruta de la música!
                         </p>
                       )}
                     </ul>
                     <Button asChild variant="link" className="px-0 mt-4">
                       <Link href="/programacion">
-                        Full Weekly Schedule <ArrowRight className="ml-2 h-4 w-4" />
+                        Horario Semanal Completo <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
                   </CardContent>
@@ -110,21 +109,20 @@ export default function Home() {
               </div>
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold tracking-tighter font-headline">
-                  Join Our Team
+                  Únete a Nuestro Equipo
                 </h3>
                 <Card className="bg-primary text-primary-foreground">
                   <CardContent className="p-6 flex items-center gap-6">
                     <Mic className="h-12 w-12 shrink-0" />
                     <div>
                       <h4 className="font-bold text-lg">
-                        Become a Voice at RadioWave
+                        Conviértete en una Voz en EstacionKusFM
                       </h4>
                       <p className="text-sm text-primary-foreground/80">
-                        Have a passion for music or a story to tell? We are
-                        looking for new talent to join our family of hosts.
+                        ¿Tienes pasión por la música o una historia que contar? Buscamos nuevos talentos.
                       </p>
                       <Button asChild variant="secondary" className="mt-4">
-                        <Link href="/unete">Apply Now</Link>
+                        <Link href="/unete">Aplica Ahora</Link>
                       </Button>
                     </div>
                   </CardContent>
@@ -140,11 +138,10 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">
-                Our Campaigns
+                Nuestras Campañas
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                We believe in the power of community. Check out our current
-                campaigns and find out how you can get involved.
+                Creemos en el poder de la comunidad. Revisa nuestras campañas actuales y descubre cómo puedes participar.
               </p>
             </div>
           </div>
@@ -164,7 +161,7 @@ export default function Home() {
                   </p>
                    <Button asChild variant="link" className="px-0 mt-2">
                       <Link href="/campanas">
-                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                        Leer Más <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
                 </CardContent>

@@ -157,9 +157,9 @@ export const blogPosts: BlogPost[] = [
     {
         id: 3,
         title: 'Our Top 5 Albums of the Year (So Far)',
-        author: 'RadioWave Staff',
+        author: 'EstacionKusFM Staff',
         date: 'July 5, 2024',
-        excerpt: 'The year is halfway over, and we\'re rounding up the best albums that have been on repeat in the RadioWave studio.',
+        excerpt: 'The year is halfway over, and we\'re rounding up the best albums that have been on repeat in the EstacionKusFM studio.',
         imageUrl: 'https://placehold.co/600x400.png',
         category: 'Reviews'
     },

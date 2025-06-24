@@ -30,13 +30,13 @@ export function SongInfoModal({ song }: SongInfoModalProps) {
           className="w-full h-auto rounded-lg"
         />
         <p className="text-sm text-muted-foreground">
-            This track is one of the top hits on RadioWave this week. Find it on your favorite music platform!
+            Este tema es uno de los más sonados en EstacionKusFM esta semana. ¡Encuéntralo en tu plataforma de música favorita!
         </p>
       </div>
       <a href={song.externalLink} target="_blank" rel="noopener noreferrer">
         <Button className="w-full">
             <ExternalLink className="mr-2 h-4 w-4" />
-            Find on Music Platform
+            Buscar en Plataforma de Música
         </Button>
       </a>
     </DialogContent>

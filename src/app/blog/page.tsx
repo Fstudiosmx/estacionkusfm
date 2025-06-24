@@ -11,10 +11,10 @@ export default function BlogPage() {
     <div className="container mx-auto px-4 md:px-6 py-12">
       <div className="flex flex-col items-center text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">
-          The RadioWave Blog
+          El Blog de EstacionKusFM
         </h1>
         <p className="max-w-[700px] text-muted-foreground md:text-xl mt-4">
-          News, interviews, music reviews, and stories from our world to yours.
+          Noticias, entrevistas, reseñas musicales e historias de nuestro mundo al tuyo.
         </p>
       </div>
 
@@ -41,14 +41,14 @@ export default function BlogPage() {
                 </Link>
               </CardTitle>
               <p className="text-sm text-muted-foreground mb-4">
-                By {post.author} on {post.date}
+                Por {post.author} el {post.date}
               </p>
               <p className="text-muted-foreground text-sm mb-6">
                 {post.excerpt}
               </p>
               <Button asChild variant="link" className="p-0 justify-start mt-auto self-start">
                 <Link href="#">
-                  Read More <ArrowRight className="ml-2 h-4 w-4" />
+                  Leer Más <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </CardContent>

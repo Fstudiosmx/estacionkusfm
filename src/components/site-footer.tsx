@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import { RadioWave } from '@/components/icons/radiowave';
+import { SiteLogo } from '@/components/icons/radiowave';
 import { Facebook, Twitter, Instagram } from 'lucide-react';
 
 const footerNavs = [
-  { href: '/nosotros', label: 'About Us' },
-  { href: '/programacion', label: 'Schedule' },
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/programacion', label: 'Programación' },
   { href: '/blog', label: 'Blog' },
-  { href: '/unete', label: 'Join Us' },
-  { href: '/contacto', label: 'Contact' },
+  { href: '/unete', label: 'Únete' },
+  { href: '/contacto', label: 'Contacto' },
 ];
 
 export function SiteFooter() {
@@ -17,16 +17,16 @@ export function SiteFooter() {
         <div className="grid gap-8 md:grid-cols-3">
           <div className="flex flex-col items-start">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <RadioWave className="h-8 w-8 text-primary" />
-              <span className="font-bold text-xl font-headline">RadioWave</span>
+              <SiteLogo className="h-8 w-8 text-primary" />
+              <span className="font-bold text-xl font-headline">EstacionKusFM</span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs">
-              Your daily dose of sound. Music, talk shows, and the pulse of the city.
+              Tu dosis diaria de sonido. Música, programas y el pulso de la ciudad.
             </p>
           </div>
           <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-8">
             <div>
-              <h3 className="font-semibold text-foreground mb-4 font-headline">Quick Links</h3>
+              <h3 className="font-semibold text-foreground mb-4 font-headline">Enlaces Rápidos</h3>
               <ul className="space-y-2">
                 {footerNavs.map((item) => (
                   <li key={item.label}>
@@ -41,7 +41,7 @@ export function SiteFooter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-foreground mb-4 font-headline">Connect</h3>
+              <h3 className="font-semibold text-foreground mb-4 font-headline">Conecta</h3>
               <ul className="space-y-2">
                 <li>
                   <a href="#" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
@@ -65,17 +65,17 @@ export function SiteFooter() {
               <ul className="space-y-2">
                  <li>
                   <Link href="/mision-vision-valores" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                    Mission & Vision
+                    Misión y Visión
                   </Link>
                 </li>
                  <li>
                   <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                    Privacy Policy
+                    Política de Privacidad
                   </Link>
                 </li>
                  <li>
                   <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                    Terms of Service
+                    Términos de Servicio
                   </Link>
                 </li>
               </ul>
@@ -83,7 +83,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="mt-8 border-t pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} RadioWave. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} EstacionKusFM. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
