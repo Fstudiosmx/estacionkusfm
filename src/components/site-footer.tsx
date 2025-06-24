@@ -60,7 +60,7 @@ export function SiteFooter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-foreground mb-4 font-headline">Legal</h3>
+              <h3 className="font-semibold text-foreground mb-4 font-headline">Legal y Recursos</h3>
               <ul className="space-y-2">
                  <li>
                   <Link href="/mision-vision-valores" className="text-muted-foreground hover:text-primary transition-colors text-sm">
@@ -75,6 +75,11 @@ export function SiteFooter() {
                  <li>
                   <Link href="/terminos-de-servicio" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                     Términos de Servicio
+                  </Link>
+                </li>
+                 <li>
+                  <Link href="/docs" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                    Guía de Configuración
                   </Link>
                 </li>
               </ul>
