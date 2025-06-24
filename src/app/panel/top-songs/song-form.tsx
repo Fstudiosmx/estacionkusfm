@@ -17,7 +17,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Song } from "@/lib/data";
 import { upsertTopSong } from "./actions";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
+import { findSongLinks } from "@/ai/flows/find-song-links-flow";
 
 const formSchema = z.object({
   id: z.string().optional(),
@@ -42,6 +43,7 @@ interface SongFormProps {
 export function SongForm({ song, onSuccess }: SongFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFindingLinks, setIsFindingLinks] = useState(false);
 
   const defaultValues: Partial<SongFormValues> = song 
     ? { ...song }
@@ -64,7 +66,47 @@ export function SongForm({ song, onSuccess }: SongFormProps) {
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [song, form]);
+  }, [song, form, defaultValues]);
+  
+  const handleFindLinks = async () => {
+    setIsFindingLinks(true);
+    const { title, artist } = form.getValues();
+
+    if (!title || !artist) {
+        toast({
+            title: "Faltan datos",
+            description: "Por favor, introduce un título y un artista para buscar los enlaces.",
+            variant: "destructive"
+        });
+        setIsFindingLinks(false);
+        return;
+    }
+
+    try {
+        const result = await findSongLinks({ title, artist });
+        if (result) {
+            form.setValue('youtubeVideoId', result.youtubeVideoId || '', { shouldValidate: true });
+            form.setValue('spotifyLink', result.spotifyLink || '', { shouldValidate: true });
+            form.setValue('appleMusicLink', result.appleMusicLink || '', { shouldValidate: true });
+            form.setValue('youtubeMusicLink', result.youtubeMusicLink || '', { shouldValidate: true });
+            toast({
+                title: "¡Enlaces encontrados!",
+                description: "Se han rellenado los campos de enlaces con la información encontrada."
+            });
+        } else {
+             throw new Error("La búsqueda no devolvió resultados.");
+        }
+    } catch (error) {
+        console.error("Error finding song links:", error);
+        toast({
+            title: "Error en la búsqueda",
+            description: "No se pudieron encontrar los enlaces para esta canción. Inténtalo de nuevo o añádelos manualmente.",
+            variant: "destructive"
+        });
+    } finally {
+        setIsFindingLinks(false);
+    }
+  };
 
   async function onSubmit(data: SongFormValues) {
     setIsSubmitting(true);
@@ -159,6 +201,18 @@ export function SongForm({ song, onSuccess }: SongFormProps) {
             )}
             />
         </div>
+
+        <div className="p-4 bg-secondary/50 rounded-lg text-center border">
+            <p className="text-sm text-muted-foreground mb-3">Rellena Título y Artista, y deja que la IA encuentre los enlaces por ti.</p>
+            <Button type="button" variant="outline" onClick={handleFindLinks} disabled={isFindingLinks}>
+                {isFindingLinks ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                    <Sparkles className="mr-2 h-4 w-4 text-yellow-500" />
+                )}
+                Buscar Enlaces con IA
+            </Button>
+        </div>
         
         <FormField
           control={form.control}
@@ -167,7 +221,7 @@ export function SongForm({ song, onSuccess }: SongFormProps) {
             <FormItem>
               <FormLabel>ID Video YouTube (Opcional)</FormLabel>
               <FormControl>
-                <Input placeholder="jfKfPfyJRdk" {...field} />
+                <Input placeholder="jfKfPfyJRdk" {...field} value={field.value ?? ''}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -182,7 +236,7 @@ export function SongForm({ song, onSuccess }: SongFormProps) {
             <FormItem>
               <FormLabel>Enlace Spotify (Opcional)</FormLabel>
               <FormControl>
-                <Input placeholder="https://open.spotify.com/..." {...field} />
+                <Input placeholder="https://open.spotify.com/..." {...field} value={field.value ?? ''}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -195,7 +249,7 @@ export function SongForm({ song, onSuccess }: SongFormProps) {
             <FormItem>
               <FormLabel>Enlace Apple Music (Opcional)</FormLabel>
               <FormControl>
-                <Input placeholder="https://music.apple.com/..." {...field} />
+                <Input placeholder="https://music.apple.com/..." {...field} value={field.value ?? ''}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -208,7 +262,7 @@ export function SongForm({ song, onSuccess }: SongFormProps) {
             <FormItem>
               <FormLabel>Enlace YouTube Music (Opcional)</FormLabel>
               <FormControl>
-                <Input placeholder="https://music.youtube.com/..." {...field} />
+                <Input placeholder="https://music.youtube.com/..." {...field} value={field.value ?? ''}/>
               </FormControl>
               <FormMessage />
             </FormItem>
