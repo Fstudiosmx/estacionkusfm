@@ -1,4 +1,3 @@
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,7 +25,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState, useTransition } from "react";
 import { Loader2, Radio, Video, BrainCircuit } from "lucide-react";
-import { getSiteSettingsAction, upsertSiteSettings, siteSettingsSchema, type SiteSettingsSchema } from "./actions";
+import { getSiteSettingsAction, upsertSiteSettings } from "./actions";
+import { siteSettingsSchema, type SiteSettings } from "@/lib/data";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 
@@ -34,9 +34,9 @@ import { Separator } from "@/components/ui/separator";
 export default function SettingsPage() {
     const { toast } = useToast();
     const [isPending, startTransition] = useTransition();
-    const [settings, setSettings] = useState<SiteSettingsSchema | null>(null);
+    const [settings, setSettings] = useState<SiteSettings | null>(null);
 
-    const form = useForm<SiteSettingsSchema>({
+    const form = useForm<SiteSettings>({
         resolver: zodResolver(siteSettingsSchema),
         defaultValues: {
             radioProvider: 'azuracast',
@@ -67,7 +67,7 @@ export default function SettingsPage() {
     }, [form]);
 
 
-    const onSubmit = (data: SiteSettingsSchema) => {
+    const onSubmit = (data: SiteSettings) => {
         startTransition(async () => {
             try {
                 await upsertSiteSettings(data);

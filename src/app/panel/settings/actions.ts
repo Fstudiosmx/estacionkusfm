@@ -1,33 +1,9 @@
-
 "use server";
 
-import { z } from "zod";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
-import type { SiteSettings } from "@/lib/data";
-
-export const siteSettingsSchema = z.object({
-    radioProvider: z.enum(["azuracast", "zenofm", "live365"]),
-    streamUrl: z.string().url("Debe ser una URL de streaming válida.").or(z.literal('')),
-    
-    azuracastBaseUrl: z.string().url("Debe ser una URL base válida.").optional().or(z.literal('')),
-    azuracastStationId: z.string().optional().or(z.literal('')),
-    azuracastApiKey: z.string().optional().or(z.literal('')),
-
-    zenoStationUuid: z.string().optional().or(z.literal('')),
-    live365StationId: z.string().optional().or(z.literal('')),
-
-    showDocsLink: z.boolean(),
-
-    hlsStreamUrl: z.string().url("Debe ser una URL HLS válida.").optional().or(z.literal('')),
-    streamServer: z.string().optional().or(z.literal('')),
-    streamPort: z.string().optional().or(z.literal('')),
-    streamPassword: z.string().optional().or(z.literal('')),
-    learningSpaceAccessCode: z.string().min(4, "El código debe tener al menos 4 caracteres").optional().or(z.literal('')),
-});
-
-export type SiteSettingsSchema = z.infer<typeof siteSettingsSchema>;
+import { siteSettingsSchema, type SiteSettings } from "@/lib/data";
 
 const defaultSettings: SiteSettings = {
     radioProvider: 'azuracast',
@@ -70,7 +46,7 @@ export async function getSiteSettingsAction(): Promise<SiteSettings> {
  * Creates or updates the site settings in Firestore.
  * @param data The settings data to save.
  */
-export async function upsertSiteSettings(data: SiteSettingsSchema) {
+export async function upsertSiteSettings(data: SiteSettings) {
   const validatedData = siteSettingsSchema.parse(data);
   
   try {

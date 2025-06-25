@@ -1,4 +1,4 @@
-
+import { z } from "zod";
 
 export interface Song {
   id: any; // Can be string from Firestore or number from old data
@@ -86,32 +86,28 @@ export interface Sponsor {
   order: number;
 }
 
-export interface SiteSettings {
-  radioProvider: 'azuracast' | 'zenofm' | 'live365';
-  streamUrl: string;
-  
-  // AzuraCast settings
-  azuracastBaseUrl?: string;
-  azuracastStationId?: string;
-  azuracastApiKey?: string;
+export const siteSettingsSchema = z.object({
+    radioProvider: z.enum(["azuracast", "zenofm", "live365"]),
+    streamUrl: z.string().url("Debe ser una URL de streaming válida.").or(z.literal('')),
+    
+    azuracastBaseUrl: z.string().url("Debe ser una URL base válida.").optional().or(z.literal('')),
+    azuracastStationId: z.string().optional().or(z.literal('')),
+    azuracastApiKey: z.string().optional().or(z.literal('')),
 
-  // ZenoFM settings
-  zenoStationUuid?: string;
+    zenoStationUuid: z.string().optional().or(z.literal('')),
+    live365StationId: z.string().optional().or(z.literal('')),
 
-  // Live365 settings
-  live365StationId?: string;
+    showDocsLink: z.boolean(),
 
-  showDocsLink: boolean;
+    hlsStreamUrl: z.string().url("Debe ser una URL HLS válida.").optional().or(z.literal('')),
+    streamServer: z.string().optional().or(z.literal('')),
+    streamPort: z.string().optional().or(z.literal('')),
+    streamPassword: z.string().optional().or(z.literal('')),
+    learningSpaceAccessCode: z.string().min(4, "El código debe tener al menos 4 caracteres").optional().or(z.literal('')),
+});
 
-  // Video settings
-  hlsStreamUrl?: string;
-  
-  // Broadcaster settings
-  streamServer?: string;
-  streamPort?: string;
-  streamPassword?: string;
-  learningSpaceAccessCode?: string;
-}
+export type SiteSettings = z.infer<typeof siteSettingsSchema>;
+
 
 export interface UserSubmission {
     id: string;
