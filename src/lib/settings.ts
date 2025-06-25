@@ -5,9 +5,13 @@ import type { SiteSettings } from '@/lib/data'
 
 export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
   const defaultSettings: SiteSettings = {
+    radioProvider: 'azuracast',
     streamUrl: 'https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3',
-    nowPlayingUrl: 'https://radio.trabullnetwork.pro/api/nowplaying/estacionkusfm',
-    historyUrl: 'https://radio.trabullnetwork.pro/api/station/estacionkusfm/history',
+    azuracastBaseUrl: 'https://radio.trabullnetwork.pro',
+    azuracastStationId: 'estacionkusfm',
+    azuracastApiKey: '',
+    zenoStationUuid: '',
+    live365StationId: '',
     showDocsLink: true,
   }
 

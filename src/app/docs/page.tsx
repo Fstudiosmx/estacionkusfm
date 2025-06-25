@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Code, KeyRound, Database, Users, UploadCloud } from 'lucide-react';
+import { Code, KeyRound, Database, Users, UploadCloud, Radio } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -127,13 +127,64 @@ const firebaseConfig = {
                 </CardContent>
             </Card>
 
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4">
+                     <div className="p-3 bg-primary/10 rounded-full">
+                        <Radio className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                        <CardTitle className="font-headline">Paso 4: Configuración de la Radio</CardTitle>
+                    </div>
+                </CardHeader>
+                <CardContent className="text-muted-foreground space-y-4">
+                    <p>
+                        Para que el reproductor de radio y el historial de canciones funcionen, debes configurar tu proveedor de servicios de radio. Ve a <strong>Panel de Control &gt; Ajustes Generales</strong>.
+                    </p>
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="azuracast">
+                        <AccordionTrigger>Configurar AzuraCast</AccordionTrigger>
+                        <AccordionContent>
+                          <p>Necesitarás tres datos de tu instancia de AzuraCast:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 pl-4">
+                              <li><strong>URL Base:</strong> La URL principal de tu panel de AzuraCast. E.g., `https://radio.tudominio.com`</li>
+                              <li><strong>ID de Estación:</strong> El nombre corto (shortcode) de tu estación. E.g., `estacion_principal`</li>
+                              <li><strong>Clave API (Opcional):</strong> Para acceder al historial. Ve a `Tu Perfil > Claves API` para crear una. E.g., `20489200b1699478:6e6ba9ff38fc0d8c6a19906244a5bbcb`</li>
+                          </ul>
+                          <p className="mt-2">No olvides también poner la URL del stream de audio en el campo correspondiente.</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="zenofm">
+                        <AccordionTrigger>Configurar ZenoFM</AccordionTrigger>
+                        <AccordionContent>
+                          <p>Necesitarás tu UUID de Estación:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 pl-4">
+                              <li><strong>UUID de Estación:</strong> Puedes encontrarlo en la URL de tu página de ZenoFM. Es la cadena de letras y números después de `/s/`.</li>
+                          </ul>
+                          <p className="mt-2">El historial de canciones no está disponible para ZenoFM a través de su API pública.</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                       <AccordionItem value="live365">
+                        <AccordionTrigger>Configurar Live365</AccordionTrigger>
+                        <AccordionContent>
+                          <p>Necesitarás tu ID de Estación:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 pl-4">
+                              <li><strong>ID de Estación:</strong> Es el número de identificación de tu estación en Live365.</li>
+                          </ul>
+                           <p className="mt-2">Asegúrate de que tu cuenta de Live365 permite el acceso a la API.</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                </CardContent>
+            </Card>
+
+
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4">
                      <div className="p-3 bg-primary/10 rounded-full">
                         <Database className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Referencia de la Base de Datos (Para Creación Manual)</CardTitle>
+                        <CardTitle className="font-headline">Referencia de la Base de Datos (Opcional)</CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
@@ -257,9 +308,13 @@ schedule: [
                         <AccordionContent>
                           <p>Un único documento (con ID 'config') que almacena la configuración global del sitio. Estructura del documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`radioProvider` (string): "azuracast" | "zenofm" | "live365"</li>
                               <li>`streamUrl` (string): "https://..."</li>
-                              <li>`nowPlayingUrl` (string): "https://..."</li>
-                              <li>`historyUrl` (string): "https://..."</li>
+                              <li>`azuracastBaseUrl` (string): "https://..." (si usas Azuracast)</li>
+                              <li>`azuracastStationId` (string): "..." (si usas Azuracast)</li>
+                              <li>`azuracastApiKey` (string): "..." (opcional, si usas Azuracast)</li>
+                              <li>`zenoStationUuid` (string): "..." (si usas ZenoFM)</li>
+                              <li>`live365StationId` (string): "..." (si usas Live365)</li>
                               <li>`showDocsLink` (boolean): true</li>
                           </ul>
                         </AccordionContent>

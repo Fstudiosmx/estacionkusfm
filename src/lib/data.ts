@@ -86,8 +86,19 @@ export interface Sponsor {
 }
 
 export interface SiteSettings {
+  radioProvider: 'azuracast' | 'zenofm' | 'live365';
   streamUrl: string;
-  nowPlayingUrl: string;
-  historyUrl: string;
+  
+  // AzuraCast settings
+  azuracastBaseUrl?: string;
+  azuracastStationId?: string;
+  azuracastApiKey?: string;
+
+  // ZenoFM settings
+  zenoStationUuid?: string;
+
+  // Live365 settings
+  live365StationId?: string;
+
   showDocsLink: boolean;
 }

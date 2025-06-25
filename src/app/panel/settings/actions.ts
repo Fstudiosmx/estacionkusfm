@@ -5,20 +5,32 @@ import { z } from "zod";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
+import type { SiteSettings } from "@/lib/data";
 
-const siteSettingsSchema = z.object({
-    streamUrl: z.string().url("Debe ser una URL de streaming válida."),
-    nowPlayingUrl: z.string().url("Debe ser una URL de API válida."),
-    historyUrl: z.string().url("Debe ser una URL de API válida."),
+export const siteSettingsSchema = z.object({
+    radioProvider: z.enum(["azuracast", "zenofm", "live365"]),
+    streamUrl: z.string().url("Debe ser una URL de streaming válida.").or(z.literal('')),
+    
+    azuracastBaseUrl: z.string().url("Debe ser una URL base válida.").optional().or(z.literal('')),
+    azuracastStationId: z.string().optional().or(z.literal('')),
+    azuracastApiKey: z.string().optional().or(z.literal('')),
+
+    zenoStationUuid: z.string().optional().or(z.literal('')),
+    live365StationId: z.string().optional().or(z.literal('')),
+
     showDocsLink: z.boolean(),
 });
 
 export type SiteSettingsSchema = z.infer<typeof siteSettingsSchema>;
 
-const defaultSettings: SiteSettingsSchema = {
+const defaultSettings: SiteSettings = {
+    radioProvider: 'azuracast',
     streamUrl: 'https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3',
-    nowPlayingUrl: 'https://radio.trabullnetwork.pro/api/nowplaying/estacionkusfm',
-    historyUrl: 'https://radio.trabullnetwork.pro/api/station/estacionkusfm/history',
+    azuracastBaseUrl: 'https://radio.trabullnetwork.pro',
+    azuracastStationId: 'estacionkusfm',
+    azuracastApiKey: '',
+    zenoStationUuid: '',
+    live365StationId: '',
     showDocsLink: true,
 };
 
@@ -26,13 +38,13 @@ const defaultSettings: SiteSettingsSchema = {
  * Retrieves site settings from Firestore.
  * Returns default settings if no document is found.
  */
-export async function getSiteSettings(): Promise<SiteSettingsSchema> {
+export async function getSiteSettingsAction(): Promise<SiteSettings> {
   try {
     const docRef = doc(db, 'siteSettings', 'config');
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return { ...defaultSettings, ...docSnap.data() } as SiteSettingsSchema;
+      return { ...defaultSettings, ...docSnap.data() } as SiteSettings;
     } else {
       return defaultSettings;
     }

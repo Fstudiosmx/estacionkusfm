@@ -81,9 +81,13 @@ const firestoreData = {
     { "order": 3, "name": "Tech Gadgets", "imageUrl": "https://placehold.co/300x150.png", "hint": "gadgets tech", "websiteUrl": "#", "level": "silver" }
   ],
   "siteSettings": {
+    "radioProvider": "azuracast",
     "streamUrl": "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3",
-    "nowPlayingUrl": "https://radio.trabullnetwork.pro/api/nowplaying/estacionkusfm",
-    "historyUrl": "https://radio.trabullnetwork.pro/api/station/estacionkusfm/history",
+    "azuracastBaseUrl": "https://radio.trabullnetwork.pro",
+    "azuracastStationId": "estacionkusfm",
+    "azuracastApiKey": "20489200b1699478:6e6ba9ff38fc0d8c6a19906244a5bbcb",
+    "zenoStationUuid": "",
+    "live365StationId": "",
     "showDocsLink": true
   }
 };
