@@ -1,8 +1,9 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Code, KeyRound, Database, Users, UploadCloud } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function DocsPage() {
   return (
@@ -39,8 +40,6 @@ export default function DocsPage() {
                         <code className="text-secondary-foreground">
 {`
 // src/lib/firebase.ts
-
-// ...
 
 // IMPORTANTE: Reemplaza esto con la configuración de tu proyecto de Firebase
 const firebaseConfig = {
@@ -104,13 +103,15 @@ const firebaseConfig = {
                         <li>Primero, debemos añadir manualmente un código de invitación inicial.
                              <ul className="list-disc list-inside ml-6 mt-1 space-y-1">
                                 <li>Ve a tu base de datos de <strong>Firestore</strong>.</li>
-                                <li>Haz clic en <strong>Iniciar colección</strong>. Introduce `invitationCodes` como ID.</li>
-                                <li>Haz clic en <strong>ID automático</strong> para el documento.</li>
-                                <li>Añade los siguientes campos:
+                                <li>Haz clic en <strong>Iniciar colección</strong>. Introduce `invitationCodes` como ID de la colección.</li>
+                                <li>Haz clic en <strong>ID automático</strong> para el primer documento.</li>
+                                <li>Añade los siguientes campos al documento:
                                     <ul className="list-circle list-inside ml-6 mt-1">
                                         <li>`code` (string): `KUSFM2024`</li>
                                         <li>`used` (boolean): `false`</li>
                                         <li>`createdAt` (timestamp): elige la fecha actual</li>
+                                        <li>`usedBy` (string): déjalo vacío</li>
+                                        <li>`usedAt` (timestamp): déjalo vacío</li>
                                     </ul>
                                 </li>
                                 <li>Haz clic en <strong>Guardar</strong>.</li>
@@ -119,12 +120,11 @@ const firebaseConfig = {
                          <li className="mt-2">Inicia la aplicación y navega a la página <Link href="/registro" className="text-primary underline">/registro</Link>.</li>
                         <li>Cuando se te pida el código de invitación, introduce: <strong className="text-accent font-mono bg-muted px-2 py-1 rounded">KUSFM2024</strong></li>
                         <li>Completa el formulario con el email y la contraseña que desees para tu cuenta de administrador.</li>
-                        <li>¡Listo! Serás redirigido al panel de administración.</li>
                         <li className="mt-2"><strong>Importar Contenido Demo (¡Fácil!):</strong>
                             <ul className="list-disc list-inside ml-6 mt-1">
-                                <li>En el panel, verás una tarjeta especial que te invita a poblar la base de datos.</li>
+                                <li>Una vez registrado, serás redirigido al panel de administración. Verás una tarjeta especial que te invita a poblar la base de datos.</li>
                                 <li>Haz clic en el botón <strong>"Importar Datos de Ejemplo"</strong>.</li>
-                                <li>Espera unos segundos y la página se recargará. ¡Todo el contenido de demostración (blog, canciones, etc.) se habrá importado automáticamente!</li>
+                                <li>Espera unos segundos y la página se recargará. ¡Todo el contenido de demostración (blog, canciones, patrocinadores, etc.) se habrá importado automáticamente!</li>
                             </ul>
                         </li>
                     </ol>
@@ -134,20 +134,50 @@ const firebaseConfig = {
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4">
                      <div className="p-3 bg-primary/10 rounded-full">
-                        <Code className="h-6 w-6 text-primary" />
+                        <Database className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Paso 4: Configurar URLs de la Radio (Opcional)</CardTitle>
+                        <CardTitle className="font-headline">Referencia de la Base de Datos</CardTitle>
                     </div>
                 </CardHeader>
-                <CardContent className="space-y-4 text-muted-foreground">
-                    <p>La aplicación ya viene pre-configurada con un stream de radio de demostración. Si tienes tu propio servidor de radio (AzuraCast, ZenoFM, etc.), puedes cambiar las URLs desde el panel de administración.</p>
-                     <ol className="list-decimal list-inside space-y-2">
-                        <li>Ve a la página de <Link href="/panel" className="text-primary underline">Panel</Link> e inicia sesión.</li>
-                        <li>Busca la tarjeta de <strong>Configuración</strong> y haz clic en "Gestionar".</li>
-                        <li>Reemplaza las URLs del stream, "Now Playing" e Historial con las de tu propio servidor de radio.</li>
-                        <li>Guarda los cambios. ¡Tu radio ahora está conectada!</li>
-                    </ol>
+                <CardContent className="text-muted-foreground">
+                    <p className="mb-4">
+                        Un resumen de las colecciones de Firestore que utiliza la aplicación. Toda esta información se puede gestionar desde el Panel de Administración una vez que hayas importado los datos de ejemplo.
+                    </p>
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="blogPosts">
+                        <AccordionTrigger>blogPosts</AccordionTrigger>
+                        <AccordionContent>Almacena los artículos del blog. Cada documento representa un post con campos como `title`, `content`, `author`, `publishDate` (Timestamp), etc. Gestionado desde "Panel &gt; Blog".</AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="topSongs">
+                        <AccordionTrigger>topSongs</AccordionTrigger>
+                        <AccordionContent>Contiene el ranking de las canciones principales. Se ordenan por el campo `rank`. Incluye campos para enlaces a plataformas de streaming. Gestionado desde "Panel &gt; Top 10 Musical".</AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="weeklySchedule">
+                        <AccordionTrigger>weeklySchedule</AccordionTrigger>
+                        <AccordionContent>Guarda la programación para cada día de la semana. Hay un documento por cada día (ej. 'Monday', 'Tuesday'). Gestionado desde "Panel &gt; Parrilla Semanal".</AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="teamMembers">
+                        <AccordionTrigger>teamMembers</AccordionTrigger>
+                        <AccordionContent>Lista de los miembros del equipo que aparecen en la página "Nosotros". Se ordenan por el campo `order`. Gestionado desde "Panel &gt; Miembros del Equipo".</AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="recordedShows">
+                        <AccordionTrigger>recordedShows</AccordionTrigger>
+                        <AccordionContent>Contiene los podcasts y programas grabados que se muestran en la página "Grabaciones". Se ordenan por `publishDate`. Gestionado desde "Panel &gt; Podcasts y Grabaciones".</AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="sponsors">
+                        <AccordionTrigger>sponsors</AccordionTrigger>
+                        <AccordionContent>Almacena la información de los patrocinadores (nombre, logo, enlace). Se muestran en la página de inicio. Gestionado desde "Panel &gt; Gestión de Patrocinio".</AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="invitationCodes">
+                        <AccordionTrigger>invitationCodes</AccordionTrigger>
+                        <AccordionContent>Guarda los códigos de invitación para registrar nuevos administradores. Se pueden crear y eliminar desde "Panel &gt; Códigos de Invitación".</AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="siteSettings">
+                        <AccordionTrigger>siteSettings</AccordionTrigger>
+                        <AccordionContent>Un único documento (con ID 'config') que almacena la configuración global del sitio, como las URLs de la radio. Gestionado desde "Panel &gt; Ajustes Generales".</AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
                 </CardContent>
             </Card>
         </div>
