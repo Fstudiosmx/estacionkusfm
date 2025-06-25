@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music, MessageCircle, MoreVertical, ChevronDown } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music, MessageCircle, MoreVertical, ChevronDown, Signal } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -33,6 +33,10 @@ interface AzuraCastNowPlaying {
     };
   };
   is_online: boolean;
+  live?: {
+    is_live: boolean;
+    streamer_name: string;
+  };
 }
 
 export function RadioPlayer() {
@@ -155,6 +159,8 @@ export function RadioPlayer() {
     : 'https://placehold.co/600x600.png';
   const trackTitle = currentTrack?.title || (isOnline ? 'En Vivo' : 'Offline');
   const trackArtist = currentTrack?.artist || nowPlaying?.station.name || 'EstacionKusFM';
+  const isLiveShow = nowPlaying?.live?.is_live ?? false;
+  const showName = nowPlaying?.live?.streamer_name;
 
 
   const miniPlayerContent = (
@@ -311,6 +317,16 @@ export function RadioPlayer() {
         <div className="mt-8 w-full">
           <h3 className="font-bold font-headline text-3xl truncate">{trackTitle}</h3>
           <p className="text-lg text-muted-foreground truncate">{trackArtist}</p>
+        </div>
+        <div className="mt-6">
+          {isLiveShow && showName ? (
+            <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-1.5 rounded-full">
+                <Signal className="h-4 w-4 animate-pulse" />
+                <p className="font-semibold text-sm">Al Aire: {showName}</p>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">EstacionKusFM mas cerca de ti - no programa</p>
+          )}
         </div>
       </div>
 
