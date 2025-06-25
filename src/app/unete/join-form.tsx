@@ -1,8 +1,10 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -17,25 +19,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "El nombre debe tener al menos 2 caracteres.",
-  }),
-  email: z.string().email({
-    message: "Por favor, introduce una dirección de correo electrónico válida.",
-  }),
-  showIdea: z.string().min(10, {
-    message: "La idea del programa debe tener al menos 10 caracteres.",
-  }),
-  message: z.string().optional(),
-})
+import { joinFormSchema, submitJoinApplication } from "./actions"
+import { Loader2 } from "lucide-react"
 
 export function JoinForm() {
     const { toast } = useToast()
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof joinFormSchema>>({
+        resolver: zodResolver(joinFormSchema),
         defaultValues: {
           name: "",
           email: "",
@@ -44,14 +36,25 @@ export function JoinForm() {
         },
       })
      
-      function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-        toast({
-            title: "¡Solicitud Enviada!",
-            description: "Gracias por tu interés. Nos pondremos en contacto pronto.",
-          })
-        form.reset();
-      }
+    async function onSubmit(values: z.infer<typeof joinFormSchema>) {
+        setIsSubmitting(true)
+        const result = await submitJoinApplication(values);
+
+        if (result.success) {
+            toast({
+                title: "¡Solicitud Enviada!",
+                description: result.message,
+            })
+            form.reset();
+        } else {
+             toast({
+                title: "Error al enviar",
+                description: result.message,
+                variant: "destructive"
+            })
+        }
+        setIsSubmitting(false)
+    }
 
   return (
     <Form {...form}>
@@ -64,7 +67,7 @@ export function JoinForm() {
             <FormItem>
               <FormLabel>Nombre Completo</FormLabel>
               <FormControl>
-                <Input placeholder="Tu Nombre" {...field} />
+                <Input placeholder="Tu Nombre" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -77,7 +80,7 @@ export function JoinForm() {
             <FormItem>
               <FormLabel>Correo Electrónico</FormLabel>
               <FormControl>
-                <Input placeholder="tu@ejemplo.com" {...field} />
+                <Input placeholder="tu@ejemplo.com" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,7 +93,7 @@ export function JoinForm() {
             <FormItem>
               <FormLabel>Tu Idea para un Programa</FormLabel>
               <FormControl>
-                <Input placeholder="Ej: 'Análisis semanal del Rock de los 80'" {...field} />
+                <Input placeholder="Ej: 'Análisis semanal del Rock de los 80'" {...field} disabled={isSubmitting} />
               </FormControl>
                <FormDescription>
                 Danos un título llamativo o un concepto breve para tu programa.
@@ -110,13 +113,17 @@ export function JoinForm() {
                   placeholder="Cuéntanos un poco sobre ti y tu idea para el programa..."
                   className="resize-none"
                   {...field}
+                  disabled={isSubmitting}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Enviar Solicitud</Button>
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Enviar Solicitud
+        </Button>
       </form>
     </Form>
   )

@@ -1,4 +1,5 @@
 
+
 export interface Song {
   id: any; // Can be string from Firestore or number from old data
   rank?: number;
@@ -121,4 +122,14 @@ export interface UserSubmission {
     songArtist?: string;
     createdAt: any; // Firestore Timestamp
     isRead: boolean;
+}
+
+export interface JoinSubmission {
+    id: string;
+    name: string;
+    email: string;
+    showIdea: string;
+    message?: string;
+    createdAt: any; // Firestore Timestamp
+    isReviewed: boolean;
 }

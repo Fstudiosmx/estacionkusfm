@@ -1,4 +1,5 @@
 
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, KeyRound, Database, Users, UploadCloud, Radio, Video, BrainCircuit, MessageSquareQuote } from 'lucide-react';
 import Link from 'next/link';
@@ -218,6 +219,20 @@ const firebaseConfig = {
                               <li>`isRead` (boolean): false</li>
                           </ul>
                         </AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="joinSubmissions">
+                          <AccordionTrigger>joinSubmissions</AccordionTrigger>
+                          <AccordionContent>
+                            <p>Almacena las solicitudes para unirse al equipo enviadas desde la página '/unete'. Estructura de un documento:</p>
+                            <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                                <li>`name` (string): "Nombre del Aplicante"</li>
+                                <li>`email` (string): "email@ejemplo.com"</li>
+                                <li>`showIdea` (string): "La idea del programa..."</li>
+                                <li>`message` (string): "Mensaje adicional..." (opcional)</li>
+                                <li>`createdAt` (timestamp): Fecha y hora de envío</li>
+                                <li>`isReviewed` (boolean): false</li>
+                            </ul>
+                          </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="topSongs">
                         <AccordionTrigger>topSongs</AccordionTrigger>
