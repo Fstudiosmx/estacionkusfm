@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { collection, getDocs, limit, query } from "firebase/firestore";
-import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket, PlayCircle, Megaphone, Settings, MessageSquareQuote, UserPlus, Presentation, Trophy } from "lucide-react";
+import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket, PlayCircle, Megaphone, Settings, MessageSquareQuote, UserPlus, Presentation, Trophy, BrainCircuit } from "lucide-react";
 import Link from "next/link";
 
 export default function PanelPage() {
@@ -303,6 +303,16 @@ export default function PanelPage() {
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Configura los parámetros técnicos de la radio y el sitio.</p>
                     <Button asChild><Link href="/panel/settings">Administrar</Link></Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <BrainCircuit className="h-8 w-8 text-primary" />
+                    <h3 className="font-headline text-xl font-semibold">Espacio Aprendizaje</h3>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Accede a recursos y cursos para los locutores.</p>
+                    <Button asChild><Link href="/espacio-aprendizaje">Acceder</Link></Button>
                 </CardContent>
             </Card>
         </div>
