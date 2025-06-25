@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function DocsPage() {
+  const CodeBlock = ({ children }: { children: React.ReactNode }) => (
+    <pre className="bg-secondary p-4 rounded-md overflow-x-auto text-sm mt-2">
+      <code className="text-secondary-foreground">{children}</code>
+    </pre>
+  );
+
   return (
     <div className="container mx-auto px-4 md:px-6 py-12">
       <div className="max-w-4xl mx-auto">
@@ -36,10 +42,8 @@ export default function DocsPage() {
                         <li>Copia el objeto `firebaseConfig` que se muestra.</li>
                         <li>Abre el archivo <code className="font-mono bg-muted text-muted-foreground px-1 py-0.5 rounded">src/lib/firebase.ts</code> en tu proyecto y reemplaza el objeto `firebaseConfig` de marcador de posición con el que acabas de copiar.</li>
                     </ol>
-                    <pre className="bg-secondary p-4 rounded-md overflow-x-auto text-sm">
-                        <code className="text-secondary-foreground">
-{`
-// src/lib/firebase.ts
+                    <CodeBlock>
+{`// src/lib/firebase.ts
 
 // IMPORTANTE: Reemplaza esto con la configuración de tu proyecto de Firebase
 const firebaseConfig = {
@@ -51,10 +55,8 @@ const firebaseConfig = {
   appId: "1:1234567890:web:abcdef123456"
 };
 
-// ...
-`}
-                        </code>
-                    </pre>
+// ...`}
+                    </CodeBlock>
                 </CardContent>
             </Card>
 
@@ -100,27 +102,19 @@ const firebaseConfig = {
                 <CardContent className="space-y-4 text-muted-foreground">
                     <p>El registro de nuevos administradores está protegido por un código de invitación. Para crear tu primera cuenta e importar el contenido de demostración, sigue estos pasos:</p>
                      <ol className="list-decimal list-inside space-y-2">
-                        <li>Primero, debemos añadir manualmente un código de invitación inicial.
-                             <ul className="list-disc list-inside ml-6 mt-1 space-y-1">
-                                <li>Ve a tu base de datos de <strong>Firestore</strong>.</li>
-                                <li>Haz clic en <strong>Iniciar colección</strong>. Introduce `invitationCodes` como ID de la colección.</li>
-                                <li>Haz clic en <strong>ID automático</strong> para el primer documento.</li>
-                                <li>Añade los siguientes campos al documento:
-                                    <ul className="list-circle list-inside ml-6 mt-1">
-                                        <li>`code` (string): `KUSFM2024`</li>
-                                        <li>`used` (boolean): `false`</li>
-                                        <li>`createdAt` (timestamp): elige la fecha actual</li>
-                                        <li>`usedBy` (string): déjalo vacío</li>
-                                        <li>`usedAt` (timestamp): déjalo vacío</li>
-                                    </ul>
-                                </li>
-                                <li>Haz clic en <strong>Guardar</strong>.</li>
+                        <li>Primero, debemos añadir manualmente un código de invitación inicial en Firestore. Navega a tu base de datos y crea una nueva colección llamada `invitationCodes`. Añade un documento con los siguientes campos:
+                            <ul className="list-disc list-inside ml-6 mt-1 font-mono text-xs">
+                                <li>`code` (string): `KUSFM2024`</li>
+                                <li>`used` (boolean): `false`</li>
+                                <li>`createdAt` (timestamp): (fecha actual)</li>
+                                <li>`usedBy` (string): (dejar vacío)</li>
+                                <li>`usedAt` (timestamp): (dejar vacío)</li>
                             </ul>
                         </li>
                          <li className="mt-2">Inicia la aplicación y navega a la página <Link href="/registro" className="text-primary underline">/registro</Link>.</li>
                         <li>Cuando se te pida el código de invitación, introduce: <strong className="text-accent font-mono bg-muted px-2 py-1 rounded">KUSFM2024</strong></li>
                         <li>Completa el formulario con el email y la contraseña que desees para tu cuenta de administrador.</li>
-                        <li className="mt-2"><strong>Importar Contenido Demo (¡Fácil!):</strong>
+                        <li className="mt-2"><strong>Importar Contenido Demo (¡Recomendado!):</strong>
                             <ul className="list-disc list-inside ml-6 mt-1">
                                 <li>Una vez registrado, serás redirigido al panel de administración. Verás una tarjeta especial que te invita a poblar la base de datos.</li>
                                 <li>Haz clic en el botón <strong>"Importar Datos de Ejemplo"</strong>.</li>
@@ -137,45 +131,133 @@ const firebaseConfig = {
                         <Database className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Referencia de la Base de Datos</CardTitle>
+                        <CardTitle className="font-headline">Referencia de la Base de Datos (Para Creación Manual)</CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
                     <p className="mb-4">
-                        Un resumen de las colecciones de Firestore que utiliza la aplicación. Toda esta información se puede gestionar desde el Panel de Administración una vez que hayas importado los datos de ejemplo.
+                        A continuación se detalla la estructura de cada colección de Firestore. Usa esta guía si prefieres añadir contenido manualmente en lugar de usar el panel de administración.
                     </p>
                     <Accordion type="single" collapsible className="w-full">
                       <AccordionItem value="blogPosts">
                         <AccordionTrigger>blogPosts</AccordionTrigger>
-                        <AccordionContent>Almacena los artículos del blog. Cada documento representa un post con campos como `title`, `content`, `author`, `publishDate` (Timestamp), etc. Gestionado desde "Panel &gt; Blog".</AccordionContent>
+                        <AccordionContent>
+                          <p>Almacena los artículos del blog. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`author` (string): "Jane Doe"</li>
+                              <li>`category` (string): "Entrevistas"</li>
+                              <li>`content` (string): "El texto completo..."</li>
+                              <li>`excerpt` (string): "El resumen corto..."</li>
+                              <li>`imageUrl` (string): "https://url.com/image.png"</li>
+                              <li>`publishDate` (timestamp): Fecha y hora</li>
+                              <li>`title` (string): "Título del Artículo"</li>
+                          </ul>
+                        </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="topSongs">
                         <AccordionTrigger>topSongs</AccordionTrigger>
-                        <AccordionContent>Contiene el ranking de las canciones principales. Se ordenan por el campo `rank`. Incluye campos para enlaces a plataformas de streaming. Gestionado desde "Panel &gt; Top 10 Musical".</AccordionContent>
+                        <AccordionContent>
+                          <p>Contiene el ranking de las canciones principales. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`artist` (string): "The Voyagers"</li>
+                              <li>`coverArt` (string): "https://url.com/cover.png"</li>
+                              <li>`coverArtHint` (string): "sunrise beach"</li>
+                              <li>`rank` (number): 3</li>
+                              <li>`title` (string): "Chasing the Sun"</li>
+                              <li>`externalLink` (string): "#" (valor heredado, no usado)</li>
+                              <li>`youtubeVideoId` (string): "jfKfPfyJRdk" (opcional)</li>
+                              <li>`spotifyLink` (string): "https://spotify.com/..." (opcional)</li>
+                              <li>`appleMusicLink` (string): "https://music.apple.com/..." (opcional)</li>
+                              <li>`youtubeMusicLink` (string): "https://music.youtube.com/..." (opcional)</li>
+                          </ul>
+                        </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="weeklySchedule">
                         <AccordionTrigger>weeklySchedule</AccordionTrigger>
-                        <AccordionContent>Guarda la programación para cada día de la semana. Hay un documento por cada día (ej. 'Monday', 'Tuesday'). Gestionado desde "Panel &gt; Parrilla Semanal".</AccordionContent>
+                        <AccordionContent>
+                          <p>Guarda la programación. Hay un documento por cada día (ID del doc: 'Monday', 'Tuesday', etc.).</p>
+                           <p className="mt-2">El documento contiene un único campo `schedule` que es un array de objetos. Estructura del array `schedule`:</p>
+                           <CodeBlock>{`
+schedule: [
+  {
+    "time": "08:00 - 10:00",
+    "title": "Morning Commute",
+    "host": "Alex Johnson"
+  },
+  {
+    "time": "10:00 - 12:00",
+    "title": "Indie Vibes",
+    "host": "Samantha Bee"
+  }
+]`}</CodeBlock>
+                        </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="teamMembers">
                         <AccordionTrigger>teamMembers</AccordionTrigger>
-                        <AccordionContent>Lista de los miembros del equipo que aparecen en la página "Nosotros". Se ordenan por el campo `order`. Gestionado desde "Panel &gt; Miembros del Equipo".</AccordionContent>
+                        <AccordionContent>
+                          <p>Lista de los miembros del equipo. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`name` (string): "Alex Johnson"</li>
+                              <li>`role` (string): "Morning Commute"</li>
+                              <li>`image` (string): "https://url.com/photo.png"</li>
+                              <li>`hint` (string): "male portrait"</li>
+                              <li>`order` (number): 1</li>
+                          </ul>
+                        </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="recordedShows">
                         <AccordionTrigger>recordedShows</AccordionTrigger>
-                        <AccordionContent>Contiene los podcasts y programas grabados que se muestran en la página "Grabaciones". Se ordenan por `publishDate`. Gestionado desde "Panel &gt; Podcasts y Grabaciones".</AccordionContent>
+                        <AccordionContent>
+                          <p>Contiene los podcasts y programas grabados. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`title` (string): "Indie Vibes Ep. 12"</li>
+                              <li>`host` (string): "Samantha Bee"</li>
+                              <li>`duration` (string): "45 min"</li>
+                              <li>`description` (string): "Un mix de nuevos temas..."</li>
+                              <li>`imageUrl` (string): "https://url.com/show.png"</li>
+                              <li>`imageHint` (string): "indie music"</li>
+                              <li>`publishDate` (timestamp): Fecha y hora</li>
+                          </ul>
+                        </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="sponsors">
                         <AccordionTrigger>sponsors</AccordionTrigger>
-                        <AccordionContent>Almacena la información de los patrocinadores (nombre, logo, enlace). Se muestran en la página de inicio. Gestionado desde "Panel &gt; Gestión de Patrocinio".</AccordionContent>
+                        <AccordionContent>
+                          <p>Almacena la información de los patrocinadores. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`name` (string): "Café del Sol"</li>
+                              <li>`imageUrl` (string): "https://url.com/logo.png"</li>
+                              <li>`hint` (string): "coffee shop"</li>
+                              <li>`websiteUrl` (string): "https://cafedelsol.com"</li>
+                              <li>`level` (string): "platinum" | "gold" | "silver"</li>
+                              <li>`order` (number): 1</li>
+                          </ul>
+                        </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="invitationCodes">
                         <AccordionTrigger>invitationCodes</AccordionTrigger>
-                        <AccordionContent>Guarda los códigos de invitación para registrar nuevos administradores. Se pueden crear y eliminar desde "Panel &gt; Códigos de Invitación".</AccordionContent>
+                        <AccordionContent>
+                          <p>Guarda los códigos de invitación. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`code` (string): "KUSFM-ABC12345"</li>
+                              <li>`used` (boolean): false</li>
+                              <li>`createdAt` (timestamp): Fecha y hora</li>
+                              <li>`usedBy` (string): email del usuario (se rellena al usarlo)</li>
+                              <li>`usedAt` (timestamp): Fecha y hora (se rellena al usarlo)</li>
+                          </ul>
+                        </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="siteSettings">
                         <AccordionTrigger>siteSettings</AccordionTrigger>
-                        <AccordionContent>Un único documento (con ID 'config') que almacena la configuración global del sitio, como las URLs de la radio. Gestionado desde "Panel &gt; Ajustes Generales".</AccordionContent>
+                        <AccordionContent>
+                          <p>Un único documento (con ID 'config') que almacena la configuración global del sitio. Estructura del documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`streamUrl` (string): "https://..."</li>
+                              <li>`nowPlayingUrl` (string): "https://..."</li>
+                              <li>`historyUrl` (string): "https://..."</li>
+                              <li>`showDocsLink` (boolean): true</li>
+                          </ul>
+                        </AccordionContent>
                       </AccordionItem>
                     </Accordion>
                 </CardContent>

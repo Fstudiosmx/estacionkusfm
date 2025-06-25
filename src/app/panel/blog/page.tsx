@@ -142,9 +142,11 @@ export default function BlogManagementPage() {
             ) : posts.length > 0 ? (
               posts.map((post) => (
                 <TableRow key={post.id}>
-                  {dynamicColumns.map((col, index) => (
+                  {dynamicColumns.map((col: any, index) => (
                     <TableCell key={index}>
-                        {(col.cell as Function)({ row: { original: post } })}
+                      {col.cell
+                        ? col.cell({ row: { original: post } })
+                        : col.accessorKey ? post[col.accessorKey as keyof BlogPost] : null}
                     </TableCell>
                   ))}
                 </TableRow>

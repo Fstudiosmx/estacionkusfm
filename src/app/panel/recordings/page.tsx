@@ -141,9 +141,11 @@ export default function RecordingsManagementPage() {
             ) : recordings.length > 0 ? (
               recordings.map((recording) => (
                 <TableRow key={recording.id}>
-                  {dynamicColumns.map((col, index) => (
+                  {dynamicColumns.map((col: any, index) => (
                     <TableCell key={index}>
-                        {(col.cell as Function)({ row: { original: recording } })}
+                      {col.cell
+                        ? col.cell({ row: { original: recording } })
+                        : col.accessorKey ? recording[col.accessorKey as keyof RecordedShow] : null}
                     </TableCell>
                   ))}
                 </TableRow>

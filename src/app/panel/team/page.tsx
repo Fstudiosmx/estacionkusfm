@@ -141,9 +141,11 @@ export default function TeamManagementPage() {
             ) : members.length > 0 ? (
               members.map((member) => (
                 <TableRow key={member.id}>
-                  {dynamicColumns.map((col, index) => (
+                  {dynamicColumns.map((col: any, index) => (
                     <TableCell key={index}>
-                        {(col.cell as Function)({ row: { original: member } })}
+                      {col.cell
+                        ? col.cell({ row: { original: member } })
+                        : col.accessorKey ? member[col.accessorKey as keyof TeamMember] : null}
                     </TableCell>
                   ))}
                 </TableRow>
