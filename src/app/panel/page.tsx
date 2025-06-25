@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -82,9 +81,8 @@ export default function PanelPage() {
         title: "¡Éxito!",
         description: "Los datos de demostración han sido importados correctamente. La página se recargará.",
       });
-      setIsDbSeeded(true); // Hide the button after success
+      setIsDbSeeded(true);
       
-      // Reload the page to reflect changes everywhere
       setTimeout(() => {
         window.location.reload();
       }, 2000);
@@ -147,19 +145,29 @@ export default function PanelPage() {
         </CardContent>
       </Card>
 
-      {!isCheckingDb && !isDbSeeded && (
+      {isCheckingDb ? (
+        <Card className="max-w-4xl mx-auto mt-8 mb-8">
+          <CardContent className="p-4">
+            <Skeleton className="h-24 w-full" />
+          </CardContent>
+        </Card>
+      ) : (
         <Card className="max-w-4xl mx-auto mt-8 mb-8 bg-secondary border-primary/50">
           <CardHeader>
             <div className="flex items-center gap-4">
-                <div className="p-3 bg-primary/10 rounded-full">
-                    <UploadCloud className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                    <CardTitle>Comienza a usar tu App</CardTitle>
-                    <CardDescription>
-                        Tu base de datos parece estar vacía. Importa el contenido de demostración para ver la aplicación en acción.
-                    </CardDescription>
-                </div>
+              <div className="p-3 bg-primary/10 rounded-full">
+                <UploadCloud className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <CardTitle>
+                  {!isDbSeeded ? "Comienza a usar tu App" : "Reiniciar Datos de Prueba"}
+                </CardTitle>
+                <CardDescription>
+                  {!isDbSeeded
+                    ? "Tu base de datos parece estar vacía. Importa el contenido de demostración para ver la aplicación en acción."
+                    : "Vuelve a importar el contenido de demostración. Esto sobrescribirá los artículos, canciones y demás datos de ejemplo existentes."}
+                </CardDescription>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
@@ -169,16 +177,19 @@ export default function PanelPage() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Importando...
                 </>
-              ) : (
+              ) : !isDbSeeded ? (
                 "Importar Datos de Ejemplo"
+              ) : (
+                "Re-importar Datos"
               )}
             </Button>
-             <p className="text-xs text-muted-foreground mt-2">
-                Esta acción es segura y solo se puede realizar una vez.
+            <p className="text-xs text-muted-foreground mt-2">
+              Esta acción es segura y no afectará a los datos que no sean de demostración.
             </p>
           </CardContent>
         </Card>
       )}
+
 
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold font-headline mb-4">Módulos de Gestión</h2>
@@ -312,7 +323,10 @@ export default function PanelPage() {
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Accede a recursos y cursos para los locutores.</p>
-                    <Button asChild><Link href="/espacio-aprendizaje">Acceder</Link></Button>
+                    <div className="flex items-center gap-2">
+                      <Button asChild><Link href="/espacio-aprendizaje">Acceder</Link></Button>
+                      <Button variant="secondary" disabled>Gestionar (Próximamente)</Button>
+                    </div>
                 </CardContent>
             </Card>
         </div>
