@@ -17,7 +17,7 @@ It's designed to provide a solid foundation for projects that require features l
 
 ## Installation
 
-1. Clone the repository: `git clone <repository_url>`
+1. Clone the repository: `git clone https://github.com/Fstudiosmx/estacionkusfm`
 2. Install dependencies: `npm install`
 3. Configure Firebase: Follow the instructions in the Firebase documentation to set up your project and connect it to this application.
 
