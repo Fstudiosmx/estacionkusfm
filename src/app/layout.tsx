@@ -10,6 +10,7 @@ import { RadioPlayer } from '@/components/radio-player';
 import Script from 'next/script';
 import { getSiteSettings } from '@/lib/settings';
 import { CookieBanner } from '@/components/cookie-banner';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const belleza = Belleza({
   subsets: ['latin'],
@@ -60,14 +61,21 @@ export default async function RootLayout({
         )}
         suppressHydrationWarning={true}
       >
-        <div className="relative flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </div>
-        <RadioPlayer streamUrl={settings.streamUrl} />
-        <Toaster />
-        <CookieBanner />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="relative flex min-h-screen flex-col">
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </div>
+          <RadioPlayer streamUrl={settings.streamUrl} />
+          <Toaster />
+          <CookieBanner />
+        </ThemeProvider>
       </body>
     </html>
   );

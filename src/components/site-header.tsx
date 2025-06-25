@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Menu, LogIn, LogOut, UserCircle } from 'lucide-react';
+import { Menu, LogIn, LogOut, UserCircle, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SiteLogo } from '@/components/icons/radiowave';
@@ -19,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useToast } from '@/hooks/use-toast';
+import { ThemeToggle } from './theme-toggle';
 
 const navItems = [
   { href: '/', label: 'Inicio' },
@@ -93,6 +95,13 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center justify-end space-x-2 md:space-x-4">
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/video">
+                <Video className="h-5 w-5 md:mr-2"/>
+                <span className="hidden md:inline">Venos en Video</span>
+              </Link>
+            </Button>
+
             {!loading && (
               <div className="hidden md:block">
                 {user ? (
@@ -124,6 +133,8 @@ export function SiteHeader() {
                 )}
               </div>
             )}
+            
+            <ThemeToggle />
 
 
           <div className="md:hidden">

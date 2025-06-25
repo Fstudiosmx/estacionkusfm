@@ -88,7 +88,12 @@ const firestoreData = {
     "azuracastApiKey": "20489200b1699478:6e6ba9ff38fc0d8c6a19906244a5bbcb",
     "zenoStationUuid": "",
     "live365StationId": "",
-    "showDocsLink": true
+    "showDocsLink": true,
+    "hlsStreamUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    "streamServer": "stream.example.com",
+    "streamPort": "8000",
+    "streamPassword": "changeme",
+    "learningSpaceAccessCode": "KUSFMLAB"
   }
 };
 

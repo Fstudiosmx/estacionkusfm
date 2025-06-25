@@ -1,3 +1,4 @@
+
 import { cache } from 'react'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
@@ -13,6 +14,11 @@ export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
     zenoStationUuid: '',
     live365StationId: '',
     showDocsLink: true,
+    hlsStreamUrl: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+    streamServer: 'stream.example.com',
+    streamPort: '8000',
+    streamPassword: 'changeme',
+    learningSpaceAccessCode: 'KUSFMLAB'
   }
 
   try {

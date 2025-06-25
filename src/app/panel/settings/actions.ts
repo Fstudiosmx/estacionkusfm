@@ -19,6 +19,12 @@ export const siteSettingsSchema = z.object({
     live365StationId: z.string().optional().or(z.literal('')),
 
     showDocsLink: z.boolean(),
+
+    hlsStreamUrl: z.string().url("Debe ser una URL HLS válida.").optional().or(z.literal('')),
+    streamServer: z.string().optional().or(z.literal('')),
+    streamPort: z.string().optional().or(z.literal('')),
+    streamPassword: z.string().optional().or(z.literal('')),
+    learningSpaceAccessCode: z.string().min(4, "El código debe tener al menos 4 caracteres").optional().or(z.literal('')),
 });
 
 export type SiteSettingsSchema = z.infer<typeof siteSettingsSchema>;
@@ -32,6 +38,11 @@ const defaultSettings: SiteSettings = {
     zenoStationUuid: '',
     live365StationId: '',
     showDocsLink: true,
+    hlsStreamUrl: '',
+    streamServer: '',
+    streamPort: '',
+    streamPassword: '',
+    learningSpaceAccessCode: 'KUSFMLAB'
 };
 
 /**

@@ -25,9 +25,10 @@ import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState, useTransition } from "react";
-import { Loader2, Radio } from "lucide-react";
+import { Loader2, Radio, Video, BrainCircuit } from "lucide-react";
 import { getSiteSettingsAction, upsertSiteSettings, siteSettingsSchema, type SiteSettingsSchema } from "./actions";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 
 export default function SettingsPage() {
@@ -46,6 +47,11 @@ export default function SettingsPage() {
             zenoStationUuid: '',
             live365StationId: '',
             showDocsLink: true,
+            hlsStreamUrl: '',
+            streamServer: '',
+            streamPort: '',
+            streamPassword: '',
+            learningSpaceAccessCode: ''
         }
     });
 
@@ -58,7 +64,7 @@ export default function SettingsPage() {
                 form.reset(data);
             }
         })
-    }, []);
+    }, [form]);
 
 
     const onSubmit = (data: SiteSettingsSchema) => {
@@ -97,22 +103,21 @@ export default function SettingsPage() {
                 <p className="text-muted-foreground">Gestiona la configuración principal de tu sitio y radio.</p>
             </div>
         </div>
-
-        <Card className="max-w-4xl mx-auto">
-            <CardHeader>
-                <div className="flex items-center gap-4">
-                    <Radio className="h-8 w-8 text-primary" />
-                    <div>
-                        <CardTitle>Configuración de la Radio</CardTitle>
-                        <CardDescription>
-                            Define las URLs para el stream de audio y las APIs de tu proveedor.
-                        </CardDescription>
-                    </div>
-                </div>
-            </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+         <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+                <Card className="max-w-4xl mx-auto">
+                    <CardHeader>
+                        <div className="flex items-center gap-4">
+                            <Radio className="h-8 w-8 text-primary" />
+                            <div>
+                                <CardTitle>Configuración de la Radio</CardTitle>
+                                <CardDescription>
+                                    Define las URLs para el stream de audio y las APIs de tu proveedor.
+                                </CardDescription>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
                         <FormField
                         control={form.control}
                         name="radioProvider"
@@ -185,11 +190,64 @@ export default function SettingsPage() {
                                 )}/>
                             </div>
                         )}
+                    </CardContent>
+                </Card>
 
+                <Card className="max-w-4xl mx-auto">
+                    <CardHeader>
+                        <div className="flex items-center gap-4">
+                            <Video className="h-8 w-8 text-primary" />
+                            <div>
+                                <CardTitle>Configuración de Video</CardTitle>
+                                <CardDescription>
+                                    Configura el stream para la página "Venos en Video".
+                                </CardDescription>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <FormField control={form.control} name="hlsStreamUrl" render={({ field }) => (
+                            <FormItem><FormLabel>URL del Stream HLS</FormLabel><FormControl><Input placeholder="https://host.com/stream.m3u8" {...field} /></FormControl><FormDescription>La URL del manifiesto de tu stream de video en formato HLS.</FormDescription><FormMessage /></FormItem>
+                        )}/>
+                    </CardContent>
+                </Card>
 
+                 <Card className="max-w-4xl mx-auto">
+                    <CardHeader>
+                        <div className="flex items-center gap-4">
+                            <BrainCircuit className="h-8 w-8 text-primary" />
+                            <div>
+                                <CardTitle>Espacio de Aprendizaje</CardTitle>
+                                <CardDescription>
+                                    Configura los datos para la página de aprendizaje de locutores.
+                                </CardDescription>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <FormField control={form.control} name="learningSpaceAccessCode" render={({ field }) => (
+                            <FormItem><FormLabel>Código de Acceso</FormLabel><FormControl><Input placeholder="CÓDIGO_SECRETO" {...field} /></FormControl><FormDescription>El código que los locutores necesitarán para acceder a la página de aprendizaje.</FormDescription><FormMessage /></FormItem>
+                        )}/>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <FormField control={form.control} name="streamServer" render={({ field }) => (
+                                <FormItem><FormLabel>Servidor de Stream</FormLabel><FormControl><Input placeholder="stream.example.com" {...field} /></FormControl><FormMessage /></FormItem>
+                            )}/>
+                            <FormField control={form.control} name="streamPort" render={({ field }) => (
+                                <FormItem><FormLabel>Puerto</FormLabel><FormControl><Input placeholder="8000" {...field} /></FormControl><FormMessage /></FormItem>
+                            )}/>
+                        </div>
+                        <FormField control={form.control} name="streamPassword" render={({ field }) => (
+                            <FormItem><FormLabel>Contraseña del Stream</FormLabel><FormControl><Input type="password" placeholder="••••••••••" {...field} /></FormControl><FormMessage /></FormItem>
+                        )}/>
+                    </CardContent>
+                </Card>
+
+                <Card className="max-w-4xl mx-auto">
+                    <CardHeader>
                         <CardTitle>Configuración del Sitio</CardTitle>
-                        
-                        <FormField
+                    </CardHeader>
+                    <CardContent>
+                       <FormField
                             control={form.control}
                             name="showDocsLink"
                             render={({ field }) => (
@@ -211,22 +269,20 @@ export default function SettingsPage() {
                                 </FormItem>
                             )}
                         />
-                        <div className="flex gap-2">
-                            <Button type="submit" disabled={isPending}>
-                                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Guardar Cambios
-                            </Button>
-                             <Button variant="outline" asChild>
-                                <Link href="/panel">Volver al Panel</Link>
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            </CardContent>
-        </Card>
-         <div className="mt-8">
-       
-      </div>
+                    </CardContent>
+                </Card>
+                
+                <div className="flex gap-2 max-w-4xl mx-auto">
+                    <Button type="submit" disabled={isPending}>
+                        {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Guardar Cambios
+                    </Button>
+                     <Button variant="outline" asChild>
+                        <Link href="/panel">Volver al Panel</Link>
+                    </Button>
+                </div>
+            </form>
+        </Form>
     </div>
     );
 }

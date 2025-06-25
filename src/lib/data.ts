@@ -101,4 +101,24 @@ export interface SiteSettings {
   live365StationId?: string;
 
   showDocsLink: boolean;
+
+  // Video settings
+  hlsStreamUrl?: string;
+  
+  // Broadcaster settings
+  streamServer?: string;
+  streamPort?: string;
+  streamPassword?: string;
+  learningSpaceAccessCode?: string;
+}
+
+export interface UserSubmission {
+    id: string;
+    type: 'request' | 'shoutout';
+    name: string;
+    message: string;
+    songTitle?: string;
+    songArtist?: string;
+    createdAt: any; // Firestore Timestamp
+    isRead: boolean;
 }

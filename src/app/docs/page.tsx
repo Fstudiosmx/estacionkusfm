@@ -1,10 +1,9 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Code, KeyRound, Database, Users, UploadCloud, Radio } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Code, KeyRound, Database, Users, UploadCloud, Radio, Video, BrainCircuit, MessageSquareQuote } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { FaGoogle } from "react-icons/fa";
 
 export default function DocsPage() {
   const CodeBlock = ({ children }: { children: React.ReactNode }) => (
@@ -133,44 +132,42 @@ const firebaseConfig = {
                         <Radio className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Paso 4: Configuración de la Radio</CardTitle>
+                        <CardTitle className="font-headline">Paso 4: Configuración de la Radio y Stream</CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground space-y-4">
                     <p>
-                        Para que el reproductor de radio y el historial de canciones funcionen, debes configurar tu proveedor de servicios de radio. Ve a <strong>Panel de Control &gt; Ajustes Generales</strong>.
+                        Para que el reproductor de radio, el historial de canciones y el stream de video funcionen, debes configurar los ajustes desde el panel de administración. Ve a <strong>Panel de Control &gt; Ajustes Generales</strong>.
                     </p>
                     <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem value="azuracast">
-                        <AccordionTrigger>Configurar AzuraCast</AccordionTrigger>
+                      <AccordionItem value="radio">
+                        <AccordionTrigger>Configurar Proveedor de Radio</AccordionTrigger>
                         <AccordionContent>
-                          <p>Necesitarás tres datos de tu instancia de AzuraCast:</p>
+                          <p>En la sección "Configuración de la Radio", elige tu proveedor y rellena los campos correspondientes. Por ejemplo, para AzuraCast:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 pl-4">
                               <li><strong>URL Base:</strong> La URL principal de tu panel de AzuraCast. E.g., `https://radio.tudominio.com`</li>
                               <li><strong>ID de Estación:</strong> El nombre corto (shortcode) de tu estación. E.g., `estacion_principal`</li>
-                              <li><strong>Clave API (Opcional):</strong> Para acceder al historial. Ve a `Tu Perfil > Claves API` para crear una. E.g., `20489200b1699478:6e6ba9ff38fc0d8c6a19906244a5bbcb`</li>
+                              <li><strong>URL del Stream de Audio:</strong> El enlace directo al stream de audio (ej. MP3, AAC).</li>
                           </ul>
-                          <p className="mt-2">No olvides también poner la URL del stream de audio en el campo correspondiente.</p>
                         </AccordionContent>
                       </AccordionItem>
-                      <AccordionItem value="zenofm">
-                        <AccordionTrigger>Configurar ZenoFM</AccordionTrigger>
+                      <AccordionItem value="video">
+                        <AccordionTrigger>Configurar Stream de Video</AccordionTrigger>
                         <AccordionContent>
-                          <p>Necesitarás tu UUID de Estación:</p>
+                          <p>En la sección "Configuración de Video", introduce la URL de tu stream en formato HLS.</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 pl-4">
-                              <li><strong>UUID de Estación:</strong> Puedes encontrarlo en la URL de tu página de ZenoFM. Es la cadena de letras y números después de `/s/`.</li>
+                              <li><strong>URL del Stream HLS:</strong> La URL que termina en `.m3u8`. E.g., `https://host.com/stream.m3u8`</li>
                           </ul>
-                          <p className="mt-2">El historial de canciones no está disponible para ZenoFM a través de su API pública.</p>
                         </AccordionContent>
                       </AccordionItem>
-                       <AccordionItem value="live365">
-                        <AccordionTrigger>Configurar Live365</AccordionTrigger>
+                       <AccordionItem value="learning">
+                        <AccordionTrigger>Configurar Espacio de Aprendizaje</AccordionTrigger>
                         <AccordionContent>
-                          <p>Necesitarás tu ID de Estación:</p>
+                          <p>En la sección "Espacio de Aprendizaje", puedes definir las credenciales que tus locutores usarán para transmitir, y el código de acceso a la página.</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 pl-4">
-                              <li><strong>ID de Estación:</strong> Es el número de identificación de tu estación en Live365.</li>
+                              <li><strong>Código de Acceso:</strong> Una contraseña para que los locutores accedan a la página de recursos.</li>
+                              <li><strong>Servidor de Stream, Puerto y Contraseña:</strong> Los datos de conexión para el software de transmisión (ej. VirtualDJ, RadioBOSS).</li>
                           </ul>
-                           <p className="mt-2">Asegúrate de que tu cuenta de Live365 permite el acceso a la API.</p>
                         </AccordionContent>
                       </AccordionItem>
                     </Accordion>
@@ -204,6 +201,21 @@ const firebaseConfig = {
                               <li>`imageUrl` (string): "https://url.com/image.png"</li>
                               <li>`publishDate` (timestamp): Fecha y hora</li>
                               <li>`title` (string): "Título del Artículo"</li>
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                       <AccordionItem value="userSubmissions">
+                        <AccordionTrigger>userSubmissions</AccordionTrigger>
+                        <AccordionContent>
+                          <p>Guarda las peticiones de canciones y los saludos de los oyentes. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`type` (string): "request" | "shoutout"</li>
+                              <li>`name` (string): "Nombre del Oyente"</li>
+                              <li>`message` (string): "Mensaje del saludo" (para shoutouts)</li>
+                              <li>`songTitle` (string): "Título de la Canción" (para requests)</li>
+                              <li>`songArtist` (string): "Artista de la Canción" (para requests)</li>
+                              <li>`createdAt` (timestamp): Fecha y hora de envío</li>
+                              <li>`isRead` (boolean): false</li>
                           </ul>
                         </AccordionContent>
                       </AccordionItem>
@@ -311,10 +323,8 @@ schedule: [
                               <li>`radioProvider` (string): "azuracast" | "zenofm" | "live365"</li>
                               <li>`streamUrl` (string): "https://..."</li>
                               <li>`azuracastBaseUrl` (string): "https://..." (si usas Azuracast)</li>
-                              <li>`azuracastStationId` (string): "..." (si usas Azuracast)</li>
-                              <li>`azuracastApiKey` (string): "..." (opcional, si usas Azuracast)</li>
-                              <li>`zenoStationUuid` (string): "..." (si usas ZenoFM)</li>
-                              <li>`live365StationId` (string): "..." (si usas Live365)</li>
+                              <li>`hlsStreamUrl` (string): "https://.../stream.m3u8" (para video)</li>
+                              <li>`learningSpaceAccessCode` (string): "SECRET_CODE" (para locutores)</li>
                               <li>`showDocsLink` (boolean): true</li>
                           </ul>
                         </AccordionContent>
