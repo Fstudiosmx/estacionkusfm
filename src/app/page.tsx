@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -14,28 +15,36 @@ import type { Program, Song, BlogPost } from '@/lib/data';
 import { SponsorsSection } from '@/components/sponsors-section';
 import { HeroSlideshow } from '@/components/hero-slideshow';
 
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error(`Operation timed out after ${ms}ms`)), ms)
+  );
+  return Promise.race([promise, timeout]);
+}
+
 async function getPageData() {
   try {
     const dayOfWeekEn = new Date().toLocaleDateString('en-US', { weekday: 'long', timeZone: 'America/Mexico_City' });
+    const TIMEOUT_MS = 5000;
 
     // Fetch Top Songs
     const songsQuery = query(collection(db, "topSongs"), orderBy("rank"), limit(10));
-    const songsSnapshot = await getDocs(songsQuery);
+    const songsSnapshot = await withTimeout(getDocs(songsQuery), TIMEOUT_MS);
     const topSongs = songsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Song));
 
     // Fetch Today's Schedule
     const scheduleDocRef = doc(db, "weeklySchedule", dayOfWeekEn);
-    const scheduleDocSnap = await getDoc(scheduleDocRef);
+    const scheduleDocSnap = await withTimeout(getDoc(scheduleDocRef), TIMEOUT_MS);
     const todaysSchedule = scheduleDocSnap.exists() ? (scheduleDocSnap.data().schedule || []) : [];
 
     // Fetch Blog Posts
     const postsQuery = query(collection(db, "blogPosts"), orderBy("publishDate", "desc"), limit(4));
-    const postsSnapshot = await getDocs(postsQuery);
+    const postsSnapshot = await withTimeout(getDocs(postsQuery), TIMEOUT_MS);
     const blogPosts = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogPost));
 
     return { topSongs, todaysSchedule, blogPosts, error: null };
   } catch (error: any) {
-    console.error("Firebase fetch error:", error);
+    console.error("Firebase fetch error on Home page:", error);
     return { 
       topSongs: [], 
       todaysSchedule: [], 
