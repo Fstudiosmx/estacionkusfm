@@ -56,11 +56,38 @@ export function RadioPlayer({ streamUrl }: RadioPlayerProps) {
   const [shoutoutOpen, setShoutoutOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isPlayerDetailOpen, setPlayerDetailOpen] = useState(false);
+  const [mexicoTime, setMexicoTime] = useState('');
 
   const apiUrl = "/api/nowplaying";
 
   useEffect(() => {
     setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const setTime = () => {
+        const now = new Date();
+        const time = now.toLocaleTimeString('es-MX', {
+            timeZone: 'America/Mexico_City',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+        });
+        const date = now.toLocaleDateString('es-ES', {
+            timeZone: 'America/Mexico_City',
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+        setMexicoTime(`${date} | ${time}`);
+    };
+
+    setTime(); // Set initial time
+    const timer = setInterval(setTime, 1000);
+
+    return () => clearInterval(timer);
   }, []);
 
   const fetchNowPlaying = useCallback(async () => {
@@ -362,6 +389,14 @@ export function RadioPlayer({ streamUrl }: RadioPlayerProps) {
         <div className="mt-8 w-full">
           <h3 className="font-bold font-headline text-3xl truncate">{trackTitle}</h3>
           <p className="text-lg text-muted-foreground truncate">{trackArtist}</p>
+        </div>
+        <div className="mt-4 text-center">
+            <p className="font-mono text-xl text-muted-foreground">
+                {mexicoTime ? mexicoTime.split(' | ')[1] : <span className="animate-pulse">00:00:00</span>}
+            </p>
+            <p className="text-xs text-muted-foreground capitalize">
+                {mexicoTime ? mexicoTime.split(' | ')[0] : 'Cargando fecha...'}
+            </p>
         </div>
         <div className="mt-6">
           {isLiveShow && showName ? (

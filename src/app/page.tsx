@@ -19,7 +19,7 @@ import { es } from 'date-fns/locale';
 
 async function getPageData() {
   try {
-    const dayOfWeekEn = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    const dayOfWeekEn = new Date().toLocaleDateString('en-US', { weekday: 'long', timeZone: 'America/Mexico_City' });
 
     // Fetch Top Songs
     const songsQuery = query(collection(db, "topSongs"), orderBy("rank"), limit(10));
@@ -51,7 +51,7 @@ async function getPageData() {
 
 export default async function Home() {
   const { topSongs, todaysSchedule, blogPosts, error } = await getPageData();
-  const today = new Date().toLocaleDateString('es-ES', { weekday: 'long' });
+  const today = new Date().toLocaleDateString('es-ES', { weekday: 'long', timeZone: 'America/Mexico_City' });
 
   const renderFirebaseError = () => (
     <div className="max-w-2xl mx-auto text-center my-12">
