@@ -1,4 +1,6 @@
+
 import type { Metadata } from 'next';
+import { Belleza, Alegreya } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
@@ -7,6 +9,22 @@ import { SiteFooter } from '@/components/site-footer';
 import { RadioPlayer } from '@/components/radio-player';
 import Script from 'next/script';
 import { getSiteSettings } from '@/lib/settings';
+import { CookieBanner } from '@/components/cookie-banner';
+
+const belleza = Belleza({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-belleza',
+  display: 'swap',
+});
+
+const alegreya = Alegreya({
+  subsets: ['latin'],
+  weight: ['400', '500', '700', '800', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-alegreya',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'EstacionKusFM - Tu Radio Online',
@@ -23,16 +41,6 @@ export default async function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Belleza&display=swap"
-          rel="stylesheet"
-        />
         {/* 
           TODO: Reemplaza "ca-pub-XXXXXXXXXXXXXXXX" con tu ID de cliente de Google AdSense.
           Puedes encontrarlo en tu cuenta de AdSense.
@@ -46,7 +54,9 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
-          'min-h-screen bg-background font-body antialiased'
+          'min-h-screen bg-background font-body antialiased',
+          belleza.variable,
+          alegreya.variable
         )}
         suppressHydrationWarning={true}
       >
@@ -57,6 +67,7 @@ export default async function RootLayout({
         </div>
         <RadioPlayer streamUrl={settings.streamUrl} />
         <Toaster />
+        <CookieBanner />
       </body>
     </html>
   );

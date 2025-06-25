@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -12,6 +13,9 @@ const formSchema = z.object({
   image: z.string().url("Debe ser una URL válida."),
   hint: z.string().optional(),
   order: z.coerce.number().min(1, "El orden es requerido."),
+  facebookUrl: z.string().url("URL de Facebook no válida").optional().or(z.literal('')),
+  instagramUrl: z.string().url("URL de Instagram no válida").optional().or(z.literal('')),
+  twitterUrl: z.string().url("URL de Twitter/X no válida").optional().or(z.literal('')),
 });
 
 export type TeamMemberFormValues = z.infer<typeof formSchema>;
@@ -29,6 +33,7 @@ export async function upsertTeamMember(data: TeamMemberFormValues) {
     }
     revalidatePath("/panel/team");
     revalidatePath("/nosotros");
+    revalidatePath("/team/[id]", "layout");
   } catch (error) {
     console.error("Error upserting team member:", error);
     throw new Error("No se pudo guardar el miembro del equipo en la base de datos.");

@@ -202,6 +202,9 @@ schedule: [
                               <li>`image` (string): "https://url.com/photo.png"</li>
                               <li>`hint` (string): "male portrait"</li>
                               <li>`order` (number): 1</li>
+                              <li>`facebookUrl` (string): "https://facebook.com/..." (opcional)</li>
+                              <li>`instagramUrl` (string): "https://instagram.com/..." (opcional)</li>
+                              <li>`twitterUrl` (string): "https://x.com/..." (opcional)</li>
                           </ul>
                         </AccordionContent>
                       </AccordionItem>

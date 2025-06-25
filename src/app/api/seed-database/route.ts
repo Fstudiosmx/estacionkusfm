@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 import { collection, getDocs, writeBatch, limit, query, doc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -58,12 +59,12 @@ const firestoreData = {
     { "day": "Sunday", "schedule": [ { "time": "09:00 - 11:00", "title": "Easy Like Sunday Morning", "host": "Chloe Adams" }, { "time": "11:00 - 13:00", "title": "The Jazz Lounge", "host": "Marcus Cole" } ] }
   ],
   "teamMembers": [
-    { "order": 1, "name": "Alex Johnson", "role": "Morning Commute", "image": "https://placehold.co/300x300.png", "hint": "male portrait" },
-    { "order": 2, "name": "Samantha Bee", "role": "Indie Vibes", "image": "https://placehold.co/300x300.png", "hint": "female portrait" },
-    { "order": 3, "name": "Mike Richards", "role": "Lunchtime Classics", "image": "https://placehold.co/300x300.png", "hint": "male portrait smiling" },
-    { "order": 4, "name": "Jessica Wu", "role": "Afternoon Chill", "image": "https://placehold.co/300x300.png", "hint": "female portrait glasses" },
-    { "order": 5, "name": "Chris Green", "role": "Drive Time Power Mix", "image": "https://placehold.co/300x300.png", "hint": "male portrait headphones" },
-    { "order": 6, "name": "Maria Garcia", "role": "Sunrise Sessions", "image": "https://placehold.co/300x300.png", "hint": "female portrait smiling" }
+    { "order": 1, "name": "Alex Johnson", "role": "Morning Commute", "image": "https://placehold.co/300x300.png", "hint": "male portrait", "facebookUrl": "https://facebook.com", "instagramUrl": "https://instagram.com", "twitterUrl": "https://x.com" },
+    { "order": 2, "name": "Samantha Bee", "role": "Indie Vibes", "image": "https://placehold.co/300x300.png", "hint": "female portrait", "facebookUrl": "https://facebook.com", "instagramUrl": "https://instagram.com", "twitterUrl": "https://x.com" },
+    { "order": 3, "name": "Mike Richards", "role": "Lunchtime Classics", "image": "https://placehold.co/300x300.png", "hint": "male portrait smiling", "facebookUrl": "https://facebook.com", "instagramUrl": "https://instagram.com", "twitterUrl": "https://x.com" },
+    { "order": 4, "name": "Jessica Wu", "role": "Afternoon Chill", "image": "https://placehold.co/300x300.png", "hint": "female portrait glasses", "facebookUrl": "https://facebook.com", "instagramUrl": "https://instagram.com", "twitterUrl": "https://x.com" },
+    { "order": 5, "name": "Chris Green", "role": "Drive Time Power Mix", "image": "https://placehold.co/300x300.png", "hint": "male portrait headphones", "facebookUrl": "https://facebook.com", "instagramUrl": "https://instagram.com", "twitterUrl": "https://x.com" },
+    { "order": 6, "name": "Maria Garcia", "role": "Sunrise Sessions", "image": "https://placehold.co/300x300.png", "hint": "female portrait smiling", "facebookUrl": "https://facebook.com", "instagramUrl": "https://instagram.com", "twitterUrl": "https://x.com" }
   ],
   "recordedShows": [
     { "date": "July 14, 2024", "title": "Indie Vibes Ep. 12: Summer Sounds", "host": "Samantha Bee", "duration": "45 min", "description": "A mix of the best new indie tracks perfect for a summer day. Featuring interviews with upcoming artists.", "imageUrl": "https://placehold.co/600x400.png", "imageHint": "indie music" },

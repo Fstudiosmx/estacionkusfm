@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -88,7 +89,7 @@ export default function NosotrosPage() {
             <p className="text-muted-foreground max-w-2xl mx-auto">Las voces que te acompañan cada día. Nuestros presentadores son personas apasionadas con perspectivas únicas y amor por lo que hacen.</p>
         </div>
         {loading ? (
-             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-10">
                 {Array.from({length: 6}).map((_, i) => (
                     <div key={i} className="text-center flex flex-col items-center">
                         <Skeleton className="h-[150px] w-[150px] rounded-full mb-4" />
@@ -115,13 +116,13 @@ export default function NosotrosPage() {
                 </Card>
             </div>
         ) : (
-             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-10">
                 {teamMembers.map((member) => (
-                    <div key={member.name} className="text-center">
-                        <Image src={member.image} data-ai-hint={member.hint} alt={member.name} width={150} height={150} className="rounded-full mx-auto mb-4 object-cover" unoptimized />
-                        <h3 className="font-semibold">{member.name}</h3>
+                    <Link href={`/team/${member.id}`} key={member.id} className="group text-center">
+                        <Image src={member.image} data-ai-hint={member.hint} alt={member.name} width={150} height={150} className="rounded-full mx-auto mb-4 object-cover transition-transform duration-300 group-hover:scale-105" unoptimized />
+                        <h3 className="font-semibold group-hover:text-primary transition-colors">{member.name}</h3>
                         <p className="text-sm text-muted-foreground">{member.role}</p>
-                    </div>
+                    </Link>
                 ))}
             </div>
         )}

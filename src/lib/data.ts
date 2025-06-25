@@ -1,3 +1,4 @@
+
 export interface Song {
   id: any; // Can be string from Firestore or number from old data
   rank?: number;
@@ -58,6 +59,9 @@ export interface TeamMember {
     image: string;
     hint: string;
     order: number;
+    facebookUrl?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
 }
 
 export interface RecordedShow {

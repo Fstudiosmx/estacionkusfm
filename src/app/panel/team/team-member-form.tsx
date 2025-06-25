@@ -17,8 +17,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { TeamMember } from "@/lib/data";
 import { upsertTeamMember } from "./actions";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Loader2 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   id: z.string().optional(),
@@ -27,6 +28,9 @@ const formSchema = z.object({
   image: z.string().url("Debe ser una URL válida."),
   hint: z.string().optional(),
   order: z.coerce.number().min(1, "El orden es requerido."),
+  facebookUrl: z.string().url("URL de Facebook no válida").optional().or(z.literal('')),
+  instagramUrl: z.string().url("URL de Instagram no válida").optional().or(z.literal('')),
+  twitterUrl: z.string().url("URL de Twitter/X no válida").optional().or(z.literal('')),
 });
 
 type TeamMemberFormValues = z.infer<typeof formSchema>;
@@ -40,15 +44,18 @@ export function TeamMemberForm({ member, onSuccess }: TeamMemberFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const defaultValues: Partial<TeamMemberFormValues> = member 
-    ? { ...member }
+  const defaultValues = useMemo(() => (member 
+    ? { ...member, facebookUrl: member.facebookUrl || '', instagramUrl: member.instagramUrl || '', twitterUrl: member.twitterUrl || '' }
     : {
         order: 1,
         name: '',
         role: '',
         image: 'https://placehold.co/300x300.png',
         hint: 'portrait',
-      };
+        facebookUrl: '',
+        instagramUrl: '',
+        twitterUrl: ''
+      }), [member]);
 
   const form = useForm<TeamMemberFormValues>({
     resolver: zodResolver(formSchema),
@@ -57,7 +64,7 @@ export function TeamMemberForm({ member, onSuccess }: TeamMemberFormProps) {
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [member, form]);
+  }, [defaultValues, form]);
 
   async function onSubmit(data: TeamMemberFormValues) {
     setIsSubmitting(true);
@@ -115,7 +122,7 @@ export function TeamMemberForm({ member, onSuccess }: TeamMemberFormProps) {
           name="role"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Rol</FormLabel>
+              <FormLabel>Rol / Programa</FormLabel>
               <FormControl>
                 <Input placeholder="Ej: Morning Commute" {...field} />
               </FormControl>
@@ -149,7 +156,52 @@ export function TeamMemberForm({ member, onSuccess }: TeamMemberFormProps) {
                 </FormItem>
             )}
         />
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        
+        <Separator className="my-6"/>
+        
+        <h3 className="text-lg font-medium">Redes Sociales (Opcional)</h3>
+
+        <FormField
+            control={form.control}
+            name="twitterUrl"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>URL de Twitter / X</FormLabel>
+                <FormControl>
+                    <Input placeholder="https://x.com/usuario" {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+        />
+         <FormField
+            control={form.control}
+            name="instagramUrl"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>URL de Instagram</FormLabel>
+                <FormControl>
+                    <Input placeholder="https://instagram.com/usuario" {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+        />
+         <FormField
+            control={form.control}
+            name="facebookUrl"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>URL de Facebook</FormLabel>
+                <FormControl>
+                    <Input placeholder="https://facebook.com/usuario" {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+        />
+
+        <Button type="submit" className="w-full mt-6" disabled={isSubmitting}>
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {member ? "Guardar Cambios" : "Crear Miembro"}
         </Button>
