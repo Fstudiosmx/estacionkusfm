@@ -58,7 +58,7 @@ export default function SettingsPage() {
                 form.reset(data);
             }
         })
-    }, [form]);
+    }, []);
 
 
     const onSubmit = (data: SiteSettingsSchema) => {
