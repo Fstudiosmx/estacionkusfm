@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Pause, Volume2, VolumeX, Share2, History, RefreshCw, Music, MessageCircle, MoreVertical, ChevronDown, Signal } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -63,7 +63,7 @@ export function RadioPlayer({ streamUrl }: RadioPlayerProps) {
     setIsMounted(true);
   }, []);
 
-  const fetchNowPlaying = async () => {
+  const fetchNowPlaying = useCallback(async () => {
     try {
       const response = await fetch(apiUrl);
       if (!response.ok) {
@@ -83,13 +83,13 @@ export function RadioPlayer({ streamUrl }: RadioPlayerProps) {
         is_online: false
       }));
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchNowPlaying();
     const interval = setInterval(fetchNowPlaying, 15000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchNowPlaying]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -106,12 +106,54 @@ export function RadioPlayer({ streamUrl }: RadioPlayerProps) {
     }
   }, [isPlaying]);
 
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     if (nowPlaying?.is_online) {
-      setIsPlaying(!isPlaying);
+      setIsPlaying(p => !p);
     }
-  };
+  }, [nowPlaying?.is_online]);
   
+  // MediaSession API Effect
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) {
+        return;
+    }
+
+    if (nowPlaying?.is_online && nowPlaying.now_playing.song) {
+        const { song } = nowPlaying.now_playing;
+        const coverArt = song.art && song.art.includes('http') 
+        ? song.art 
+        : 'https://placehold.co/512x512.png';
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: `${song.artist} - ${song.title}`,
+            artist: 'escuchas estacionkusfm',
+            album: 'gracias por confiar en nosotros.',
+            artwork: [
+                { src: coverArt, sizes: '96x96', type: 'image/png' },
+                { src: coverArt, sizes: '128x128', type: 'image/png' },
+                { src: coverArt, sizes: '192x192', type: 'image/png' },
+                { src: coverArt, sizes: '256x256', type: 'image/png' },
+                { src: coverArt, sizes: '384x384', type: 'image/png' },
+                { src: coverArt, sizes: '512x512', type: 'image/png' },
+            ]
+        });
+    } else {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: 'EstacionKusFM',
+            artist: 'Tu radio online',
+            album: nowPlaying?.is_online ? 'Reproductor en pausa' : 'Offline',
+            artwork: [
+                { src: 'https://placehold.co/512x512.png', sizes: '512x512', type: 'image/png' },
+            ]
+        });
+    }
+
+    navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+    navigator.mediaSession.setActionHandler('play', togglePlay);
+    navigator.mediaSession.setActionHandler('pause', togglePlay);
+
+  }, [nowPlaying, isPlaying, togglePlay]);
+
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMuted(prev => {
