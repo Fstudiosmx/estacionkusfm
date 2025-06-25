@@ -26,11 +26,11 @@ export interface ScheduleDay {
 }
 
 export interface Campaign {
-  id: number;
-  title:string;
-  date: string;
+  id: any;
+  title: string;
+  date: any; // Firestore Timestamp
   description: string;
-  icon: 'Calendar' | 'Heart';
+  icon: 'Calendar' | 'Gift' | 'Trophy' | 'Mic';
 }
 
 export interface BlogPost {
@@ -132,4 +132,15 @@ export interface JoinSubmission {
     message?: string;
     createdAt: any; // Firestore Timestamp
     isReviewed: boolean;
+}
+
+export interface HeroSlide {
+    id: any;
+    title: string;
+    description: string;
+    imageUrl: string;
+    imageHint: string;
+    buttonText?: string;
+    buttonLink?: string;
+    order: number;
 }

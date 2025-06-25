@@ -80,6 +80,16 @@ const firestoreData = {
     { "order": 2, "name": "Vinilos & Más", "imageUrl": "https://placehold.co/300x150.png", "hint": "vinyl records", "websiteUrl": "#", "level": "gold" },
     { "order": 3, "name": "Tech Gadgets", "imageUrl": "https://placehold.co/300x150.png", "hint": "gadgets tech", "websiteUrl": "#", "level": "silver" }
   ],
+  "campaigns": [
+      { "date": "July 30, 2024", "title": "Concurso de Verano", "description": "¡Gana entradas para el festival de música de verano! Sintoniza para saber cómo participar.", "icon": "Trophy" },
+      { "date": "August 15, 2024", "title": "Especial de Aniversario", "description": "Celebramos nuestro tercer aniversario con programas especiales y entrevistas exclusivas todo el día.", "icon": "Gift" },
+      { "date": "September 1, 2024", "title": "Maratón de Talento Local", "description": "Un día completo dedicado a la música de artistas emergentes de nuestra comunidad. ¡Apoya lo local!", "icon": "Mic" }
+  ],
+  "heroSlides": [
+      { "order": 1, "title": "Tu Sonido, Tu Estación", "description": "Descubre la mejor música y programas en vivo, 24/7. Sintoniza ahora y únete a la comunidad.", "imageUrl": "https://placehold.co/1920x1080.png", "imageHint": "radio waves", "buttonText": "Escuchar en Vivo", "buttonLink": "#" },
+      { "order": 2, "title": "Venos en Video", "description": "La experiencia completa, ahora en video. Mira nuestros programas en vivo desde el estudio.", "imageUrl": "https://placehold.co/1920x1080.png", "imageHint": "live studio", "buttonText": "Ver Stream", "buttonLink": "/video" },
+      { "order": 3, "title": "Únete a Nuestro Equipo", "description": "¿Tienes una idea para un programa? Buscamos nuevas voces para unirse a nuestra familia.", "imageUrl": "https://placehold.co/1920x1080.png", "imageHint": "microphone professional", "buttonText": "Aplica Ahora", "buttonLink": "/unete" }
+  ],
   "siteSettings": {
     "radioProvider": "azuracast",
     "streamUrl": "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3",
@@ -153,6 +163,20 @@ export async function POST() {
         firestoreData.sponsors.forEach(sponsor => {
             const docRef = doc(collection(db, 'sponsors'));
             batch.set(docRef, sponsor);
+        });
+
+        firestoreData.campaigns.forEach(campaign => {
+            const { date, ...rest } = campaign;
+            const docRef = doc(collection(db, 'campaigns'));
+            batch.set(docRef, {
+                ...rest,
+                date: Timestamp.fromDate(parseDate(date)),
+            });
+        });
+
+        firestoreData.heroSlides.forEach(slide => {
+            const docRef = doc(collection(db, 'heroSlides'));
+            batch.set(docRef, slide);
         });
 
         const settingsRef = doc(db, 'siteSettings', 'config');

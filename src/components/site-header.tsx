@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Menu, LogIn, LogOut, UserCircle, Video } from 'lucide-react';
+import { Menu, LogIn, LogOut, UserCircle, Video, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SiteLogo } from '@/components/icons/radiowave';
@@ -26,6 +26,7 @@ const navItems = [
   { href: '/', label: 'Inicio' },
   { href: '/programacion', label: 'Programación' },
   { href: '/grabaciones', label: 'Grabaciones' },
+  { href: '/campanas', label: 'Campañas' },
   { href: '/blog', label: 'Blog' },
   { href: '/nosotros', label: 'Nosotros' },
   { href: '/unete', label: 'Únete' },

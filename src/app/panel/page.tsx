@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { collection, getDocs, limit, query } from "firebase/firestore";
-import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket, PlayCircle, Megaphone, Settings, MessageSquareQuote } from "lucide-react";
+import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket, PlayCircle, Megaphone, Settings, MessageSquareQuote, UserPlus, Presentation, Trophy } from "lucide-react";
 import Link from "next/link";
 
 export default function PanelPage() {
@@ -185,8 +185,18 @@ export default function PanelPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <Presentation className="h-8 w-8 text-primary" />
+                    <h3 className="font-headline text-xl font-semibold">Hero Slideshow</h3>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Administra las diapositivas de la página de inicio.</p>
+                     <Button asChild><Link href="/panel/hero-slides">Administrar</Link></Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <FileText className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Blog</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Blog</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Escribe y administra los artículos de tu blog.</p>
@@ -198,7 +208,7 @@ export default function PanelPage() {
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <ListMusic className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Top 10 Musical</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Top 10 Musical</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Define y ordena el ranking semanal de éxitos.</p>
@@ -208,7 +218,7 @@ export default function PanelPage() {
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <CalendarDays className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Parrilla Semanal</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Parrilla Semanal</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Organiza la programación de la radio para cada día.</p>
@@ -218,7 +228,7 @@ export default function PanelPage() {
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Users className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Miembros del Equipo</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Miembros del Equipo</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Añade o edita los perfiles del personal de la radio.</p>
@@ -228,7 +238,7 @@ export default function PanelPage() {
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <PlayCircle className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Podcasts y Grabaciones</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Podcasts</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Sube y gestiona los episodios de tus programas grabados.</p>
@@ -238,27 +248,37 @@ export default function PanelPage() {
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Megaphone className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Gestión de Patrocinio</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Patrocinio</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Administra los logos y enlaces de tus patrocinadores.</p>
                     <Button asChild><Link href="/panel/sponsors">Administrar</Link></Button>
                 </CardContent>
             </Card>
+             <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <Trophy className="h-8 w-8 text-primary" />
+                    <h3 className="font-headline text-xl font-semibold">Campañas</h3>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Gestiona eventos, concursos y campañas especiales.</p>
+                    <Button asChild><Link href="/panel/campaigns">Administrar</Link></Button>
+                </CardContent>
+            </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Ticket className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Códigos de Invitación</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Invitaciones</h3>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Crea y controla los códigos para nuevos administradores.</p>
+                    <p className="text-sm text-muted-foreground mb-4">Crea códigos para registrar nuevos administradores.</p>
                     <Button asChild><Link href="/panel/invitations">Administrar</Link></Button>
                 </CardContent>
             </Card>
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <MessageSquareQuote className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Interacción con Oyentes</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Interacción Oyentes</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Visualiza peticiones de canciones y saludos.</p>
@@ -267,8 +287,18 @@ export default function PanelPage() {
             </Card>
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <UserPlus className="h-8 w-8 text-primary" />
+                    <h3 className="font-headline text-xl font-semibold">Solicitudes Equipo</h3>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Revisa las aplicaciones para unirse al equipo.</p>
+                    <Button asChild><Link href="/panel/join-submissions">Administrar</Link></Button>
+                </CardContent>
+            </Card>
+             <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Settings className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Ajustes Generales</CardTitle>
+                    <h3 className="font-headline text-xl font-semibold">Ajustes Generales</h3>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">Configura los parámetros técnicos de la radio y el sitio.</p>
@@ -280,5 +310,3 @@ export default function PanelPage() {
     </div>
   );
 }
-
-    

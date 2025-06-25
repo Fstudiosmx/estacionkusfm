@@ -1,7 +1,6 @@
 
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code, KeyRound, Database, Users, UploadCloud, Radio, Video, BrainCircuit, MessageSquareQuote } from 'lucide-react';
+import { Code, KeyRound, Database, Users, UploadCloud, Radio, Video, BrainCircuit, MessageSquareQuote, UserPlus, Presentation, Trophy } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -30,7 +29,7 @@ export default function DocsPage() {
                         <KeyRound className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Paso 1: Añadir tus Credenciales de Firebase</CardTitle>
+                        <h2 className="font-headline text-xl font-semibold">Paso 1: Añadir tus Credenciales de Firebase</h2>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4 text-muted-foreground">
@@ -67,7 +66,7 @@ const firebaseConfig = {
                         <Users className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Paso 2: Habilitar Autenticación y Firestore</CardTitle>
+                        <h2 className="font-headline text-xl font-semibold">Paso 2: Habilitar Autenticación y Firestore</h2>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4 text-muted-foreground">
@@ -98,7 +97,7 @@ const firebaseConfig = {
                         <UploadCloud className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Paso 3: Crear tu Primer Usuario y Poblar la Base de Datos</CardTitle>
+                        <h2 className="font-headline text-xl font-semibold">Paso 3: Crear tu Primer Usuario y Poblar la Base de Datos</h2>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4 text-muted-foreground">
@@ -133,7 +132,7 @@ const firebaseConfig = {
                         <Radio className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Paso 4: Configuración de la Radio y Stream</CardTitle>
+                        <h2 className="font-headline text-xl font-semibold">Paso 4: Configuración de la Radio y Stream</h2>
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground space-y-4">
@@ -182,7 +181,7 @@ const firebaseConfig = {
                         <Database className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <CardTitle className="font-headline">Referencia de la Base de Datos (Opcional)</CardTitle>
+                        <h2 className="font-headline text-xl font-semibold">Referencia de la Base de Datos (Opcional)</h2>
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
@@ -190,8 +189,23 @@ const firebaseConfig = {
                         A continuación se detalla la estructura de cada colección de Firestore. Usa esta guía si prefieres añadir contenido manualmente en lugar de usar el panel de administración.
                     </p>
                     <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="heroSlides">
+                        <AccordionTrigger className="font-mono text-sm">heroSlides</AccordionTrigger>
+                        <AccordionContent>
+                          <p>Almacena las diapositivas del carrusel de la página de inicio. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`order` (number): 1</li>
+                              <li>`title` (string): "Tu Sonido, Tu Estación"</li>
+                              <li>`description` (string): "Descubre la mejor música..."</li>
+                              <li>`imageUrl` (string): "https://url.com/image.png"</li>
+                              <li>`imageHint` (string): "radio waves"</li>
+                              <li>`buttonText` (string): "Escuchar en Vivo" (opcional)</li>
+                              <li>`buttonLink` (string): "#" (opcional)</li>
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
                       <AccordionItem value="blogPosts">
-                        <AccordionTrigger>blogPosts</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">blogPosts</AccordionTrigger>
                         <AccordionContent>
                           <p>Almacena los artículos del blog. Estructura de un documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -206,7 +220,7 @@ const firebaseConfig = {
                         </AccordionContent>
                       </AccordionItem>
                        <AccordionItem value="userSubmissions">
-                        <AccordionTrigger>userSubmissions</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">userSubmissions</AccordionTrigger>
                         <AccordionContent>
                           <p>Guarda las peticiones de canciones y los saludos de los oyentes. Estructura de un documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -221,7 +235,7 @@ const firebaseConfig = {
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="joinSubmissions">
-                          <AccordionTrigger>joinSubmissions</AccordionTrigger>
+                          <AccordionTrigger className="font-mono text-sm">joinSubmissions</AccordionTrigger>
                           <AccordionContent>
                             <p>Almacena las solicitudes para unirse al equipo enviadas desde la página '/unete'. Estructura de un documento:</p>
                             <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -235,7 +249,7 @@ const firebaseConfig = {
                           </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="topSongs">
-                        <AccordionTrigger>topSongs</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">topSongs</AccordionTrigger>
                         <AccordionContent>
                           <p>Contiene el ranking de las canciones principales. Estructura de un documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -253,7 +267,7 @@ const firebaseConfig = {
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="weeklySchedule">
-                        <AccordionTrigger>weeklySchedule</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">weeklySchedule</AccordionTrigger>
                         <AccordionContent>
                           <p>Guarda la programación. Hay un documento por cada día (ID del doc: 'Monday', 'Tuesday', etc.).</p>
                            <p className="mt-2">El documento contiene un único campo `schedule` que es un array de objetos. Estructura del array `schedule`:</p>
@@ -273,7 +287,7 @@ schedule: [
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="teamMembers">
-                        <AccordionTrigger>teamMembers</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">teamMembers</AccordionTrigger>
                         <AccordionContent>
                           <p>Lista de los miembros del equipo. Estructura de un documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -289,7 +303,7 @@ schedule: [
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="recordedShows">
-                        <AccordionTrigger>recordedShows</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">recordedShows</AccordionTrigger>
                         <AccordionContent>
                           <p>Contiene los podcasts y programas grabados. Estructura de un documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -304,7 +318,7 @@ schedule: [
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="sponsors">
-                        <AccordionTrigger>sponsors</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">sponsors</AccordionTrigger>
                         <AccordionContent>
                           <p>Almacena la información de los patrocinadores. Estructura de un documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -317,8 +331,20 @@ schedule: [
                           </ul>
                         </AccordionContent>
                       </AccordionItem>
+                      <AccordionItem value="campaigns">
+                        <AccordionTrigger className="font-mono text-sm">campaigns</AccordionTrigger>
+                        <AccordionContent>
+                          <p>Almacena campañas, eventos y concursos. Estructura de un documento:</p>
+                          <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
+                              <li>`title` (string): "Concurso de Verano"</li>
+                              <li>`description` (string): "¡Gana entradas...!"</li>
+                              <li>`date` (timestamp): Fecha del evento</li>
+                              <li>`icon` (string): "Trophy" | "Gift" | "Calendar" | "Mic"</li>
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
                       <AccordionItem value="invitationCodes">
-                        <AccordionTrigger>invitationCodes</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">invitationCodes</AccordionTrigger>
                         <AccordionContent>
                           <p>Guarda los códigos de invitación. Estructura de un documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">
@@ -331,7 +357,7 @@ schedule: [
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="siteSettings">
-                        <AccordionTrigger>siteSettings</AccordionTrigger>
+                        <AccordionTrigger className="font-mono text-sm">siteSettings</AccordionTrigger>
                         <AccordionContent>
                           <p>Un único documento (con ID 'config') que almacena la configuración global del sitio. Estructura del documento:</p>
                           <ul className="list-disc list-inside space-y-1 mt-2 font-mono text-xs pl-4">

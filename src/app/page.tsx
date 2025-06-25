@@ -3,8 +3,6 @@ import Link from 'next/link';
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TopSongItem } from '@/components/top-song-item';
@@ -14,8 +12,7 @@ import { collection, doc, getDoc, getDocs, limit, orderBy, query } from 'firebas
 import { db } from '@/lib/firebase';
 import type { Program, Song, BlogPost } from '@/lib/data';
 import { SponsorsSection } from '@/components/sponsors-section';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { HeroSlideshow } from '@/components/hero-slideshow';
 
 async function getPageData() {
   try {
@@ -72,38 +69,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="w-full py-20 md:py-32 lg:py-40 bg-primary/10">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-1 lg:gap-12 xl:grid-cols-2">
-            <div className="flex flex-col justify-center space-y-4">
-              <div className="space-y-2">
-                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-primary">
-                  EstacionKusFM
-                </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Tu dosis diaria de sonido. Música ininterrumpida, programas de entrevistas y el pulso de la ciudad, al alcance de tu mano.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Button asChild size="lg" className="font-bold">
-                  <Link href="/programacion">Ver Programación</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="font-bold">
-                  <Link href="/unete">Únete</Link>
-                </Button>
-              </div>
-            </div>
-            <Image
-              src="https://placehold.co/600x400.png"
-              data-ai-hint="radio microphone"
-              width="600"
-              height="400"
-              alt="Hero"
-              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
-            />
-          </div>
-        </div>
-      </section>
+      <HeroSlideshow />
 
       <section className="w-full py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
@@ -223,11 +189,11 @@ export default async function Home() {
                             <div className="mb-4">
                                 <Badge variant="outline">{post.category}</Badge>
                             </div>
-                            <CardTitle className="font-headline text-lg mb-2 flex-1">
+                            <h3 className="font-headline text-lg mb-2 flex-1 font-semibold">
                                 <Link href={`/blog/${post.id}`} className="hover:text-primary transition-colors">
                                 {post.title}
                                 </Link>
-                            </CardTitle>
+                            </h3>
                             <p className="text-sm text-muted-foreground mb-4">
                                 {post.excerpt}
                             </p>

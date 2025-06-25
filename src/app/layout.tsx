@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next';
-import { Belleza, Alegreya } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
@@ -12,18 +12,16 @@ import { getSiteSettings } from '@/lib/settings';
 import { CookieBanner } from '@/components/cookie-banner';
 import { ThemeProvider } from '@/components/theme-provider';
 
-const belleza = Belleza({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-belleza',
+  variable: '--font-inter',
   display: 'swap',
 });
 
-const alegreya = Alegreya({
+const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['400', '500', '700', '800', '900'],
-  style: ['normal', 'italic'],
-  variable: '--font-alegreya',
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-poppins',
   display: 'swap',
 });
 
@@ -56,8 +54,8 @@ export default async function RootLayout({
       <body
         className={cn(
           'min-h-screen bg-background font-body antialiased',
-          belleza.variable,
-          alegreya.variable
+          inter.variable,
+          poppins.variable
         )}
         suppressHydrationWarning={true}
       >
