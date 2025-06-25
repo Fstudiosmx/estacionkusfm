@@ -4,6 +4,7 @@ import { Code, KeyRound, Database, Users, UploadCloud } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { FaGoogle } from "react-icons/fa";
 
 export default function DocsPage() {
   const CodeBlock = ({ children }: { children: React.ReactNode }) => (
@@ -76,7 +77,8 @@ const firebaseConfig = {
                             <ul className="list-disc list-inside ml-6 mt-1">
                                 <li>En el menú de tu Consola de Firebase, ve a <strong>Authentication</strong>.</li>
                                 <li>Selecciona la pestaña <strong>Sign-in method</strong>.</li>
-                                <li>Haz clic en <strong>Email/Contraseña</strong> en la lista de proveedores y habilítalo.</li>
+                                <li>Haz clic en <strong>Email/Contraseña</strong> y habilítalo.</li>
+                                <li>Haz clic en <strong>Google</strong>, habilítalo y selecciona un correo electrónico de soporte.</li>
                             </ul>
                         </li>
                         <li className="mt-2"><strong>Crear Base de Datos (Firestore):</strong>
