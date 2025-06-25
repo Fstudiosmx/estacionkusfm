@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -127,22 +128,22 @@ export default function PanelPage() {
     <div className="container mx-auto px-4 md:px-6 py-12">
        <div className="flex flex-col items-center text-center mb-8">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">
-                Panel de Administración
+                Estación de Control
             </h1>
             <p className="max-w-[700px] text-muted-foreground md:text-xl mt-4">
-                Gestiona el contenido y la configuración de EstacionKusFM.
+                El centro de mando para todo el contenido de EstacionKusFM.
             </p>
         </div>
 
       <Card className="max-w-4xl mx-auto mb-8">
         <CardHeader>
-          <CardTitle>Bienvenido, {user.email}</CardTitle>
+          <CardTitle>Hola, {user.email}</CardTitle>
           <CardDescription>
-            Usa las herramientas de abajo para gestionar el contenido de tu sitio web.
+            Desde aquí puedes administrar cada aspecto de tu sitio web y estación de radio.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={handleLogout}>Cerrar Sesión</Button>
+          <Button onClick={handleLogout}>Salir</Button>
         </CardContent>
       </Card>
 
@@ -180,7 +181,7 @@ export default function PanelPage() {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold font-headline mb-4">Panel de Contenido</h2>
+        <h2 className="text-2xl font-bold font-headline mb-4">Módulos de Gestión</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
@@ -188,90 +189,90 @@ export default function PanelPage() {
                     <CardTitle className="font-headline text-xl">Blog</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Crea, edita y publica nuevos artículos en el blog.</p>
+                    <p className="text-sm text-muted-foreground mb-4">Escribe y administra los artículos de tu blog.</p>
                      <Button asChild>
-                        <Link href="/panel/blog">Gestionar</Link>
+                        <Link href="/panel/blog">Administrar</Link>
                     </Button>
                 </CardContent>
             </Card>
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <ListMusic className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Top 10 Canciones</CardTitle>
+                    <CardTitle className="font-headline text-xl">Top 10 Musical</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Edita el ranking de las canciones más populares de la semana.</p>
-                    <Button asChild><Link href="/panel/top-songs">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Define y ordena el ranking semanal de éxitos.</p>
+                    <Button asChild><Link href="/panel/top-songs">Administrar</Link></Button>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <CalendarDays className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Programación</CardTitle>
+                    <CardTitle className="font-headline text-xl">Parrilla Semanal</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Actualiza el horario semanal de todos los programas.</p>
-                    <Button asChild><Link href="/panel/schedule">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Organiza la programación de la radio para cada día.</p>
+                    <Button asChild><Link href="/panel/schedule">Administrar</Link></Button>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Users className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Equipo</CardTitle>
+                    <CardTitle className="font-headline text-xl">Miembros del Equipo</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Gestiona los miembros del equipo que se muestran en la página 'Nosotros'.</p>
-                    <Button asChild><Link href="/panel/team">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Añade o edita los perfiles del personal de la radio.</p>
+                    <Button asChild><Link href="/panel/team">Administrar</Link></Button>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <PlayCircle className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Grabaciones</CardTitle>
+                    <CardTitle className="font-headline text-xl">Podcasts y Grabaciones</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Añade y edita los podcasts y programas grabados.</p>
-                    <Button asChild><Link href="/panel/recordings">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Sube y gestiona los episodios de tus programas grabados.</p>
+                    <Button asChild><Link href="/panel/recordings">Administrar</Link></Button>
                 </CardContent>
             </Card>
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Megaphone className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Patrocinadores</CardTitle>
+                    <CardTitle className="font-headline text-xl">Gestión de Patrocinio</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Gestiona los patrocinadores y la publicidad del sitio.</p>
-                    <Button asChild><Link href="/panel/sponsors">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Administra los logos y enlaces de tus patrocinadores.</p>
+                    <Button asChild><Link href="/panel/sponsors">Administrar</Link></Button>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Ticket className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Invitaciones</CardTitle>
+                    <CardTitle className="font-headline text-xl">Códigos de Invitación</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Genera nuevos códigos para invitar a otros administradores.</p>
-                    <Button asChild><Link href="/panel/invitations">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Crea y controla los códigos para nuevos administradores.</p>
+                    <Button asChild><Link href="/panel/invitations">Administrar</Link></Button>
                 </CardContent>
             </Card>
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <MessageSquareQuote className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Peticiones</CardTitle>
+                    <CardTitle className="font-headline text-xl">Interacción con Oyentes</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Revisa las peticiones de canciones y saludos de los oyentes.</p>
-                    <Button asChild><Link href="/panel/requests">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Visualiza peticiones de canciones y saludos.</p>
+                    <Button asChild><Link href="/panel/requests">Administrar</Link></Button>
                 </CardContent>
             </Card>
              <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Settings className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Configuración</CardTitle>
+                    <CardTitle className="font-headline text-xl">Ajustes Generales</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Ajusta la configuración general del sitio web y la radio.</p>
-                    <Button asChild><Link href="/panel/settings">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Configura los parámetros técnicos de la radio y el sitio.</p>
+                    <Button asChild><Link href="/panel/settings">Administrar</Link></Button>
                 </CardContent>
             </Card>
         </div>
@@ -279,3 +280,5 @@ export default function PanelPage() {
     </div>
   );
 }
+
+    
