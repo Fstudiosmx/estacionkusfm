@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,7 +62,7 @@ export function SponsorForm({ sponsor, onSuccess }: SponsorFormProps) {
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [sponsor, form, defaultValues]);
+  }, [sponsor, form]);
 
   async function onSubmit(data: SponsorFormValues) {
     setIsSubmitting(true);

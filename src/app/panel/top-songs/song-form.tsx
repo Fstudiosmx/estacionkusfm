@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -66,7 +67,7 @@ export function SongForm({ song, onSuccess }: SongFormProps) {
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [song, form, defaultValues]);
+  }, [song, form]);
   
   const handleFindLinks = async () => {
     setIsFindingLinks(true);

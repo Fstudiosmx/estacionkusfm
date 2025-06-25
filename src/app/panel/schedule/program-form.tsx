@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +38,7 @@ export function ProgramForm({ program, onSubmit, isSaving }: ProgramFormProps) {
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [program, form, defaultValues]);
+  }, [program, form]);
 
   return (
     <Form {...form}>

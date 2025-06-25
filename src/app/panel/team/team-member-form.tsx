@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,7 +57,7 @@ export function TeamMemberForm({ member, onSuccess }: TeamMemberFormProps) {
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [member, form, defaultValues]);
+  }, [member, form]);
 
   async function onSubmit(data: TeamMemberFormValues) {
     setIsSubmitting(true);
