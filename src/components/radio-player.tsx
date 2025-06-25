@@ -39,7 +39,11 @@ interface AzuraCastNowPlaying {
   };
 }
 
-export function RadioPlayer() {
+interface RadioPlayerProps {
+  streamUrl: string;
+}
+
+export function RadioPlayer({ streamUrl }: RadioPlayerProps) {
   const [nowPlaying, setNowPlaying] = useState<AzuraCastNowPlaying | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
@@ -53,7 +57,6 @@ export function RadioPlayer() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isPlayerDetailOpen, setPlayerDetailOpen] = useState(false);
 
-  const streamUrl = "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3";
   const apiUrl = "/api/nowplaying";
 
   useEffect(() => {

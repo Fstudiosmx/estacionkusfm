@@ -80,3 +80,10 @@ export interface Sponsor {
   level: 'platinum' | 'gold' | 'silver';
   order: number;
 }
+
+export interface SiteSettings {
+  streamUrl: string;
+  nowPlayingUrl: string;
+  historyUrl: string;
+  showDocsLink: boolean;
+}

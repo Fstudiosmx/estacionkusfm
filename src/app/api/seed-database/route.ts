@@ -78,7 +78,13 @@ const firestoreData = {
     { "order": 1, "name": "Café del Sol", "imageUrl": "https://placehold.co/300x150.png", "hint": "coffee shop", "websiteUrl": "#", "level": "platinum" },
     { "order": 2, "name": "Vinilos & Más", "imageUrl": "https://placehold.co/300x150.png", "hint": "vinyl records", "websiteUrl": "#", "level": "gold" },
     { "order": 3, "name": "Tech Gadgets", "imageUrl": "https://placehold.co/300x150.png", "hint": "gadgets tech", "websiteUrl": "#", "level": "silver" }
-  ]
+  ],
+  "siteSettings": {
+    "streamUrl": "https://radio.trabullnetwork.pro/listen/estacionkusfm/radio.mp3",
+    "nowPlayingUrl": "https://radio.trabullnetwork.pro/api/nowplaying/estacionkusfm",
+    "historyUrl": "https://radio.trabullnetwork.pro/api/station/estacionkusfm/history",
+    "showDocsLink": true
+  }
 };
 
 export async function POST() {
@@ -138,6 +144,10 @@ export async function POST() {
             const docRef = doc(collection(db, 'sponsors'));
             batch.set(docRef, sponsor);
         });
+
+        const settingsRef = doc(db, 'siteSettings', 'config');
+        batch.set(settingsRef, firestoreData.siteSettings);
+
 
         await batch.commit();
 

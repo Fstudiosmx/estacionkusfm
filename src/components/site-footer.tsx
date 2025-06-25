@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { SiteLogo } from '@/components/icons/radiowave';
 import { Facebook, Instagram, X } from 'lucide-react';
+import { getSiteSettings } from '@/lib/settings';
 
 const footerNavs = [
   { href: '/nosotros', label: 'Nosotros' },
@@ -9,7 +10,9 @@ const footerNavs = [
   { href: '/unete', label: 'Únete' },
 ];
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const settings = await getSiteSettings();
+
   return (
     <footer className="w-full bg-secondary border-t mt-auto pb-24 sm:pb-28">
       <div className="container mx-auto px-4 md:px-6 py-8">
@@ -77,11 +80,13 @@ export function SiteFooter() {
                     Términos de Servicio
                   </Link>
                 </li>
-                 <li>
-                  <Link href="/docs" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                    Guía de Configuración
-                  </Link>
-                </li>
+                {settings.showDocsLink && (
+                  <li>
+                    <Link href="/docs" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                        Guía de Configuración
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

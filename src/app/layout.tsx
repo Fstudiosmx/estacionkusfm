@@ -6,17 +6,20 @@ import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { RadioPlayer } from '@/components/radio-player';
 import Script from 'next/script';
+import { getSiteSettings } from '@/lib/settings';
 
 export const metadata: Metadata = {
   title: 'EstacionKusFM - Tu Radio Online',
   description: 'La mejor música y programas, en vivo 24/7.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
@@ -52,7 +55,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </div>
-        <RadioPlayer />
+        <RadioPlayer streamUrl={settings.streamUrl} />
         <Toaster />
       </body>
     </html>

@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { collection, getDocs, limit, query } from "firebase/firestore";
-import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket, PlayCircle, Megaphone } from "lucide-react";
+import { Loader2, UploadCloud, ListMusic, FileText, CalendarDays, Users, Ticket, PlayCircle, Megaphone, Settings, MessageSquareQuote } from "lucide-react";
 import Link from "next/link";
 
 export default function PanelPage() {
@@ -234,6 +234,16 @@ export default function PanelPage() {
                     <Button asChild><Link href="/panel/recordings">Gestionar</Link></Button>
                 </CardContent>
             </Card>
+             <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <Megaphone className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Patrocinadores</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Gestiona los patrocinadores y la publicidad del sitio.</p>
+                    <Button asChild><Link href="/panel/sponsors">Gestionar</Link></Button>
+                </CardContent>
+            </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                     <Ticket className="h-8 w-8 text-primary" />
@@ -244,14 +254,24 @@ export default function PanelPage() {
                     <Button asChild><Link href="/panel/invitations">Gestionar</Link></Button>
                 </CardContent>
             </Card>
-            <Card>
+             <Card>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                    <Megaphone className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline text-xl">Patrocinadores</CardTitle>
+                    <MessageSquareQuote className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Peticiones</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">Gestiona los patrocinadores y la publicidad del sitio.</p>
-                    <Button asChild><Link href="/panel/sponsors">Gestionar</Link></Button>
+                    <p className="text-sm text-muted-foreground mb-4">Revisa las peticiones de canciones y saludos de los oyentes.</p>
+                    <Button asChild><Link href="/panel/requests">Gestionar</Link></Button>
+                </CardContent>
+            </Card>
+             <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                    <Settings className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-xl">Configuración</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">Ajusta la configuración general del sitio web y la radio.</p>
+                    <Button asChild><Link href="/panel/settings">Gestionar</Link></Button>
                 </CardContent>
             </Card>
         </div>

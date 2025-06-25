@@ -1,8 +1,11 @@
 // src/app/api/history/route.ts
+import { getSiteSettings } from '@/lib/settings';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const azura_url = 'https://radio.trabullnetwork.pro/api/station/estacionkusfm/history';
+  const settings = await getSiteSettings();
+  const azura_url = settings.historyUrl;
+
   try {
     const response = await fetch(azura_url, {
       cache: 'no-store',
